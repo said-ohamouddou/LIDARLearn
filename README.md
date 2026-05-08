@@ -12,7 +12,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
 [![PyTorch 2.4.1](https://img.shields.io/badge/PyTorch-2.4.1-ee4c2c.svg)](https://pytorch.org/)
-![Visitors](https://komarev.com/ghpvc/?username=said-ohamouddou&style=for-the-badge&color=brightgreen)
+![Repo Views](https://komarev.com/ghpvc/?username=said-ohamouddou&repo=LIDARLearn&label=Repository%20Views&color=0e75b6&style=for-the-badge)
 <img src="media/vis.png" alt="LIDARLearn — 3D point-cloud deep learning outputs" width="900"/>
 
 *Paper:* [LIDARLearn: A Unified Deep Learning Library for 3D Point Cloud Classification, Segmentation, and Self-Supervised Representation Learning](https://arxiv.org/abs/2604.10780) · *Demo:* [Google Drive walkthrough](https://drive.google.com/drive/folders/1TR4mR9aXYXpvM2RNBFuYb1gYn1uSKad5?usp=sharing)
