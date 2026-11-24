@@ -6,7 +6,7 @@ and saves per-block visualizations as HTML files (interactive 3D via plotly)
 and per-block .npy arrays for downstream analysis.
 
 Usage:
-    python scripts/visulization/visualize_seg.py \
+    python scripts/visualization/visualize_seg.py \
         --config cfgs/segmentation/PointMAE/S3DIS/pointmae_s3dis.yaml \
         --ckpt experiments/S3DIS/pointmae_s3dis/ckpt-best-seg.pth \
         --num_vis 20 \

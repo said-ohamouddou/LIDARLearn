@@ -5,7 +5,7 @@ Loads a trained part-segmentation model, runs inference on the test set,
 and saves per-shape interactive 3D visualizations (GT vs Pred).
 
 Usage:
-    python scripts/visulization/visualize_partseg.py \
+    python scripts/visualization/visualize_partseg.py \
         --config cfgs/segmentation/PointNet/ShapeNetParts/pointnet_partseg.yaml \
         --ckpt experiments/ShapeNetParts/pointnet_partseg/ckpt-last-seg.pth \
         --num_vis 30

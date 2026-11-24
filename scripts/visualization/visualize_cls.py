@@ -6,7 +6,7 @@ and saves per-sample interactive 3D visualizations colored by predicted vs
 ground-truth class, plus a confusion matrix and summary.
 
 Usage:
-    python scripts/visulization/visualize_cls.py \
+    python scripts/visualization/visualize_cls.py \
         --config experiments/STPCTLS/dgcnn_stpctls/config.yaml \
         --ckpt experiments/STPCTLS/dgcnn_stpctls/ckpt-best.pth \
         --num_vis 30

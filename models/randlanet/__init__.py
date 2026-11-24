@@ -7,7 +7,7 @@ Source: https://github.com/aRI0U/RandLA-Net-pytorch (no license)
 Clean implementation.
 """
 
-from .randlenet import (
+from .randlanet import (
     LocalSpatialEncoding,
     AttentivePooling,
     LocalFeatureAggregation,

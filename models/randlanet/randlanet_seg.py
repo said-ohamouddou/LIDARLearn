@@ -10,7 +10,7 @@ Clean implementation.
 import torch
 import torch.nn.functional as F
 
-from .randlenet import RandLANet
+from .randlanet import RandLANet
 from ..build import MODELS
 from ..base_seg_model import BaseSegModel
 

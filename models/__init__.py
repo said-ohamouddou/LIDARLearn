@@ -106,8 +106,8 @@ _MODEL_MODULES = [
     "models.ppfnet.ppfnet",                           # pointnet2_ops
     "models.pointscnet.network",                      # pointnet2_ops
     "models.pointscnet.pointscnet_seg",
-    "models.randlenet.randlenet",                     # pointnet2_ops
-    "models.randlenet.randlenet_seg",
+    "models.randlanet.randlanet",                     # pointnet2_ops
+    "models.randlanet.randlanet_seg",
     "models.rscnn.rscnn",                             # pointnet2_ops
     "models.rscnn.rscnn_seg",
     "models.msdgcnn.msdgcnn",                         # pointnet2_ops
@@ -119,8 +119,8 @@ _MODEL_MODULES = [
     "models.pointtnt.pointtnt_seg",                   # pointnet2_ops
     "models.p2p.p2p",                                 # torch_scatter, pointnet2_ops
     "models.p2p.p2p_seg",
-    "models.rapsurf.rapsurf",                         # pointnet2_ops
-    "models.rapsurf.rapsurf_seg",
+    "models.repsurf.repsurf",                         # pointnet2_ops
+    "models.repsurf.repsurf_seg",
     "models.dela.dela",                               # dela_cutils, pointnet2_ops
     "models.dela.dela_seg",
     "models.pvt.pvt",                                 # ptv_modules
