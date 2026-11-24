@@ -34,10 +34,9 @@ from pathlib import Path
 import pytest
 import torch
 
-from models.build import build_model_from_cfg
 from utils.config import cfg_from_yaml_file
 
-from .conftest import REPO_ROOT  # type: ignore
+from .conftest import REPO_ROOT, build_model_or_skip  # type: ignore
 
 
 # ---------------------------------------------------------------------------
@@ -111,7 +110,7 @@ def test_pretrained_checkpoint_loads_nontrivially(label, cfg_rel, ckpt_rel):
         pytest.skip(f"pretrained checkpoint not present: {ckpt_rel}")
 
     cfg = cfg_from_yaml_file(cfg_path)
-    model = build_model_from_cfg(cfg.model)
+    model = build_model_or_skip(cfg.model)
 
     # Byte-level snapshot BEFORE loading — deep-copy each tensor so nothing
     # can alias through after load_state_dict replaces the storage.

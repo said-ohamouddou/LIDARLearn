@@ -16,13 +16,15 @@ from __future__ import annotations
 import pytest
 
 from utils.config import cfg_from_yaml_file
-from models.build import MODELS, build_model_from_cfg
+from models.build import MODELS
 
 from .conftest import (
     ALL_CONFIGS,
     CLASSIFICATION_CONFIGS,
     S3DIS_CONFIGS,
     SHAPENETPARTS_CONFIGS,
+    allow_missing_extensions,
+    build_model_or_skip,
     config_id,
 )
 
@@ -57,6 +59,10 @@ def _assert_registered(name: str):
     hint = ", ".join(registered[:20]) + ("..." if len(registered) > 20 else "")
     skipped = getattr(MODELS, "import_failures", {})
     if skipped:
+        if allow_missing_extensions():
+            # CI without a GPU/nvcc: the CUDA extensions can't be built there.
+            missing = sorted({dep for dep, _ in skipped.values()})
+            pytest.skip(f"{name} unavailable: missing {', '.join(missing)}")
         details = "\n".join(f"  - {mod}: {err}" for mod, (_, err) in sorted(skipped.items()))
         raise AssertionError(
             f"Model '{name}' is not registered. These model modules were skipped "
@@ -77,7 +83,7 @@ def test_classification_model_builds(cfg_path):
     if not hasattr(cfg, "model") or not hasattr(cfg.model, "NAME"):
         pytest.skip("not a model config (no model.NAME)")
     _assert_registered(cfg.model.NAME)
-    model = build_model_from_cfg(cfg.model)
+    model = build_model_or_skip(cfg.model)
     total = sum(p.numel() for p in model.parameters())
     assert total > 0, f"Model {cfg.model.NAME} has no parameters"
 
@@ -86,7 +92,7 @@ def test_classification_model_builds(cfg_path):
 def test_semantic_seg_model_builds(cfg_path):
     cfg = cfg_from_yaml_file(cfg_path)
     _assert_registered(cfg.model.NAME)
-    model = build_model_from_cfg(cfg.model)
+    model = build_model_or_skip(cfg.model)
     assert sum(p.numel() for p in model.parameters()) > 0
 
 
@@ -94,5 +100,5 @@ def test_semantic_seg_model_builds(cfg_path):
 def test_part_seg_model_builds(cfg_path):
     cfg = cfg_from_yaml_file(cfg_path)
     _assert_registered(cfg.model.NAME)
-    model = build_model_from_cfg(cfg.model)
+    model = build_model_or_skip(cfg.model)
     assert sum(p.numel() for p in model.parameters()) > 0

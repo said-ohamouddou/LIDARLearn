@@ -10,6 +10,7 @@
 
 **Test LIDARLearn on Colab:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-9_pwgyqAK6OUS2tvPT5DUPowv1udOWl?usp=sharing)
 
+[![tests](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml/badge.svg)](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml)
 [![arXiv](https://img.shields.io/badge/arXiv-2604.10780-b31b1b.svg)](https://arxiv.org/abs/2604.10780)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
