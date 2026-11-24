@@ -28,7 +28,8 @@
 
 ## News
 
-- **2026-11 — PointMamba added.** LIDARLearn now supports [PointMamba](https://github.com/LMD0311/PointMamba) (NeurIPS 2024), a state-space (Mamba) backbone. It covers the tasks of the official repository: ShapeNet-55 pre-training, ModelNet40 fine-tuning, few-shot and ScanObjectNN (OBJ-BG, OBJ-ONLY, PB-T50-RS). The official checkpoints load unchanged and reproduce the published 93.5% on ModelNet40. See [Supported Models](#supported-models) and [installing Mamba](#5b-optional-install-mamba-for-pointmamba).
+- **2026-11 — PointMamba added.** LIDARLearn now supports [PointMamba](https://github.com/LMD0311/PointMamba) (NeurIPS 2024), a state-space (Mamba) backbone.
+- **2026-11 — Newer PyTorch and CUDA.** LIDARLearn now runs on PyTorch 2.8 with CUDA 12.8, in addition to PyTorch 2.4.1 with CUDA 11.8. See [Installation](#installation).
 
 ---
 
