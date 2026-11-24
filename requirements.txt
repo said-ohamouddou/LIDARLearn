@@ -39,5 +39,3 @@ termcolor
 matplotlib==3.9.2
 seaborn==0.13.2
 
-# Preprocessing (HELIALS LAS ingestion)
-laspy

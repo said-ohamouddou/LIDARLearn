@@ -84,7 +84,7 @@ def get_args():
         '--init_source',
         type=str,
         default=None,
-        help='Override init_source in model config (e.g., "HELIALS" for HELIALS-pretrained weights). '
+        help='Override init_source in model config (e.g., "ShapeNet" for ShapeNet-pretrained weights). '
              'If not specified, uses value from YAML config (default: ShapeNet).')
     parser.add_argument(
         '--early_stopping_patience',

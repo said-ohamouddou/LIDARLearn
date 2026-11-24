@@ -16,8 +16,7 @@ LIDARLearn/
 │   ├── ShapeNet55-34/
 │   ├── ShapeNetPart/
 │   ├── S3DIS/
-│   ├── STPCTLS/
-│   └── HELIALS/
+│   └── STPCTLS/
 └── ...
 ```
 
@@ -27,7 +26,7 @@ layout the dataloaders in [datasets/](datasets/) and the YAML configs in
 
 ### Which datasets need preprocessing?
 
-Most benchmarks ship ready-to-use — only three need a one-time preprocessing
+Most benchmarks ship ready-to-use — only two need a one-time preprocessing
 pass before you can train on them:
 
 | Dataset | Preprocessing | Script |
@@ -35,9 +34,8 @@ pass before you can train on them:
 | ModelNet40 / ModelNet-FewShot / ScanObjectNN / ShapeNet-55 / ShapeNetPart | — | none |
 | **S3DIS** | ✓ | [preprocessing/preprocess_s3dis.py](preprocessing/preprocess_s3dis.py) |
 | **STPCTLS** | ✓ | [preprocessing/preprocess_stpctls.py](preprocessing/preprocess_stpctls.py) |
-| **HELIALS** | ✓ | [preprocessing/preprocess_helials.py](preprocessing/preprocess_helials.py) |
 
-All three scripts are idempotent (skip already-processed files) and write
+Both scripts are idempotent (skip already-processed files) and write
 their outputs under `data/`, where the loaders expect them.
 
 ---
@@ -263,71 +261,3 @@ data/STPCTLS/
 
 Both loaders auto-rebuild their split file if you change `--seed` or
 `K_FOLDS` between runs.
-
----
-
-### HELIALS
-
-- **Download:** [Zenodo 17077256](https://zenodo.org/records/17077256)
-- **Config:** [cfgs/dataset/TreeDatasetHELIALS.yaml](cfgs/dataset/TreeDatasetHELIALS.yaml)
-- **Loader:** [datasets/TreeSpeciesDatasetHELIALS.py](datasets/TreeSpeciesDatasetHELIALS.py)
-- **Preprocessor:** [preprocessing/preprocess_helials.py](preprocessing/preprocess_helials.py)
-
-HELIALS ships as raw per-tree `.las` point clouds (millions of points each)
-plus a CSV of species labels and train/test flags.
-
-> **Note:** LIDARLearn uses **only the geometric XYZ coordinates** (plus RGB
-> when available). Other LAS per-point attributes carried by the HELIALS
-> sensor payload — intensity, return number, number of returns, classification,
-> scan angle, GPS time, etc. — are **not** read by the preprocessor or the
-> loader. If you want to experiment with those channels, extend
-> [preprocessing/preprocess_helials.py](preprocessing/preprocess_helials.py)
-> and the loader accordingly.
-
-**Step 1.** Unpack the Zenodo archive under `preprocessing/full_data_HeliALS/`:
-
-```
-preprocessing/full_data_HeliALS/
-├── A_10004.las
-├── A_10005.las
-├── ...
-└── training-and-test-segments-with-species.csv
-```
-
-**Step 2.** Run the preprocessor (GPU FPS via `pointnet2_ops`, a few minutes
-for the full set):
-
-```bash
-python preprocessing/preprocess_helials.py \
-    --input_dir preprocessing/full_data_HeliALS \
-    --output_dir data/HELIALS
-```
-
-Per tree: loads XYZ + RGB from the LAS, GPU-FPS-downsamples to **2048**
-points, centers XYZ on its centroid (original scale preserved), normalises
-LAS uint16 RGB to `[0, 1]`, and writes a canonical `.xyz` file with header
-`x y z R G B` + 2048 data rows. Trees with fewer than 2048 raw points are
-skipped (rare for HELIALS — most trees have millions).
-
-**Step 3.** Copy the species-metadata CSV next to the preprocessed clouds
-(the loader requires it for species labels and train/test flags):
-
-```bash
-cp preprocessing/full_data_HeliALS/training-and-test-segments-with-species.csv data/HELIALS/
-```
-
-Final layout:
-
-```
-data/HELIALS/
-├── training-and-test-segments-with-species.csv
-├── A_10004.xyz
-├── A_10005.xyz
-└── ...
-```
-
-The loader builds `point_cloud_data_pretrain_1024.h5` /
-`point_cloud_data_pretrain_recon_1024.h5` caches on the first SSL
-pretraining run (for the corresponding configs); finetune runs read the
-`.xyz` files directly.
-

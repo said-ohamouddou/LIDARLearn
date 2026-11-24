@@ -7,8 +7,8 @@ ground-truth class, plus a confusion matrix and summary.
 
 Usage:
     python scripts/visulization/visualize_cls.py \
-        --config experiments/HELIALS/ms_dgcnn2_norm_both_helials/config.yaml \
-        --ckpt experiments/HELIALS/ms_dgcnn2_norm_both_helials/ckpt-best.pth \
+        --config experiments/STPCTLS/dgcnn_stpctls/config.yaml \
+        --ckpt experiments/STPCTLS/dgcnn_stpctls/ckpt-best.pth \
         --num_vis 30
 
 Outputs:
