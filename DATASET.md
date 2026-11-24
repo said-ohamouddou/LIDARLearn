@@ -153,9 +153,9 @@ data/ShapeNet55-34/
 ### ShapeNetPart
 
 - **Download:** [Google Drive](https://drive.google.com/drive/folders/1S4TXe0GNOJBWoWEjMVltap29GE5N4b5_?usp=sharing)
-- **Configs:** [cfgs/dataset/ShapeNetPartsH5.yaml](cfgs/dataset/ShapeNetPartsH5.yaml), [cfgs/dataset/ShapeNetParts.yaml](cfgs/dataset/ShapeNetParts.yaml)
+- **Config:** [cfgs/dataset/ShapeNetPartsH5.yaml](cfgs/dataset/ShapeNetPartsH5.yaml)
 
-Place the HDF5 variant so the final layout is:
+Place the HDF5 release so the final layout is:
 
 ```
 data/ShapeNetPart/
@@ -165,10 +165,6 @@ data/ShapeNetPart/
         ├── ply_data_val0.h5
         └── ply_data_test0.h5, ply_data_test1.h5
 ```
-
-If you instead have the normal-resampled point variant, put it under
-`data/ShapeNetPart/shapenetcore_partanno_segmentation_benchmark_v0_normal/`
-and use [cfgs/dataset/ShapeNetParts.yaml](cfgs/dataset/ShapeNetParts.yaml).
 
 ---
 
