@@ -71,8 +71,6 @@ def aggregate_cv_results(all_fold_results, exp_path, logger):
             'f1_weighted': mt.f1_weighted_at_best_acc,
             'precision_macro': mt.precision_macro_at_best_acc,
             'precision_weighted': mt.precision_weighted_at_best_acc,
-            'recall_macro': mt.recall_macro_at_best_acc,
-            'recall_weighted': mt.recall_weighted_at_best_acc,
             'kappa': mt.kappa_at_best_acc,
             'mcc': mt.mcc_at_best_acc,
             'best_epoch': mt.best_acc_epoch,
@@ -89,8 +87,7 @@ def aggregate_cv_results(all_fold_results, exp_path, logger):
 
     metric_cols = [
         'best_accuracy', 'balanced_acc', 'f1_macro', 'f1_weighted',
-        'precision_macro', 'precision_weighted', 'recall_macro',
-        'recall_weighted', 'kappa', 'mcc',
+        'precision_macro', 'precision_weighted', 'kappa', 'mcc',
     ]
     per_class_metric_cols = [
         f"{metric}_{cls}" for cls in class_names

@@ -175,7 +175,6 @@ def print_final_summary(metrics_tracker, class_names, epoch, logger=None):
         ('F1 macro',    f'{metrics_tracker.f1_macro_at_best_acc:.2f}%'),
         ('F1 weighted', f'{metrics_tracker.f1_weighted_at_best_acc:.2f}%'),
         ('Precision',   f'{metrics_tracker.precision_macro_at_best_acc:.2f}%'),
-        ('Recall',      f'{metrics_tracker.recall_macro_at_best_acc:.2f}%'),
         ('Kappa',       f'{metrics_tracker.kappa_at_best_acc:.2f}%'),
         ('MCC',         f'{metrics_tracker.mcc_at_best_acc:.2f}%'),
     ]
