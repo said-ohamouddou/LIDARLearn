@@ -58,7 +58,9 @@ class ModelNetFewShot(Dataset):
 
     def __getitem__(self, index):
         points, label, _ = self.dataset[index]
-
+        # Stored points are in FPS order (8192 per shape), so the first
+        # N_POINTS are an FPS sample of N_POINTS, as in ModelNetDataset.
+        points = points[:self.npoints].copy()
         points[:, 0:3] = pc_normalize(points[:, 0:3])
         if not self.use_normals:
             points = points[:, 0:3]
