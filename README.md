@@ -260,7 +260,7 @@ The 8 self-supervised backbones (Point-MAE, Point-BERT, PointGPT, ACT, ReCon, PC
 
 **Download:** [Google Drive — LIDARLearn pretrained weights](https://drive.google.com/drive/folders/1u0EbvwVji_fAMD2GghoNviyzyXxxaUMa?usp=sharing)
 
-Place every downloaded `.pth` into [`pretrained/`](pretrained/) at the repo root:
+Place every downloaded `.pth` into `pretrained/` at the repo root:
 
 ```
 pretrained/
@@ -295,13 +295,14 @@ You can skip this section entirely if you only plan to train the 29 supervised b
 |---|---|---|
 | **ModelNet40** | Classification (40 classes) | [`datasets/ModelNetDataset.py`](datasets/ModelNetDataset.py) |
 | **ModelNet40-FewShot** | Few-shot classification (5/10-way, 10/20-shot) | [`datasets/ModelNetDatasetFewShot.py`](datasets/ModelNetDatasetFewShot.py) |
-| **ShapeNet-55** | SSL pre-training | [`datasets/ShapeNet55DatasetPretrain.py`](datasets/ShapeNet55DatasetPretrain.py) |
-| **ShapeNet Part** | Part segmentation (50 classes, 16 categories) | [`datasets/ShapeNet55Dataset.py`](datasets/ShapeNet55Dataset.py) |
+| **ScanObjectNN** | Real-world object classification (15 classes; PointMamba) | [`datasets/ScanObjectNNDataset.py`](datasets/ScanObjectNNDataset.py) |
+| **ShapeNet-55** | SSL pre-training | [`datasets/ShapeNet55Dataset.py`](datasets/ShapeNet55Dataset.py) |
+| **ShapeNet Part** | Part segmentation (50 classes, 16 categories) | [`datasets/ShapeNet55DatasetPretrain.py`](datasets/ShapeNet55DatasetPretrain.py) |
 | **S3DIS** | Indoor semantic segmentation (13 classes) | [`datasets/S3DISDataset.py`](datasets/S3DISDataset.py) |
 | **STPCTLS** ([Göttingen Research Online](https://data.goettingen-research-online.de/dataset.xhtml?persistentId=doi:10.25625/FOHUJM)) | LiDAR tree species (7 classes, TLS point clouds) | [`datasets/TreeSpeciesDataset.py`](datasets/TreeSpeciesDataset.py) |
 | **STPCTLS-CV** | STPCTLS with stratified *K*-fold CV | [`datasets/TreeSpeciesDatasetCV.py`](datasets/TreeSpeciesDatasetCV.py) |
 
-Dataset download and preparation instructions are in [`DATASET.md`](DATASET.md). For convenience, the **preprocessed STPCTLS data is already included in the repository** (under [`data/`](data/)) so you can reproduce the tree-species benchmark out of the box without any external download.
+Dataset download and preparation instructions are in [`DATASET.md`](DATASET.md).
 
 ## Quick Start
 
@@ -463,15 +464,7 @@ param count and epoch time) is automatically wrapped in `\textbf{}` in the
 LaTeX output and `**…**` in the Markdown output, so the top method stands
 out at a glance. Ties are all bolded.
 
-**Example reports** (fully compiled PDFs + source `.tex` / `.csv` / `.md`
-from real benchmark runs) are shipped under `experiments/<dataset>/latex/`:
-
-| Dataset | Task | Example output |
-|---|---|---|
-| S3DIS | Semantic segmentation | [`experiments/S3DIS/latex/`](experiments/S3DIS/latex/) — `s3dis_comparison.{tex,pdf,csv,md}` |
-| ShapeNetParts | Part segmentation | [`experiments/ShapeNetParts/latex/`](experiments/ShapeNetParts/latex/) — `shapenetparts_comparison.{tex,pdf,csv,md}` |
-
-Each folder includes `references.bib` (auto-copied from `scripts/reports/references.bib`) so the `.tex` files compile standalone with `pdflatex` + `bibtex` — drop them straight into a paper submission.
+Each report folder also gets a copy of `references.bib` (from `scripts/reports/references.bib`), so the `.tex` files compile standalone with `pdflatex` + `bibtex` — drop them straight into a paper submission.
 
 ## Project Structure
 
@@ -495,31 +488,18 @@ LIDARLearn/
 ## Testing
 
 ```bash
-pytest tests/                      # full suite (~4 min on a single GPU)
+pytest tests/                      # full suite (~2-3 min on a single GPU)
 pytest tests/test_configs.py       # L1: every YAML parses and builds
 pytest tests/test_forward_shapes.py # L2: every model forward-passes correctly
+pytest tests/test_datasets.py      # data loaders: splits, labels, no train/test leakage
 ```
-
-## Roadmap / Open TODOs
-
-Help wanted — these are the priorities we're actively looking for community contributions on:
-
-- [ ] **More tests & benchmark feedback**, especially on long-running datasets such as **S3DIS** (semantic segmentation runs take many hours per config). If you have cluster time, please share logs, mIoU numbers, and any hyperparameter adjustments that worked for you.
-- [ ] **Support arbitrary point dimensions (D > 3)** — current loaders mostly consume XYZ (plus RGB for a few datasets). Remote-sensing pipelines routinely need per-point **intensity, return number, number of returns, classification, scan angle, GPS time, multi-spectral bands**, etc. Goal: configurable input channels end-to-end (LAS/LAZ preprocessors → datasets → model `in_channels`) without per-model forks.
-- [ ] **Reproduce and compare against paper-reported values.** For each model + dataset pair, we want a side-by-side table of LIDARLearn's numbers vs. the original paper's. Mismatches are opportunities to fix configs, augmentation pipelines, or training schedules.
-- [ ] **Add new models** — recent point cloud backbones, SSL methods, and PEFT strategies that aren't in the [matrix above](#supported-models). Follow the three-step contribution workflow below.
-- [ ] **Add 3D point cloud registration support** — task heads, dataset loaders (e.g., 3DMatch, KITTI odometry, ModelNet-registration), metrics (rotation/translation error, RRE/RTE), and reference methods (PPFNet is already vendored but not yet wired as a registration task).
-- [ ] **Improve and optimize the code** — profile training/inference hot paths, reduce redundant tensor copies, add `torch.compile` / AMP support where it helps, cut memory overhead in large-scene seg runs, and clean up any remaining upstream-vendored code paths. PRs that shave GPU hours are especially welcome.
-- [ ] **Windows and macOS support** — the project is currently developed and tested on Linux only. Windows needs PowerShell/`.bat` equivalents for `extensions/install_extensions.sh` and the `scripts/train_*.sh` sweep runners (or a WSL2 setup guide). macOS has no CUDA, so support would mean a CPU/MPS mode that gates the ~6 CUDA-only models (PointTransformerV2/V3, P2P, DeepGCN, DELA, RandLA-Net) on `torch.cuda.is_available()` and skips the CUDA extensions build. PRs adding either platform — with install instructions and at least one model verified end-to-end — very welcome.
-- [ ] **Full documentation of every model and its hyperparameters** — a per-model reference page (markdown under `docs/models/` or a single consolidated table) covering: what the model does in 1-2 sentences, its YAML `model:` block keys, what each hyperparameter controls, recommended defaults per dataset family (ModelNet40 / ShapeNet / STPCTLS / S3DIS), memory/compute footprint, and any model-specific gotchas (e.g., input channel assumptions, required preprocessors, supported task heads).
-- [ ] **Any community proposal that improves LIDARLearn** — new features, API refinements, documentation, tooling, CI, visualization helpers, or anything else. Open an issue first to discuss scope, then send a PR.
 
 ## Contributing
 
 Contributions are welcome! Whether you're adding a new backbone, a new dataset loader, a PEFT strategy, or fixing a bug, the workflow is:
 
 1. **Fork** the repository and create a feature branch (`git checkout -b feat/my-model`).
-2. **Add your model** in three steps — create `models/<name>/<name>.py` with a class inheriting `BasePointCloudModel` (or `BaseSegModel`) and decorated with `@MODELS.register_module()`, register it in `models/__init__.py`, and provide at least one YAML config under `cfgs/`.
+2. **Add your model** in three steps — create `models/<name>/<name>.py` with a class inheriting `BasePointCloudModel` (or `BaseSegModel`) and decorated with `@MODELS.register_module()`, add its module to the `_MODEL_MODULES` list in `models/__init__.py`, and provide at least one YAML config under `cfgs/`.
 3. **Run the test suite** — `pytest tests/` must pass. New models are automatically picked up by the L1 config-parse and L2 forward-shape tests.
 4. **Follow the style** — keep YAML configs `_base_`-inherited, document non-obvious hyperparameters, and include the paper citation in your config header.
 5. **Open a PR** describing the change, the reference paper/repository, and any benchmark numbers if available.

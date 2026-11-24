@@ -63,6 +63,27 @@ sampling order; configs with `N_POINTS: 1024` use the first 1024 of them
 (an FPS sample of 1024 points), so no raw per-shape files are needed.
 ModelNet40 has no validation split: `subset: val` uses the official test split.
 
+**Alternative source (raw files).** If the Tsinghua Cloud link is unavailable,
+the raw `modelnet40_normal_resampled` files (10,000 points per shape, with
+normals) are mirrored by Pointcept on Hugging Face as
+[`Pointcept/modelnet40_normal_resampled-compressed`](https://huggingface.co/datasets/Pointcept/modelnet40_normal_resampled-compressed).
+The archive has no top-level folder, so extract it *inside* the target
+directory:
+
+```bash
+mkdir -p data/ModelNet/modelnet40_normal_resampled
+tar -xzf modelnet40_normal_resampled.tar.gz -C data/ModelNet/modelnet40_normal_resampled
+```
+
+On the first run the loader samples each shape with FPS and caches the
+result as `modelnet40_{train,test}_<N_POINTS>pts_fps.dat` next to the raw
+files. This is a one-time step that takes roughly an hour for 1024 points.
+The resulting data reproduces published accuracy: the official PointMamba
+checkpoint scores 93.5% on it.
+The dataset originates from the
+[Princeton ModelNet project](https://modelnet.cs.princeton.edu/); please
+cite it and follow its terms of use.
+
 ---
 
 ### ModelNet Few-Shot
