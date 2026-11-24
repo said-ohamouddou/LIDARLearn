@@ -19,7 +19,7 @@ from .pos import get_pos_embed
 from ..build import MODELS
 from ..base_model import BasePointCloudModel, print_model_info
 from utils import misc
-from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message
+from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message, load_checkpoint
 from utils.logger import print_log
 from utils.knn import knn_point
 
@@ -549,7 +549,7 @@ class PCP(BasePointCloudModel):
 
     def load_model_from_ckpt(self, bert_ckpt_path):
         if bert_ckpt_path is not None:
-            ckpt = torch.load(bert_ckpt_path)
+            ckpt = load_checkpoint(bert_ckpt_path)
             base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
 
             total_ckpt_params = sum(p.numel() for p in base_ckpt.values())

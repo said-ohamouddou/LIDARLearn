@@ -24,6 +24,7 @@ import torch.nn.functional as F
 from pointnet2_ops.pointnet2_utils import three_nn, three_interpolate
 
 from ..base_seg_model import BaseSegModel
+from utils.checkpoint import load_checkpoint
 
 
 class PointNetFeaturePropagation(nn.Module):
@@ -176,7 +177,7 @@ class TransformerSegBase(BaseSegModel):
     def load_backbone_ckpt(self, ckpt_path, strict=False):
         if hasattr(self, 'backbone') and hasattr(self.backbone, 'load_model_from_ckpt'):
             return self.backbone.load_model_from_ckpt(ckpt_path)
-        state = torch.load(ckpt_path, map_location='cpu')
+        state = load_checkpoint(ckpt_path, map_location='cpu')
         sd = state.get('base_model', state.get('model', state))
         sd = {k.replace('module.', ''): v for k, v in sd.items()}
         return self.backbone.load_state_dict(sd, strict=strict)

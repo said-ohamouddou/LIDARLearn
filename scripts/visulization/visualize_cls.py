@@ -28,6 +28,7 @@ from sklearn.metrics import (
     confusion_matrix, accuracy_score, balanced_accuracy_score,
     f1_score, cohen_kappa_score, matthews_corrcoef,
 )
+from utils.checkpoint import load_checkpoint
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -227,7 +228,7 @@ def main():
     from models.build import build_model_from_cfg
 
     model = build_model_from_cfg(config.model)
-    ckpt = torch.load(args.ckpt, map_location='cpu')
+    ckpt = load_checkpoint(args.ckpt, map_location='cpu')
     sd = ckpt.get('base_model', ckpt)
     sd = {k.replace('module.', ''): v for k, v in sd.items()}
     model.load_state_dict(sd, strict=False)

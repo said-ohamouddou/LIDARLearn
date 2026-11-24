@@ -21,6 +21,7 @@ from typing import List, Tuple
 import torch
 import torch.nn as nn
 from torch.autograd.function import InplaceFunction
+from utils.checkpoint import load_checkpoint
 
 BN1d, BN2d, BN3d = nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d
 
@@ -403,7 +404,7 @@ def load_checkpoint(model=None, optimizer=None, filename='checkpoint'):
     filename = "{}.pth.tar".format(filename)
     if os.path.isfile(filename):
         print("==> Loading from checkpoint '{}'".format(filename))
-        checkpoint = torch.load(filename)
+        checkpoint = load_checkpoint(filename)
         epoch = checkpoint['epoch']
         it = checkpoint.get('it', 0.0)
         best_prec = checkpoint['best_prec']

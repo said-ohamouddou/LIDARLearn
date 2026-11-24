@@ -6,7 +6,6 @@ import warnings
 
 warnings.filterwarnings('ignore', message='.*adaptive_max_pool2d_backward_cuda.*')
 warnings.filterwarnings('ignore', message='.*TORCH_CUDA_ARCH_LIST.*')
-warnings.filterwarnings('ignore', message='.*weights_only=False.*')
 
 os.environ.setdefault('CUBLAS_WORKSPACE_CONFIG', ':4096:8')
 

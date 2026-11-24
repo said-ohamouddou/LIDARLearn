@@ -17,7 +17,7 @@ from lightly import loss as losses
 from .act_3d_dvae import Group, Encoder, ACTPromptedDiscreteVAEwithVIT
 from ..build import MODELS
 from ..base_model import BasePointCloudModel, print_model_info
-from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message
+from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message, load_checkpoint
 from utils.logger import print_log
 
 from ..ssl_blocks import Mlp, Attention, Block, TransformerEncoder
@@ -290,7 +290,7 @@ class TokenAllMaskTransformer(nn.Module):
                 nn.init.constant_(m.bias, 0)
 
     def _prepare_encoder(self, dvae_ckpt):
-        ckpt = torch.load(dvae_ckpt, map_location='cpu')
+        ckpt = load_checkpoint(dvae_ckpt, map_location='cpu')
         base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
         encoder_ckpt = {k.replace("encoder.", ""): v for k, v in base_ckpt.items() if 'encoder' in k}
 
@@ -501,7 +501,7 @@ class MaskTransformer(nn.Module):
                 nn.init.constant_(m.bias, 0)
 
     def _prepare_encoder(self, dvae_ckpt):
-        ckpt = torch.load(dvae_ckpt, map_location='cpu')
+        ckpt = load_checkpoint(dvae_ckpt, map_location='cpu')
         base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
         encoder_ckpt = {k.replace("encoder.", ""): v for k, v in base_ckpt.items() if 'encoder' in k}
 
@@ -709,7 +709,7 @@ class ACT(BasePointCloudModel):
 
     def load_model_from_ckpt(self, bert_ckpt_path, custom_loading=False):
         if bert_ckpt_path is not None:
-            ckpt = torch.load(bert_ckpt_path)
+            ckpt = load_checkpoint(bert_ckpt_path)
             if custom_loading:
                 base_ckpt = {k.replace("module.point_encoder.", ""): v for k, v in ckpt['state_dict'].items()}
                 base_ckpt = {k.replace("encoder", "blocks"): v for k, v in base_ckpt.items()}
@@ -865,7 +865,7 @@ class ACT_PointBERT(nn.Module):
 
     def _prepare_dvae(self):
         dvae_ckpt = self.config.dvae_config.ckpt
-        ckpt = torch.load(dvae_ckpt, map_location='cpu')
+        ckpt = load_checkpoint(dvae_ckpt, map_location='cpu')
         base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
         self.dvae.load_state_dict(base_ckpt, strict=True)
         print_log(f'[dVAE] Successful Loading the ckpt for dvae from {dvae_ckpt}', logger='ACT')
@@ -1049,7 +1049,7 @@ class ACT_PointDistillation_Pretrain(nn.Module):
     def build_tokenizer(self, cfg):
         self.dvae_tokenizer = ACTPromptedDiscreteVAEwithVIT(cfg)
         dvae_ckpt = self.config.dvae_config.ckpt
-        ckpt = torch.load(dvae_ckpt, map_location='cpu')
+        ckpt = load_checkpoint(dvae_ckpt, map_location='cpu')
         base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
         self.dvae_tokenizer.load_state_dict(base_ckpt, strict=True)
         print_log(f'[dVAE] Successful Loading the ckpt for dvae from {dvae_ckpt}', logger='ACT')

@@ -16,6 +16,7 @@ from .modules import Group, Token_Embed, Encoder_Block
 from ..build import MODELS
 from ..base_seg_model import BaseSegModel
 from ..seg.transformer_seg_base import PointNetFeaturePropagation
+from utils.checkpoint import load_checkpoint
 
 
 class H_Encoder_Seg(nn.Module):
@@ -185,7 +186,7 @@ class PointM2AE_Seg(BaseSegModel):
         which line up with `self.h_encoder.*` here. Head params
         (`propagations.*`, `convs*`, `bns*`) are initialized from scratch.
         """
-        state = torch.load(ckpt_path, map_location='cpu')
+        state = load_checkpoint(ckpt_path, map_location='cpu')
         sd = state.get('base_model', state.get('model', state))
         sd = {k.replace('module.', ''): v for k, v in sd.items()}
         return self.load_state_dict(sd, strict=strict)

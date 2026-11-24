@@ -16,6 +16,7 @@ import torch.nn.functional as F
 from ..build import MODELS, build_model_from_cfg
 from ..base_seg_model import BaseSegModel
 from ..seg.transformer_seg_base import PointNetFeaturePropagation
+from utils.checkpoint import load_checkpoint
 
 
 @MODELS.register_module()
@@ -114,7 +115,7 @@ class PointGPT_Seg(BaseSegModel):
         """Load pretrained PointGPT weights into the backbone."""
         if hasattr(self.backbone, 'load_model_from_ckpt'):
             return self.backbone.load_model_from_ckpt(ckpt_path)
-        state = torch.load(ckpt_path, map_location='cpu')
+        state = load_checkpoint(ckpt_path, map_location='cpu')
         sd = state.get('base_model', state.get('model', state))
         sd = {k.replace('module.', ''): v for k, v in sd.items()}
         return self.backbone.load_state_dict(sd, strict=strict)

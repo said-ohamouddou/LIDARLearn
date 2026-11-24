@@ -14,6 +14,18 @@ from typing import Optional, List, Dict, NamedTuple, Tuple, Iterable
 from termcolor import colored
 
 
+def load_checkpoint(f, map_location=None):
+    """Load a LIDARLearn or upstream checkpoint on any supported torch version.
+
+    torch >= 2.6 defaults ``torch.load`` to ``weights_only=True``, which rejects
+    checkpoints that also store configs (EasyDict), numpy scalars or optimizer
+    state, i.e. LIDARLearn's own training checkpoints and most released SSL
+    weights. Passing ``weights_only=False`` keeps torch 2.4 and 2.6+ identical.
+    It runs the file's pickle code, so only load checkpoints you trust.
+    """
+    return torch.load(f, map_location=map_location, weights_only=False)
+
+
 def get_missing_parameters_message(keys: List[str]) -> str:
     """
     Get a logging-friendly message to report parameter names (keys) that are in

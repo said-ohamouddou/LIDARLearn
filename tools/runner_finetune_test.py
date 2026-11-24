@@ -19,6 +19,7 @@ import numpy as np
 from .metrics_tracker import Acc_Metric, ValidationMetricsTracker
 from .validation import validate
 from datasets.augmentation import get_train_transforms
+from utils.checkpoint import load_checkpoint
 
 
 def apply_model_specific_freezing(base_model, config, logger=None):
@@ -381,7 +382,7 @@ def run_net(args, config):
     # Final evaluation on test set
     best_ckpt_path = os.path.join(args.experiment_path, 'ckpt-best.pth')
     if os.path.exists(best_ckpt_path):
-        checkpoint = torch.load(best_ckpt_path, map_location='cpu', weights_only=False)
+        checkpoint = load_checkpoint(best_ckpt_path, map_location='cpu')
         state_dict = checkpoint['base_model']
         if list(state_dict.keys())[0].startswith('module.'):
             state_dict = {k.replace('module.', ''): v for k, v in state_dict.items()}

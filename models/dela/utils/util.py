@@ -13,10 +13,11 @@ entry points.
 import torch
 
 from utils.logger import print_log
+from utils.checkpoint import load_checkpoint
 
 
 def load_state(fn, **args):
-    state = torch.load(fn)
+    state = load_checkpoint(fn)
     for i in args.keys():
         if hasattr(args[i], "load_state_dict"):
             args[i].load_state_dict(state[i])
