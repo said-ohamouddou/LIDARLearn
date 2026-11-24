@@ -26,6 +26,12 @@
 
 ---
 
+## News
+
+- **2026-11 — PointMamba added.** LIDARLearn now supports [PointMamba](https://github.com/LMD0311/PointMamba) (NeurIPS 2024), a state-space (Mamba) backbone. It covers the tasks of the official repository: ShapeNet-55 pre-training, ModelNet40 fine-tuning, few-shot and ScanObjectNN (OBJ-BG, OBJ-ONLY, PB-T50-RS). The official checkpoints load unchanged and reproduce the published 93.5% on ModelNet40. See [Supported Models](#supported-models) and [installing Mamba](#5b-optional-install-mamba-for-pointmamba).
+
+---
+
 ## Overview
 
 **LIDARLearn** ships the **most complete off-the-shelf catalogue of 3D point cloud deep-learning methods** we're aware of — **59 model configurations** covering 31 supervised backbones, 8 self-supervised pre-training methods, and 5 parameter-efficient fine-tuning (PEFT) strategies (DAPT, IDPT, PPT, GST, VPT-Deep) composable with 4 of the SSL backbones (ACT, PointGPT, Point-MAE, ReCon) — all exposed through a single registry-based framework with YAML-driven configs, standardised runners, automatic LaTeX/CSV reporting, and a 2 200+ test `pytest` suite.
