@@ -94,6 +94,7 @@ MODEL_CITATIONS: dict[str, str] = {
     'PCP':                 'pcpmae',
     'PCP-MAE':             'pcpmae',
     'PCPMAE':              'pcpmae',
+    'PointMamba':          'liang2024pointmamba',
     'Point-M2AE':          'zhang2022point',
     'PointM2AE':           'zhang2022point',
     'PointBERT':           'yu2022point',
@@ -214,6 +215,7 @@ MODEL_CATEGORIES: dict[str, str] = {
     'PCP':                 'Self-supervised',
     'PCP-MAE':             'Self-supervised',
     'PCPMAE':              'Self-supervised',
+    'PointMamba':          'Self-supervised',
     'Point-M2AE':          'Self-supervised',
     'PointM2AE':           'Self-supervised',
     'PointBERT':           'Self-supervised',
@@ -237,6 +239,7 @@ MODEL_ORDER = [
     'MSDGCNN', 'KANDGCNN', 'MSDGCNN2',
     # Self-supervised
     'Point-MAE', 'ACT', 'RECON', 'PointGPT', 'Point-M2AE', 'PointBERT', 'PCP',
+    'PointMamba',
 ]
 
 # PEFT strategies — order inside each SSL base model
@@ -286,6 +289,7 @@ _LOWERCASE_ALIASES = {
     'pcpmae':              'PCP',
     'pointm2ae':           'Point-M2AE',
     'pointbert':           'PointBERT',
+    'pointmamba':          'PointMamba',
 }
 
 

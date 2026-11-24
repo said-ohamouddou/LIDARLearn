@@ -133,26 +133,29 @@ python main.py --config cfgs/classification/KANDGCNN/ModelNet40/modelnet40.yaml 
 
 echo ""; echo "=== SSL Models (Full Fine-tuning) ==="
 
-echo "[SSL 1/7] PointMAE"
+echo "[SSL 1/8] PointMAE"
 python main.py --config cfgs/classification/PointMAE/ModelNet40/modelnet40.yaml $COMMON --ckpts pretrained/pretrained_mae.pth --exp_name pointmae_modelnet40
 
-echo "[SSL 2/7] ReCon"
+echo "[SSL 2/8] ReCon"
 python main.py --config cfgs/classification/RECON/ModelNet40/modelnet40.yaml $COMMON --ckpts pretrained/pretrained_recon.pth --exp_name recon_modelnet40
 
-echo "[SSL 3/7] Point-M2AE"
+echo "[SSL 3/8] Point-M2AE"
 python main.py --config cfgs/classification/PointM2AE/ModelNet40/modelnet40.yaml $COMMON --ckpts pretrained/pretrained_m2ae.pth --exp_name pointm2ae_modelnet40
 
-echo "[SSL 4/7] PointBERT"
+echo "[SSL 4/8] PointBERT"
 python main.py --config cfgs/classification/PointBERT/ModelNet40/modelnet40.yaml $COMMON --ckpts pretrained/pretrained_bert.pth --exp_name pointbert_modelnet40
 
-echo "[SSL 5/7] PointGPT"
+echo "[SSL 5/8] PointGPT"
 python main.py --config cfgs/classification/PointGPT/ModelNet40/modelnet40.yaml $COMMON --ckpts pretrained/pretrained_gpt.pth --exp_name pointgpt_modelnet40
 
-echo "[SSL 6/7] ACT"
+echo "[SSL 6/8] ACT"
 python main.py --config cfgs/classification/ACT/ModelNet40/modelnet40.yaml $COMMON --ckpts pretrained/pretrained_act.pth --exp_name act_modelnet40
 
-echo "[SSL 7/7] PCP-MAE"
+echo "[SSL 7/8] PCP-MAE"
 python main.py --config cfgs/classification/PCPMAE/ModelNet40/modelnet40.yaml $COMMON --ckpts pretrained/pretrained_pcp.pth --exp_name pcpmae_modelnet40
+
+echo "[SSL 8/8] PointMamba (needs the optional mamba-ssm package)"
+python main.py --config cfgs/classification/PointMamba/ModelNet40/modelnet40.yaml $COMMON --ckpts pretrained/pointmamba_pretrain.pth --exp_name pointmamba_modelnet40
 
 # ────────────────────────────────────────────────
 #  PEFT STRATEGIES — PointMAE backbone

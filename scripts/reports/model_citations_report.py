@@ -48,7 +48,7 @@ MODEL_CITATIONS = {
     # Self-supervised
     'Point-MAE': 'pang2022masked', 'PointMAE': 'pang2022masked',
     'ACT': 'dong2023act', 'RECON': 'qi2023contrast', 'ReCon': 'qi2023contrast',
-    'PointGPT': 'chen2024pointgpt', 'PCP': 'pcpmae', 'PCP-MAE': 'pcpmae',
+    'PointGPT': 'chen2024pointgpt', 'PCP': 'pcpmae', 'PCP-MAE': 'pcpmae', 'PointMamba': 'liang2024pointmamba',
     'Point-M2AE': 'zhang2022point', 'PointM2AE': 'zhang2022point',
     'PointBERT': 'yu2022point', 'Point-BERT': 'yu2022point',
     # PEFT
@@ -74,7 +74,7 @@ MODEL_CATEGORIES = {
     # Self-supervised
     'Point-MAE': 'Self-supervised', 'PointMAE': 'Self-supervised',
     'ACT': 'Self-supervised', 'RECON': 'Self-supervised', 'ReCon': 'Self-supervised',
-    'PointGPT': 'Self-supervised', 'PCP': 'Self-supervised', 'PCP-MAE': 'Self-supervised',
+    'PointGPT': 'Self-supervised', 'PCP': 'Self-supervised', 'PCP-MAE': 'Self-supervised', 'PointMamba': 'Self-supervised',
     'Point-M2AE': 'Self-supervised', 'PointM2AE': 'Self-supervised',
     'PointBERT': 'Self-supervised', 'Point-BERT': 'Self-supervised',
     # PEFT

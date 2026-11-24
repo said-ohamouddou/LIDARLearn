@@ -65,7 +65,7 @@ MODEL_ORDER = [
     'PointTransformer', 'PointTransformerV2', 'PointTransformerV3',
     'P2P', 'PointTNT', 'GlobalTransformer',
     # SSL
-    'PointMAE', 'PointBERT', 'PointGPT', 'ACT', 'RECON', 'PCP', 'PointM2AE',
+    'PointMAE', 'PointBERT', 'PointGPT', 'ACT', 'RECON', 'PCP', 'PointM2AE', 'PointMamba',
 ]
 
 MODEL_CITATIONS = {
@@ -82,7 +82,7 @@ MODEL_CITATIONS = {
     'P2P': 'p2p', 'PointTNT': 'pointtnt', 'GlobalTransformer': 'pointtnt',
     'PointMAE': 'pang2022masked', 'PointBERT': 'yu2022point',
     'PointGPT': 'chen2024pointgpt', 'ACT': 'dong2023act',
-    'RECON': 'qi2023contrast', 'PCP': 'pcpmae', 'PointM2AE': 'zhang2022point',
+    'RECON': 'qi2023contrast', 'PCP': 'pcpmae', 'PointMamba': 'liang2024pointmamba', 'PointM2AE': 'zhang2022point',
 }
 
 # Way/shot combos in the order they appear in the Point-BERT table

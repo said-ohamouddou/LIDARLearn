@@ -63,6 +63,7 @@ _MODEL_MODULES = [
     "models.pointm2ae.pointm2ae",
     "models.pointm2ae.pointm2ae_pretrain",
     "models.pointm2ae.pointm2ae_seg",
+    "models.pointmamba.pointmamba",                   # mamba_ssm (optional), pointnet2_ops, chamfer_dist
 
     # PEFT strategies
     "models.ppt.ppt",

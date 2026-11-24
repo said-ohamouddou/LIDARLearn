@@ -1,0 +1,53 @@
+# PointMamba few-shot on ModelNet40, 10-way 10-shot (upstream cfgs/fewshot.yaml).
+dataset:
+  train:
+    _base_: cfgs/dataset/ModelNet40FewShot.yaml
+    others:
+      K_FOLDS: 10
+      bs: 32
+      subset: train
+      way: 10
+      shot: 10
+      fold: 0
+  val:
+    _base_: cfgs/dataset/ModelNet40FewShot.yaml
+    others:
+      K_FOLDS: 10
+      bs: 32
+      subset: test
+      way: 10
+      shot: 10
+      fold: 0
+grad_norm_clip: 10
+max_epoch: 150
+model:
+  NAME: PointMamba
+  init_source: ShapeNet
+  base_model: PointMamba
+  cls_dim: 10
+  trans_dim: 384
+  depth: 12
+  num_heads: 6
+  group_size: 32
+  num_group: 64
+  encoder_dims: 384
+  rms_norm: false
+  drop_path: 0.5
+  drop_out: 0.0
+  use_cls_token: false
+  max_head: false
+  avg_head: true
+  finetuning_strategy: Full Finetuning
+  label_smoothing: 0.0
+npoints: 1024
+optimizer:
+  type: AdamW
+  kwargs:
+    lr: 0.0005
+    weight_decay: 0.05
+scheduler:
+  type: CosLR
+  kwargs:
+    epochs: 150
+    initial_epochs: 10
+step_per_update: 1

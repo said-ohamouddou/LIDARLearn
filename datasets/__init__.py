@@ -9,6 +9,7 @@ import datasets.ModelNetDatasetFewShot
 import datasets.ShapeNet55Dataset
 import datasets.ShapeNet55DatasetPretrain
 import datasets.S3DISDataset
+import datasets.ScanObjectNNDataset
 # Import augmentation module
 from .augmentation import (
     get_train_transforms,

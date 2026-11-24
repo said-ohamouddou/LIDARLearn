@@ -12,6 +12,7 @@ LIDARLearn/
 ├── data/
 │   ├── ModelNet/
 │   ├── ModelNetFewshot/
+│   ├── ScanObjectNN/
 │   ├── ShapeNet55-34/
 │   ├── ShapeNetPart/
 │   ├── S3DIS/
@@ -31,7 +32,7 @@ pass before you can train on them:
 
 | Dataset | Preprocessing | Script |
 |---|:-:|---|
-| ModelNet40 / ModelNet-FewShot / ShapeNet-55 / ShapeNetPart | — | none |
+| ModelNet40 / ModelNet-FewShot / ScanObjectNN / ShapeNet-55 / ShapeNetPart | — | none |
 | **S3DIS** | ✓ | [preprocessing/preprocess_s3dis.py](preprocessing/preprocess_s3dis.py) |
 | **STPCTLS** | ✓ | [preprocessing/preprocess_stpctls.py](preprocessing/preprocess_stpctls.py) |
 | **HELIALS** | ✓ | [preprocessing/preprocess_helials.py](preprocessing/preprocess_helials.py) |
@@ -78,6 +79,29 @@ data/ModelNetFewshot/
 ├── 5way_20shot/
 ├── 10way_10shot/
 └── 10way_20shot/
+```
+
+---
+
+### ScanObjectNN
+
+- **Download:** [official website](https://hkust-vgd.github.io/scanobjectnn/) (subject to the dataset's terms of use)
+- **Configs:** [ScanObjectNN_objectbg.yaml](cfgs/dataset/ScanObjectNN_objectbg.yaml) (OBJ-BG), [ScanObjectNN_objectonly.yaml](cfgs/dataset/ScanObjectNN_objectonly.yaml) (OBJ-ONLY), [ScanObjectNN_hardest.yaml](cfgs/dataset/ScanObjectNN_hardest.yaml) (PB-T50-RS)
+- **Loader:** [datasets/ScanObjectNNDataset.py](datasets/ScanObjectNNDataset.py)
+- **Used by:** PointMamba ([cfgs/classification/PointMamba/ScanObjectNN/](cfgs/classification/PointMamba/ScanObjectNN/))
+
+Unpack the official h5 files under `data/ScanObjectNN/`:
+
+```
+data/ScanObjectNN/
+├── main_split/
+│   ├── training_objectdataset.h5
+│   ├── test_objectdataset.h5
+│   ├── training_objectdataset_augmentedrot_scale75.h5
+│   └── test_objectdataset_augmentedrot_scale75.h5
+└── main_split_nobg/
+    ├── training_objectdataset.h5
+    └── test_objectdataset.h5
 ```
 
 ---
