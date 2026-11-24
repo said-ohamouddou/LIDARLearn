@@ -2,7 +2,7 @@
 PointSCNet: Point Cloud Structure and Correlation Learning Based on
             Space-Filling Curve-Guided Sampling
 
-Paper: Chen et al., Symmetry 2022 — https://www.mdpi.com/2073-8994/14/8/1485
+Paper: Chen et al., Symmetry 2022 — https://doi.org/10.3390/sym14010008
 Source: https://github.com/Chenguoz/PointSCNet
 
 Clean implementation.

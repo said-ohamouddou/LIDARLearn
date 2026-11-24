@@ -101,7 +101,7 @@ MODEL_CITATIONS: dict[str, str] = {
     # PEFT strategies
     'IDPT':                'zha2023instance',
     'DAPT':                'zhou2024dynamic',
-    'PPT':                 'sun24ppt',
+    'PPT':                 'zhang2025positional',
     'PointGST':            'pointgst',
     'GST':                 'pointgst',
     'VPT_Deep':            'jia2022visual',

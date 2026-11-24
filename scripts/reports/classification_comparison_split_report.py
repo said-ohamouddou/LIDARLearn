@@ -153,7 +153,7 @@ MODEL_CITATIONS = {
     'Point-MAE': 'pang2022masked', 'ACT': 'dong2023act', 'RECON': 'qi2023contrast',
     'PointGPT': 'chen2024pointgpt', 'PCP': 'pcpmae', 'Point-M2AE': 'zhang2022point', 'PointBERT': 'yu2022point',
     # PEFT
-    'IDPT': 'zha2023instance', 'DAPT': 'zhou2024dynamic', 'PPT': 'sun24ppt',
+    'IDPT': 'zha2023instance', 'DAPT': 'zhou2024dynamic', 'PPT': 'zhang2025positional',
     'PointGST': 'pointgst', 'VPT_Deep': 'jia2022visual', 'VPT-Deep': 'jia2022visual',
 }
 

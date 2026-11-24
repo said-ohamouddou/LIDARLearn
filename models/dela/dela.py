@@ -1,7 +1,7 @@
 """
 Decoupled Local Aggregation for Point Cloud Learning
 
-Paper: arXiv 2308.16532, 2024
+Paper: arXiv 2308.16532, 2023
 Authors: Binjie Chen, Yunzhou Xia, Yu Zang, Cheng Wang, Jonathan Li
 Source: Implementation adapted from: https://github.com/Matrix-ASC/DeLA
 License: MIT
