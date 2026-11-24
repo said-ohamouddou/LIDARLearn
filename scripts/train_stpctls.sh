@@ -31,91 +31,97 @@ COMMON="--mode finetune --seed $SEED --max_epoch $MAX_EPOCH --augmentation $AUGM
 
 echo ""; echo "=== Supervised Models ==="
 
-echo "[1/30] PointNet"
+echo "[1/31] PointNet"
 python main.py --config cfgs/classification/PointNet/STPCTLS/stpctls.yaml $COMMON --exp_name pointnet_stpctls
 
-echo "[2/30] PointNet++ (SSG)"
+echo "[2/31] PointNet++ (SSG)"
 python main.py --config cfgs/classification/PointNet2/STPCTLS/stpctls_ssg.yaml $COMMON --exp_name pointnet2_ssg_stpctls
 
-echo "[3/30] PointNet++ (MSG)"
+echo "[3/31] PointNet++ (MSG)"
 python main.py --config cfgs/classification/PointNet2/STPCTLS/stpctls_msg.yaml $COMMON --exp_name pointnet2_msg_stpctls
 
-echo "[4/30] DGCNN"
+echo "[4/31] DGCNN"
 python main.py --config cfgs/classification/DGCNN/STPCTLS/stpctls.yaml $COMMON --exp_name dgcnn_stpctls
 
-echo "[5/30] PCT"
+echo "[5/31] PCT"
 python main.py --config cfgs/classification/PCT/STPCTLS/stpctls.yaml $COMMON --exp_name pct_stpctls
 
-echo "[6/30] PointMLP"
+echo "[6/31] PointMLP"
 python main.py --config cfgs/classification/PointMLP/STPCTLS/stpctls.yaml $COMMON --exp_name pointmlp_stpctls
 
-echo "[7/30] CurveNet"
+echo "[7/31] PointMLP-elite"
+python main.py --config cfgs/classification/PointMLP/STPCTLS/stpctls_elite.yaml $COMMON --exp_name pointmlp_elite_stpctls
+
+echo "[8/31] CurveNet"
 python main.py --config cfgs/classification/CurveNet/STPCTLS/stpctls.yaml $COMMON --exp_name curvenet_stpctls
 
-echo "[8/30] DeepGCN"
+echo "[9/31] DeepGCN"
 python main.py --config cfgs/classification/DeepGCN/STPCTLS/stpctls.yaml $COMMON --exp_name deepgcn_stpctls
 
-echo "[9/30] DELA"
+echo "[10/31] DELA"
 python main.py --config cfgs/classification/DELA/STPCTLS/stpctls.yaml $COMMON --exp_name dela_stpctls
 
-echo "[10/30] RSCNN"
+echo "[11/31] RSCNN"
 python main.py --config cfgs/classification/RSCNN/STPCTLS/stpctls.yaml $COMMON --exp_name rscnn_stpctls
 
-echo "[11/30] PointConv"
+echo "[12/31] PointConv"
 python main.py --config cfgs/classification/PointConv/STPCTLS/stpctls.yaml $COMMON --exp_name pointconv_stpctls
 
-echo "[12/30] PointWeb"
+echo "[13/31] PointWeb"
 python main.py --config cfgs/classification/PointWeb/STPCTLS/stpctls.yaml $COMMON --exp_name pointweb_stpctls
 
-echo "[13/30] SO-Net"
+echo "[14/31] SO-Net"
 python main.py --config cfgs/classification/SONet/STPCTLS/stpctls.yaml $COMMON --exp_name sonet_stpctls
 
-echo "[14/30] RepSurf"
+echo "[15/31] RepSurf"
 python main.py --config cfgs/classification/RepSurf/STPCTLS/stpctls.yaml $COMMON --exp_name repsurf_stpctls
 
-echo "[15/30] PointCNN"
+echo "[16/31] RepSurf-U (2x)"
+python main.py --config cfgs/classification/RepSurf/STPCTLS/stpctls_2x.yaml $COMMON --exp_name repsurf_2x_stpctls
+
+echo "[17/31] PointCNN"
 python main.py --config cfgs/classification/PointCNN/STPCTLS/stpctls.yaml $COMMON --exp_name pointcnn_stpctls
 
-echo "[16/30] PointSCNet"
+echo "[18/31] PointSCNet"
 python main.py --config cfgs/classification/PointSCNet/STPCTLS/stpctls.yaml $COMMON --exp_name pointscnet_stpctls
 
-echo "[17/30] GDANet"
+echo "[19/31] GDANet"
 python main.py --config cfgs/classification/GDAN/STPCTLS/stpctls.yaml $COMMON --exp_name gdan_stpctls
 
-echo "[19/30] PPFNet"
+echo "[20/31] PPFNet"
 python main.py --config cfgs/classification/PPFNet/STPCTLS/stpctls.yaml $COMMON --exp_name ppfnet_stpctls
 
-echo "[20/30] PVT"
+echo "[21/31] PVT"
 python main.py --config cfgs/classification/PVT/STPCTLS/stpctls.yaml $COMMON --exp_name pvt_stpctls
 
-echo "[21/30] PointTransformer"
+echo "[22/31] PointTransformer"
 python main.py --config cfgs/classification/PointTransformer/STPCTLS/stpctls.yaml $COMMON --exp_name pointtransformer_stpctls
 
-echo "[22/30] PointTransformerV2"
+echo "[23/31] PointTransformerV2"
 python main.py --config cfgs/classification/PointTransformerV2/STPCTLS/stpctls.yaml $COMMON --exp_name pointtransformerv2_stpctls
 
-echo "[23/30] PointTransformerV3"
+echo "[24/31] PointTransformerV3"
 python main.py --config cfgs/classification/PointTransformerV3/STPCTLS/stpctls.yaml $COMMON --exp_name pointtransformerv3_stpctls
 
-echo "[24/30] P2P"
+echo "[25/31] P2P"
 python main.py --config cfgs/classification/P2P/STPCTLS/stpctls.yaml $COMMON --exp_name p2p_stpctls
 
-echo "[25/30] PointTNT"
+echo "[26/31] PointTNT"
 python main.py --config cfgs/classification/PointTNT/STPCTLS/stpctls.yaml $COMMON --exp_name pointtnt_stpctls
 
-echo "[26/30] GlobalTransformer"
+echo "[27/31] GlobalTransformer"
 python main.py --config cfgs/classification/GlobalTransformer/STPCTLS/stpctls.yaml $COMMON --exp_name globaltransformer_stpctls
 
-echo "[27/30] PointKAN"
+echo "[28/31] PointKAN"
 python main.py --config cfgs/classification/PointKAN/STPCTLS/stpctls.yaml $COMMON --exp_name pointkan_stpctls
 
-echo "[28/30] MSDGCNN"
+echo "[29/31] MSDGCNN"
 python main.py --config cfgs/classification/MSDGCNN/STPCTLS/stpctls.yaml $COMMON --exp_name msdgcnn_stpctls
 
-echo "[29/30] MSDGCNN2"
+echo "[30/31] MSDGCNN2"
 python main.py --config cfgs/classification/MSDGCNN2/STPCTLS/stpctls.yaml $COMMON --exp_name msdgcnn2_stpctls
 
-echo "[30/30] KAN-DGCNN"
+echo "[31/31] KAN-DGCNN"
 python main.py --config cfgs/classification/KANDGCNN/STPCTLS/stpctls.yaml $COMMON --exp_name kandgcnn_stpctls
 
 # ────────────────────────────────────────────────
