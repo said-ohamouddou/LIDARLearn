@@ -132,18 +132,18 @@ class Block(nn.Module):
         self.tfts_gamma_5, self.tfts_beta_5 = init_tfts(embed_dim)
 
     def forward(self, x, attn_mask):
-        # Attention path (pre-norm + TFTS + attn + residual)
-        h = x
-        x_norm = apply_tfts(self.ln_1(x), self.tfts_gamma_1, self.tfts_beta_1)
-        a, _ = self.attn(x_norm, x_norm, x_norm, attn_mask=attn_mask, need_weights=False)
-        x = h + a
+        # Follows PointGST's GPT_DAPT block: as in the PointGPT backbone, the
+        # attention residual is added to the normalised tokens, and the MLP
+        # carries TFTS scale/shift (gamma_4/5) around its hidden layer.
+        x = apply_tfts(self.ln_1(x), self.tfts_gamma_1, self.tfts_beta_1)
+        a, _ = self.attn(x, x, x, attn_mask=attn_mask, need_weights=False)
+        x = x + a
 
-        # MLP path (pre-norm + TFTS, then full MLP + adapter in parallel)
-        h = x
         m = apply_tfts(self.ln_2(x), self.tfts_gamma_2, self.tfts_beta_2)
         a_mlp = self.adapt_mlp(m)
-        m = self.mlp(m) + a_mlp
-        x = h + m
+        m = self.mlp[2](self.mlp[1](apply_tfts(self.mlp[0](x), self.tfts_gamma_4, self.tfts_beta_4)))
+        m = apply_tfts(m, self.tfts_gamma_5, self.tfts_beta_5) + a_mlp
+        x = x + m
 
         # Dynamic adapter-prompt token injection (mirrors dapt.py:142-144).
         # GPT layout is [seq, batch, hidden]; the mean pools over seq to get

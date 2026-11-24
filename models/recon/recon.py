@@ -125,19 +125,23 @@ class ReConBlock(nn.Module):
             x = x + self.drop_path(self.mlp(self.norm2(x)))
             return x
 
+        # As in upstream ReCon, each residual is added to the normalised
+        # tokens (not the block input); pretrained ReCon weights expect this.
         cls = x[:, :3]
         vis_x = x[:, 3:]
 
         cls = self.norm1_contrast(cls)
-        vis_x_norm = self.norm1(vis_x)
+        vis_x = self.norm1(vis_x)
         if self.finetune:
-            cls = cls + self.drop_path(self.attn_contrast(cls, vis_x_norm))
+            cls = cls + self.drop_path(self.attn_contrast(cls, vis_x))
         else:
-            cls = cls + self.drop_path(self.attn_contrast(cls, vis_x_norm.detach()))
-        vis_x = vis_x + self.drop_path(self.attn(vis_x_norm))
+            cls = cls + self.drop_path(self.attn_contrast(cls, vis_x.detach()))
+        vis_x = vis_x + self.drop_path(self.attn(vis_x))
 
-        cls = cls + self.drop_path(self.mlp_contrast(self.norm2_contrast(cls)))
-        vis_x = vis_x + self.drop_path(self.mlp(self.norm2(vis_x)))
+        cls = self.norm2_contrast(cls)
+        vis_x = self.norm2(vis_x)
+        cls = cls + self.drop_path(self.mlp_contrast(cls))
+        vis_x = vis_x + self.drop_path(self.mlp(vis_x))
 
         return torch.cat((cls, vis_x), dim=1)
 
