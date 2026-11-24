@@ -28,9 +28,9 @@ from sklearn.metrics import (
     confusion_matrix, accuracy_score, balanced_accuracy_score,
     f1_score, cohen_kappa_score, matthews_corrcoef,
 )
-from utils.checkpoint import load_checkpoint
-
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from utils.checkpoint import load_checkpoint
 
 
 # ── Distinct colors for up to 20 classes ─────────────────────────────────────
@@ -219,7 +219,8 @@ def main():
         split_cfg,
     )
     ds = data_loader.dataset
-    class_names = ds.classes if hasattr(ds, 'classes') else [str(i) for i in range(config.model.get('num_classes', 10))]
+    # ModelNet stores classes as {name: index} (in index order); others use a list.
+    class_names = list(ds.classes) if hasattr(ds, 'classes') else [str(i) for i in range(config.model.get('num_classes', 10))]
     num_classes = len(class_names)
     print(f"Dataset: {len(ds)} samples, {num_classes} classes: {class_names}")
 
