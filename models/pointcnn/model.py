@@ -65,7 +65,7 @@ class XConv(nn.Module):
             out_channels=C_out,
             kernel_size=(1, K),
             depth_multiplier=depth_multiplier
-        )).cuda()
+        ))
 
     def forward(self, x: Tuple[UFloatTensor,            # (N, P, dims)
                                UFloatTensor,            # (N, P, K, dims)
@@ -197,7 +197,7 @@ class PointCNN(nn.Module):
         fts = self.dense(fts) if fts is not None else fts
 
         # This step takes ~97% of the time. Prime target for optimization: KNN on GPU.
-        pts_idx = self.r_indices_func(rep_pts.cpu(), pts.cpu()).cuda()
+        pts_idx = self.r_indices_func(rep_pts.cpu(), pts.cpu()).to(pts.device)
         # -------------------------------------------------------------------------- #
 
         pts_regional = self.select_region(pts, pts_idx)
