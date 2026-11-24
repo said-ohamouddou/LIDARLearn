@@ -460,8 +460,7 @@ def run_net(args, config):
         # Core metrics to include (matching CV summary format)
         # Note: key names must match get_best_metrics_dict() output
         core_metrics = ['best_accuracy', 'balanced_acc', 'f1_macro', 'f1_weighted',
-                        'precision_macro', 'precision_weighted', 'recall_macro',
-                        'recall_weighted', 'kappa', 'mcc']
+                        'precision_macro', 'precision_weighted', 'kappa', 'mcc']
 
         summary_data = {
             'model_name': model_name,

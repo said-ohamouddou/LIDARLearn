@@ -17,7 +17,6 @@ from sklearn.metrics import (
     confusion_matrix,
     f1_score,
     precision_score,
-    recall_score,
     matthews_corrcoef,
     accuracy_score
 )
@@ -89,8 +88,6 @@ class ValidationMetricsTracker:
         self.f1_weighted_at_best_acc = 0.0
         self.precision_macro_at_best_acc = 0.0
         self.precision_weighted_at_best_acc = 0.0
-        self.recall_macro_at_best_acc = 0.0
-        self.recall_weighted_at_best_acc = 0.0
         self.kappa_at_best_acc = 0.0
         self.mcc_at_best_acc = 0.0
         self.predictions_at_best_acc = None
@@ -109,8 +106,6 @@ class ValidationMetricsTracker:
         f1_weighted = f1_score(labels, predictions, average='weighted', zero_division=0) * 100.
         precision_macro = precision_score(labels, predictions, average='macro', zero_division=0) * 100.
         precision_weighted = precision_score(labels, predictions, average='weighted', zero_division=0) * 100.
-        recall_macro = recall_score(labels, predictions, average='macro', zero_division=0) * 100.
-        recall_weighted = recall_score(labels, predictions, average='weighted', zero_division=0) * 100.
         kappa = cohen_kappa_score(labels, predictions) * 100.
         mcc = matthews_corrcoef(labels, predictions) * 100.
 
@@ -127,8 +122,6 @@ class ValidationMetricsTracker:
             self.f1_weighted_at_best_acc = f1_weighted
             self.precision_macro_at_best_acc = precision_macro
             self.precision_weighted_at_best_acc = precision_weighted
-            self.recall_macro_at_best_acc = recall_macro
-            self.recall_weighted_at_best_acc = recall_weighted
             self.kappa_at_best_acc = kappa
             self.mcc_at_best_acc = mcc
 
@@ -185,8 +178,6 @@ class ValidationMetricsTracker:
             'f1_weighted': self.f1_weighted_at_best_acc,
             'precision_macro': self.precision_macro_at_best_acc,
             'precision_weighted': self.precision_weighted_at_best_acc,
-            'recall_macro': self.recall_macro_at_best_acc,
-            'recall_weighted': self.recall_weighted_at_best_acc,
             'kappa': self.kappa_at_best_acc,
             'mcc': self.mcc_at_best_acc,
             'best_epoch': self.best_acc_epoch,
@@ -227,8 +218,8 @@ class ValidationMetricsTracker:
                   (self.best_acc, self.balanced_acc_at_best_acc), logger=logger)
         print_log('  F1 (macro): %.4f%%, F1 (weighted): %.4f%%' %
                   (self.f1_macro_at_best_acc, self.f1_weighted_at_best_acc), logger=logger)
-        print_log('  Precision (macro): %.4f%%, Recall (macro): %.4f%%' %
-                  (self.precision_macro_at_best_acc, self.recall_macro_at_best_acc), logger=logger)
+        print_log('  Precision (macro): %.4f%%, Precision (weighted): %.4f%%' %
+                  (self.precision_macro_at_best_acc, self.precision_weighted_at_best_acc), logger=logger)
         print_log("  Cohen's Kappa: %.4f%%, MCC: %.4f%%" %
                   (self.kappa_at_best_acc, self.mcc_at_best_acc), logger=logger)
 
@@ -536,8 +527,6 @@ class ValidationMetricsTracker:
             'f1_weighted': f'{self.f1_weighted_at_best_acc:.4f}',
             'precision_macro': f'{self.precision_macro_at_best_acc:.4f}',
             'precision_weighted': f'{self.precision_weighted_at_best_acc:.4f}',
-            'recall_macro': f'{self.recall_macro_at_best_acc:.4f}',
-            'recall_weighted': f'{self.recall_weighted_at_best_acc:.4f}',
             'kappa': f'{self.kappa_at_best_acc:.4f}',
             'mcc': f'{self.mcc_at_best_acc:.4f}',
             'trainable_params': trainable_params if trainable_params else 'N/A',

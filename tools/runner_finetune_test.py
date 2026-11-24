@@ -82,7 +82,7 @@ def evaluate_on_test_set(base_model, test_dataloader, args, config, class_names,
     """Evaluate model on test set and return comprehensive metrics."""
     from sklearn.metrics import (
         balanced_accuracy_score, cohen_kappa_score, f1_score,
-        precision_score, recall_score, matthews_corrcoef, accuracy_score,
+        precision_score, matthews_corrcoef, accuracy_score,
         classification_report, confusion_matrix
     )
 
@@ -120,8 +120,6 @@ def evaluate_on_test_set(base_model, test_dataloader, args, config, class_names,
         f1_weighted = f1_score(test_label_np, test_pred_np, average='weighted', zero_division=0) * 100.
         precision_macro = precision_score(test_label_np, test_pred_np, average='macro', zero_division=0) * 100.
         precision_weighted = precision_score(test_label_np, test_pred_np, average='weighted', zero_division=0) * 100.
-        recall_macro = recall_score(test_label_np, test_pred_np, average='macro', zero_division=0) * 100.
-        recall_weighted = recall_score(test_label_np, test_pred_np, average='weighted', zero_division=0) * 100.
         kappa = cohen_kappa_score(test_label_np, test_pred_np) * 100.
         mcc = matthews_corrcoef(test_label_np, test_pred_np) * 100.
 
@@ -144,8 +142,6 @@ def evaluate_on_test_set(base_model, test_dataloader, args, config, class_names,
         'f1_weighted': f1_weighted,
         'precision_macro': precision_macro,
         'precision_weighted': precision_weighted,
-        'recall_macro': recall_macro,
-        'recall_weighted': recall_weighted,
         'kappa': kappa,
         'mcc': mcc,
         'per_class_report': report,
@@ -399,8 +395,6 @@ def run_net(args, config):
     test_metrics_tracker.f1_weighted_at_best_acc = test_results['f1_weighted']
     test_metrics_tracker.precision_macro_at_best_acc = test_results['precision_macro']
     test_metrics_tracker.precision_weighted_at_best_acc = test_results['precision_weighted']
-    test_metrics_tracker.recall_macro_at_best_acc = test_results['recall_macro']
-    test_metrics_tracker.recall_weighted_at_best_acc = test_results['recall_weighted']
     test_metrics_tracker.kappa_at_best_acc = test_results['kappa']
     test_metrics_tracker.mcc_at_best_acc = test_results['mcc']
     test_metrics_tracker.confusion_matrix_at_best_acc = test_results['confusion_matrix']
@@ -460,8 +454,7 @@ def run_net(args, config):
     best_metrics_dict = test_metrics_tracker.get_best_metrics_dict(trainable_params=trainable_params)
 
     core_metrics = ['best_accuracy', 'balanced_acc', 'f1_macro', 'f1_weighted',
-                    'precision_macro', 'precision_weighted', 'recall_macro',
-                    'recall_weighted', 'kappa', 'mcc']
+                    'precision_macro', 'precision_weighted', 'kappa', 'mcc']
 
     summary_data = {
         'model_name': model_name,
