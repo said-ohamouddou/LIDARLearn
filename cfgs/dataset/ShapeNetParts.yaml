@@ -1,4 +1,0 @@
-NAME: ShapeNetParts
-DATA_PATH: data/ShapeNetPart/shapenetcore_partanno_segmentation_benchmark_v0_normal
-N_POINTS: 2048
-normal_channel: False

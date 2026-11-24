@@ -1,9 +1,7 @@
 """ShapeNet Parts dataset loader for part segmentation."""
 
 import glob
-import json
 import os
-from pathlib import Path
 
 import h5py
 import numpy as np
@@ -34,92 +32,6 @@ def _pc_normalize(pc: np.ndarray) -> np.ndarray:
     if m > 0:
         pc = pc / m
     return pc
-
-
-@DATASETS.register_module()
-class ShapeNetParts(Dataset):
-    """ShapeNet Parts dataset for per-point part segmentation."""
-
-    # Expose static maps so runner/metrics can use them directly.
-    seg_classes = SHAPENET_SEG_CLASSES
-    seg_label_to_cat = SHAPENET_SEG_LABEL_TO_CAT
-    num_seg_classes = 50
-    num_obj_classes = 16
-
-    def __init__(self, config):
-        self.root = config.DATA_PATH
-        self.npoints = getattr(config, 'N_POINTS', 2048)
-        self.partition = config.subset  # 'train' | 'trainval' | 'val' | 'test'
-        self.normal_channel = getattr(config, 'normal_channel', False)
-
-        catfile = os.path.join(self.root, 'synsetoffset2category.txt')
-        self.cat = {}
-        with open(catfile, 'r') as f:
-            for line in f:
-                name, offset = line.strip().split()
-                self.cat[name] = offset
-        # Fixed category ordering → category id (0..15)
-        self.classes_original = {k: i for i, k in enumerate(sorted(self.cat.keys()))}
-        # Expose in the order matching seg_classes for category_names indexing
-        self.category_names = sorted(self.cat.keys())
-
-        split_dir = os.path.join(self.root, 'train_test_split')
-        with open(os.path.join(split_dir, 'shuffled_train_file_list.json')) as f:
-            train_ids = {str(d.split('/')[2]) for d in json.load(f)}
-        with open(os.path.join(split_dir, 'shuffled_val_file_list.json')) as f:
-            val_ids = {str(d.split('/')[2]) for d in json.load(f)}
-        with open(os.path.join(split_dir, 'shuffled_test_file_list.json')) as f:
-            test_ids = {str(d.split('/')[2]) for d in json.load(f)}
-
-        self.datapath = []
-        for cat_name, offset in self.cat.items():
-            dir_point = os.path.join(self.root, offset)
-            if not os.path.isdir(dir_point):
-                continue
-            fns = sorted(os.listdir(dir_point))
-            if self.partition == 'trainval':
-                fns = [fn for fn in fns if fn[:-4] in train_ids or fn[:-4] in val_ids]
-            elif self.partition == 'train':
-                fns = [fn for fn in fns if fn[:-4] in train_ids]
-            elif self.partition == 'val':
-                fns = [fn for fn in fns if fn[:-4] in val_ids]
-            elif self.partition == 'test':
-                fns = [fn for fn in fns if fn[:-4] in test_ids]
-            else:
-                raise ValueError(f"Unknown split: {self.partition}")
-            for fn in fns:
-                self.datapath.append((cat_name, os.path.join(dir_point, fn)))
-
-        self._cache = {}
-        self._cache_size = 20000
-
-        # Expose .classes for runner integration (list of obj-category names)
-        self.classes = self.category_names
-
-    def __len__(self):
-        return len(self.datapath)
-
-    def __getitem__(self, index):
-        if index in self._cache:
-            point_set, cls, seg = self._cache[index]
-        else:
-            cat_name, fn = self.datapath[index]
-            cls = np.array([self.classes_original[cat_name]], dtype=np.int32)
-            data = np.loadtxt(fn).astype(np.float32)
-            point_set = data[:, :6] if self.normal_channel else data[:, :3]
-            seg = data[:, -1].astype(np.int32)
-            if len(self._cache) < self._cache_size:
-                self._cache[index] = (point_set, cls, seg)
-
-        point_set = point_set.copy()
-        point_set[:, :3] = _pc_normalize(point_set[:, :3])
-
-        choice = np.random.choice(len(seg), self.npoints, replace=True)
-        point_set = point_set[choice, :]
-        seg = seg[choice]
-
-        # Match the library's tuple format: (taxonomy, model_id, (data_tuple))
-        return 'ShapeNetParts', self.datapath[index][0], (point_set, cls, seg)
 
 
 # Canonical object-label ordering used by the H5 release
