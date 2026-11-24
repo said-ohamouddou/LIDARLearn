@@ -18,7 +18,6 @@ import torch.nn.functional as F
 
 
 from . import pointnet2_utils
-# import my_point_utils as point_utils
 from . import pytorch_utils as pt_utils
 from typing import List
 import numpy as np
