@@ -413,18 +413,18 @@ python main.py --config cfgs/classification/PointMAE/STPCTLS/stpctls_cv.yaml \
 
 ### Visualization
 
-All three viz scripts live in [`scripts/visulization/`](scripts/visulization/) and emit self-contained interactive HTML files (Plotly-based 3D scatter) plus `.npy` arrays and a text summary. Each page shows the **model name** and **dataset name** at the top so you never lose track of which run produced which output.
+All three viz scripts live in [`scripts/visualization/`](scripts/visualization/) and emit self-contained interactive HTML files (Plotly-based 3D scatter) plus `.npy` arrays and a text summary. Each page shows the **model name** and **dataset name** at the top so you never lose track of which run produced which output.
 
 | Task | Script | Output |
 |---|---|---|
-| Classification | [`visualize_cls.py`](scripts/visulization/visualize_cls.py) | per-sample 3D HTML, confusion matrix, gallery `index.html` |
-| Semantic segmentation | [`visualize_seg.py`](scripts/visulization/visualize_seg.py) | per-block GT/Pred side-by-side, per-class IoU summary |
-| Part segmentation | [`visualize_partseg.py`](scripts/visulization/visualize_partseg.py) | per-shape GT/Pred side-by-side, per-category mIoU summary |
+| Classification | [`visualize_cls.py`](scripts/visualization/visualize_cls.py) | per-sample 3D HTML, confusion matrix, gallery `index.html` |
+| Semantic segmentation | [`visualize_seg.py`](scripts/visualization/visualize_seg.py) | per-block GT/Pred side-by-side, per-class IoU summary |
+| Part segmentation | [`visualize_partseg.py`](scripts/visualization/visualize_partseg.py) | per-shape GT/Pred side-by-side, per-category mIoU summary |
 
 **Example — part segmentation with a fine-tuned PointBERT checkpoint:**
 
 ```bash
-python scripts/visulization/visualize_partseg.py \
+python scripts/visualization/visualize_partseg.py \
     --config cfgs/segmentation/PointBERT/ShapeNetParts/pointbert_partseg.yaml \
     --ckpt experiments/ShapeNetParts/pointbert_partseg/ckpt-best-seg.pth \
     --num_vis 30 \

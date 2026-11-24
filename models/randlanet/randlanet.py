@@ -201,7 +201,7 @@ class LocalFeatureAggregation(nn.Module):
 
 # NOTE: RandLANet itself is not registered in the MODELS registry — it is
 # a pure segmentation backbone with per-point outputs. Use ``RandLANet_Seg``
-# (in randlenet_seg.py) which wraps this class and exposes the right I/O
+# (in randlanet_seg.py) which wraps this class and exposes the right I/O
 # contract for the seg runner. There are no RandLANet classification
 # configs on purpose.
 class RandLANet(nn.Module):

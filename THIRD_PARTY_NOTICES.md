@@ -34,8 +34,8 @@ the basis for adaptation.
 | PointWeb | `models/pointweb/` | MIT | https://github.com/hszhao/PointWeb |
 | PPFNet | `models/ppfnet/` | MIT | https://github.com/vinits5/learning3d |
 | PVT | `models/pvt/` | MIT | https://github.com/HaochengWan/PVT |
-| RandLANet | `models/randlenet/` | No license | https://github.com/aRI0U/RandLA-Net-pytorch |
-| RepSurf | `models/rapsurf/` | Apache-2.0 | https://github.com/hancyran/RepSurf |
+| RandLANet | `models/randlanet/` | No license | https://github.com/aRI0U/RandLA-Net-pytorch |
+| RepSurf | `models/repsurf/` | Apache-2.0 | https://github.com/hancyran/RepSurf |
 | RSCNN | `models/rscnn/` | MIT | https://github.com/Yochengliu/Relation-Shape-CNN |
 | SONet | `models/sonet/` | MIT | https://github.com/lijx10/SO-Net |
 | P2P | `models/p2p/` | MIT | https://github.com/wangzy22/P2P |
@@ -73,7 +73,7 @@ copyright holder and the changes made for LIDARLearn integration.
 | Model | Directory | NOTICE |
 |---|---|---|
 | PointMLP | `models/pointmlp/` | `models/pointmlp/NOTICE` |
-| RepSurf | `models/rapsurf/` | `models/rapsurf/NOTICE` |
+| RepSurf | `models/repsurf/` | `models/repsurf/NOTICE` |
 | PointGST | `models/pointgst/` | `models/pointgst/NOTICE` |
 | DAPT | `models/dapt/` | `models/dapt/NOTICE` |
 | PointMamba | `models/pointmamba/` | `models/pointmamba/NOTICE` |
