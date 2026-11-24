@@ -126,7 +126,7 @@ _MODEL_MODULES = [
     "models.pvt.pvt_seg",
     "models.pointtransformer.pointtransformer",       # pointops
     "models.pointtransformer.pointtransformer_seg",
-    "models.pointtransformerv2.pointtransformerv2",   # pointops, torch_scatter, torch_geometric
+    "models.pointtransformerv2.pointtransformerv2",   # pointops, torch_scatter, torch_cluster
     "models.pointtransformerv2.pointtransformerv2_seg",
     "models.pointtransformerv3.pointtransformerv3",   # torch_scatter (spconv optional)
     "models.pointtransformerv3.pointtransformerv3_seg",
