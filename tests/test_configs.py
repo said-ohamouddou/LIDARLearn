@@ -55,6 +55,14 @@ def _assert_registered(name: str):
     except AttributeError:
         registered = []
     hint = ", ".join(registered[:20]) + ("..." if len(registered) > 20 else "")
+    skipped = getattr(MODELS, "import_failures", {})
+    if skipped:
+        details = "\n".join(f"  - {mod}: {err}" for mod, (_, err) in sorted(skipped.items()))
+        raise AssertionError(
+            f"Model '{name}' is not registered. These model modules were skipped "
+            f"because a dependency is missing; install it or build the CUDA "
+            f"extensions (bash extensions/install_extensions.sh):\n{details}"
+        )
     raise AssertionError(
         f"Model '{name}' is not registered "
         f"(registry has {len(registered)} entries: {hint}). "
