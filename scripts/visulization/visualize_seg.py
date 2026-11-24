@@ -25,6 +25,7 @@ import sys
 
 import numpy as np
 import torch
+from utils.checkpoint import load_checkpoint
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -176,7 +177,7 @@ def main():
 
     model = build_model_from_cfg(config.model)
 
-    ckpt = torch.load(args.ckpt, map_location='cpu')
+    ckpt = load_checkpoint(args.ckpt, map_location='cpu')
     sd = ckpt.get('base_model', ckpt)
     # Handle DataParallel key prefix
     sd = {k.replace('module.', ''): v for k, v in sd.items()}

@@ -12,6 +12,7 @@ from clip import clip
 import timm
 import os
 import random
+from utils.checkpoint import load_checkpoint
 
 
 def load_clip_to_cpu(backbone_name):
@@ -22,7 +23,7 @@ def load_clip_to_cpu(backbone_name):
         model = torch.jit.load(model_path, map_location="cpu").eval()
         state_dict = None
     except RuntimeError:
-        state_dict = torch.load(model_path, map_location="cpu")
+        state_dict = load_checkpoint(model_path, map_location="cpu")
     model = clip.build_model(state_dict or model.state_dict())
     return model
 

@@ -35,6 +35,7 @@ from utils.logger import print_log
 # Yu et al., CVPR 2022. https://github.com/Julie-tang00/Point-BERT
 
 from ..ssl_blocks import Mlp, Attention, Block, TransformerEncoder, Encoder
+from utils.checkpoint import load_checkpoint
 
 
 # Group — FPS + KNN grouping via pointnet2_ops (MIT) + torch.cdist
@@ -324,7 +325,7 @@ class DeepPromptTransformerEncoder(nn.Module):
 
 def _load_pretrained(model, ckpt_path: str, strict: bool = False, tag: str = ""):
     """Load weights from a PointMAE / PointBERT / ACT / PCP-MAE checkpoint."""
-    ckpt = torch.load(ckpt_path, map_location="cpu")
+    ckpt = load_checkpoint(ckpt_path, map_location="cpu")
     state = {k.replace("module.", ""): v
              for k, v in ckpt.get("base_model", ckpt).items()}
     prefix_map = {

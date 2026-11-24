@@ -16,7 +16,7 @@ from timm.models.layers import DropPath, trunc_normal_
 from .dvae import Group, DiscreteVAE, Encoder
 from ..build import MODELS
 from ..base_model import BasePointCloudModel, print_model_info
-from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message
+from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message, load_checkpoint
 from utils.logger import print_log
 
 from ..ssl_blocks import Mlp, Attention, Block, TransformerEncoder
@@ -68,7 +68,7 @@ class PointBERT(BasePointCloudModel):
 
     def load_model_from_ckpt(self, bert_ckpt_path):
         if bert_ckpt_path is not None:
-            ckpt = torch.load(bert_ckpt_path)
+            ckpt = load_checkpoint(bert_ckpt_path)
             base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
 
             total_ckpt_params = sum(p.numel() for p in base_ckpt.values())
@@ -227,7 +227,7 @@ class MaskTransformer(nn.Module):
                 nn.init.constant_(m.bias, 0)
 
     def _prepare_encoder(self, dvae_ckpt):
-        ckpt = torch.load(dvae_ckpt, map_location='cpu')
+        ckpt = load_checkpoint(dvae_ckpt, map_location='cpu')
         base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
         encoder_ckpt = {k.replace("encoder.", ""): v for k, v in base_ckpt.items() if 'encoder' in k}
 
@@ -390,7 +390,7 @@ class PointBERT_Pretrain(nn.Module):
 
     def _prepare_dvae(self):
         dvae_ckpt = self.config.dvae_config.ckpt
-        ckpt = torch.load(dvae_ckpt, map_location='cpu')
+        ckpt = load_checkpoint(dvae_ckpt, map_location='cpu')
         base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
         self.dvae.load_state_dict(base_ckpt, strict=True)
         print_log(f'[dVAE] Successful Loading the ckpt for dvae from {dvae_ckpt}', logger='Point_BERT')

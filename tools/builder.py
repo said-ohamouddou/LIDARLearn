@@ -15,6 +15,7 @@ from models import build_model_from_cfg
 from utils.logger import print_log
 from utils import misc
 from utils.misc import worker_init_fn, build_lambda_sche
+from utils.checkpoint import load_checkpoint
 # Try importing timm scheduler, fall back to custom implementation
 try:
     from timm.scheduler import CosineLRScheduler
@@ -447,7 +448,7 @@ def resume_model(base_model, args, logger=None):
 
     # load state dict
     map_location = {'cuda:%d' % 0: 'cuda:%d' % args.local_rank}
-    state_dict = torch.load(ckpt_path, map_location=map_location)
+    state_dict = load_checkpoint(ckpt_path, map_location=map_location)
 
     # parameter resume of base model
     base_ckpt = {k.replace("module.", ""): v for k, v in state_dict['base_model'].items()}
@@ -473,7 +474,7 @@ def resume_optimizer(optimizer, args, logger=None):
     print_log(f'[RESUME INFO] Loading optimizer from {ckpt_path}...', logger=logger)
 
     # load state dict
-    state_dict = torch.load(ckpt_path, map_location='cpu')
+    state_dict = load_checkpoint(ckpt_path, map_location='cpu')
     optimizer.load_state_dict(state_dict['optimizer'])
 
 
@@ -488,7 +489,7 @@ def resume_rng_state(args, logger=None):
     ckpt_path = os.path.join(args.experiment_path, 'ckpt-last.pth')
     if not os.path.exists(ckpt_path):
         return
-    state_dict = torch.load(ckpt_path, map_location='cpu')
+    state_dict = load_checkpoint(ckpt_path, map_location='cpu')
 
     if 'rng_torch' in state_dict:
         torch.set_rng_state(state_dict['rng_torch'])
@@ -585,7 +586,7 @@ def load_model(base_model, ckpt_path, logger=None, strict=True):
     print_log(f'Loading weights from {ckpt_path}...', logger=logger)
 
     # load state dict
-    state_dict = torch.load(ckpt_path, map_location='cpu')
+    state_dict = load_checkpoint(ckpt_path, map_location='cpu')
 
     # parameter resume of base model
     if state_dict.get('model') is not None:

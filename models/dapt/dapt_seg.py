@@ -17,6 +17,7 @@ from ..ssl_blocks import Encoder
 from ..build import MODELS
 from ..base_seg_model import BaseSegModel
 from ..seg.transformer_seg_base import PointNetFeaturePropagation
+from utils.checkpoint import load_checkpoint
 
 
 @MODELS.register_module()
@@ -135,7 +136,7 @@ class DAPT_Seg(BaseSegModel):
         """
         if ckpt_path is None:
             return
-        ckpt = torch.load(ckpt_path, map_location='cpu')
+        ckpt = load_checkpoint(ckpt_path, map_location='cpu')
         sd = ckpt.get('base_model', ckpt.get('model', ckpt))
         sd = {k.replace('module.', ''): v for k, v in sd.items()}
         remapped = {}

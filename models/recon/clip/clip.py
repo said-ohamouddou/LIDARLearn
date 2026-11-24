@@ -22,6 +22,7 @@ from tqdm import tqdm
 
 from .model import build_model
 from .simple_tokenizer import SimpleTokenizer as _Tokenizer
+from utils.checkpoint import load_checkpoint
 
 try:
     from torchvision.transforms import InterpolationMode
@@ -143,7 +144,7 @@ def load(name: str, device: Union[str, torch.device] = "cuda" if torch.cuda.is_a
             if jit:
                 warnings.warn(f"File {model_path} is not a JIT archive. Loading as a state dict instead")
                 jit = False
-            state_dict = torch.load(opened_file, map_location="cpu")
+            state_dict = load_checkpoint(opened_file, map_location="cpu")
 
     if not jit:
         model = build_model(state_dict or model.state_dict()).to(device)

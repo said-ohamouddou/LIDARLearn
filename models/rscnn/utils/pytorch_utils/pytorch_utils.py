@@ -22,6 +22,7 @@ from typing import List, Tuple
 from scipy.stats import t as student_t
 import statistics as stats
 import math
+from utils.checkpoint import load_checkpoint
 
 ########## Relation-Shape Convolution begin ############
 
@@ -557,7 +558,7 @@ def load_checkpoint(model=None, optimizer=None, filename='checkpoint'):
     filename = "{}.pth.tar".format(filename)
     if os.path.isfile(filename):
         print("==> Loading from checkpoint '{}'".format(filename))
-        checkpoint = torch.load(filename)
+        checkpoint = load_checkpoint(filename)
         epoch = checkpoint['epoch']
         best_prec = checkpoint['best_prec']
         if model is not None and checkpoint['model_state'] is not None:
