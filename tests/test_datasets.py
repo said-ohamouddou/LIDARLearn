@@ -71,11 +71,16 @@ def test_fewshot_episode_structure(fewshot_root):
     _assert_normalised(points.numpy())
 
 
-@pytest.mark.xfail(strict=True, reason="known bug: ModelNetFewShot ignores N_POINTS and returns all "
-                                       "8192 stored points (configs and protocol use 1024)")
 def test_fewshot_returns_n_points(fewshot_root):
-    _, _, (points, _) = _fewshot(fewshot_root, "test")[0]
+    """The few-shot pickles store 8192 FPS-ordered points; models get the
+    first N_POINTS (an FPS sample), as in the Point-BERT protocol."""
+    ds = _fewshot(fewshot_root, "test")
+    _, _, (points, _) = ds[0]
     assert tuple(points.shape) == (1024, 3)
+    stored = ds.dataset[0][0][:1024, :3]
+    centred = stored - stored.mean(0)
+    assert np.allclose(points.numpy(), centred / np.linalg.norm(centred, axis=1).max(), atol=1e-5)
+    assert ds.dataset[0][0].shape == (8192, 6)  # stored data is not modified
 
 
 # ------------------------------------------------- ShapeNet-55 (pretraining)
