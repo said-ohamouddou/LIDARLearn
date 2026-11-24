@@ -35,7 +35,6 @@ Designed for **researchers and engineers** who need to run **apples-to-apples be
 - **General 3D data** — ModelNet40, ShapeNet-55/34, ShapeNet Part, ScanObjectNN (PointMamba)
 - **Indoor 3D scans** — S3DIS (Matterport-style RGB + XYZ, semantic segmentation)
 - **Terrestrial Laser Scanning (TLS)** — STPCTLS (tree species classification on high-density ground-based scans)
-- **Aerial / helicopter LiDAR (ALS)** — HELIALS (tree species from sparse-to-dense aerial point clouds)
 
 Same YAML schema, same CLI, same report generators for all of them — swap the dataset, keep the model and training recipe constant. Supported tasks: **classification**, **semantic segmentation**, **part segmentation**, and **few-shot classification**, with built-in stratified *K*-fold cross-validation and Friedman/Nemenyi statistical analysis.
 
@@ -43,7 +42,7 @@ Same YAML schema, same CLI, same report generators for all of them — swap the 
 
 The matrix below enumerates every (model × fine-tuning strategy) pair shipped
 with ready-to-run YAML configs. Columns:
-**Cls** — object classification (ModelNet40 / STPCTLS / HELIALS / ModelNetFewShot),
+**Cls** — object classification (ModelNet40 / STPCTLS / ModelNetFewShot),
 **PartSeg** — part segmentation (ShapeNetParts),
 **SemSeg** — semantic segmentation (S3DIS).
 "Strategy" is the PEFT adapter applied on top of an SSL backbone:
@@ -301,7 +300,6 @@ You can skip this section entirely if you only plan to train the 29 supervised b
 | **S3DIS** | Indoor semantic segmentation (13 classes) | [`datasets/S3DISDataset.py`](datasets/S3DISDataset.py) |
 | **STPCTLS** ([Göttingen Research Online](https://data.goettingen-research-online.de/dataset.xhtml?persistentId=doi:10.25625/FOHUJM)) | LiDAR tree species (7 classes, TLS point clouds) | [`datasets/TreeSpeciesDataset.py`](datasets/TreeSpeciesDataset.py) |
 | **STPCTLS-CV** | STPCTLS with stratified *K*-fold CV | [`datasets/TreeSpeciesDatasetCV.py`](datasets/TreeSpeciesDatasetCV.py) |
-| **HELIALS** ([Zenodo 17077256](https://zenodo.org/records/17077256)) | Helicopter ALS tree species | [`datasets/TreeSpeciesDatasetHELIALS.py`](datasets/TreeSpeciesDatasetHELIALS.py) |
 
 Dataset download and preparation instructions are in [`DATASET.md`](DATASET.md). For convenience, the **preprocessed STPCTLS data is already included in the repository** (under [`data/`](data/)) so you can reproduce the tree-species benchmark out of the box without any external download.
 
@@ -470,7 +468,6 @@ from real benchmark runs) are shipped under `experiments/<dataset>/latex/`:
 
 | Dataset | Task | Example output |
 |---|---|---|
-| HELIALS | Classification | [`experiments/HELIALS/latex/`](experiments/HELIALS/latex/) — `model_comparison_tables.{tex,pdf,csv,md}` |
 | S3DIS | Semantic segmentation | [`experiments/S3DIS/latex/`](experiments/S3DIS/latex/) — `s3dis_comparison.{tex,pdf,csv,md}` |
 | ShapeNetParts | Part segmentation | [`experiments/ShapeNetParts/latex/`](experiments/ShapeNetParts/latex/) — `shapenetparts_comparison.{tex,pdf,csv,md}` |
 
@@ -481,7 +478,7 @@ Each folder includes `references.bib` (auto-copied from `scripts/reports/referen
 ```
 LIDARLearn/
 ├── cfgs/              # YAML configs (classification, segmentation, fewshot, pretrain)
-├── datasets/          # Dataset loaders (ModelNet, ShapeNet, S3DIS, STPCTLS, HELIALS)
+├── datasets/          # Dataset loaders (ModelNet, ScanObjectNN, ShapeNet, S3DIS, STPCTLS)
 │                      #   + augmentation.py (shared pointcloud transforms)
 ├── models/            # Backbones, SSL methods, PEFT adapters, seg wrappers
 ├── tools/             # Training runners (finetune, pretrain, seg, fewshot)
@@ -514,7 +511,7 @@ Help wanted — these are the priorities we're actively looking for community co
 - [ ] **Add 3D point cloud registration support** — task heads, dataset loaders (e.g., 3DMatch, KITTI odometry, ModelNet-registration), metrics (rotation/translation error, RRE/RTE), and reference methods (PPFNet is already vendored but not yet wired as a registration task).
 - [ ] **Improve and optimize the code** — profile training/inference hot paths, reduce redundant tensor copies, add `torch.compile` / AMP support where it helps, cut memory overhead in large-scene seg runs, and clean up any remaining upstream-vendored code paths. PRs that shave GPU hours are especially welcome.
 - [ ] **Windows and macOS support** — the project is currently developed and tested on Linux only. Windows needs PowerShell/`.bat` equivalents for `extensions/install_extensions.sh` and the `scripts/train_*.sh` sweep runners (or a WSL2 setup guide). macOS has no CUDA, so support would mean a CPU/MPS mode that gates the ~6 CUDA-only models (PointTransformerV2/V3, P2P, DeepGCN, DELA, RandLA-Net) on `torch.cuda.is_available()` and skips the CUDA extensions build. PRs adding either platform — with install instructions and at least one model verified end-to-end — very welcome.
-- [ ] **Full documentation of every model and its hyperparameters** — a per-model reference page (markdown under `docs/models/` or a single consolidated table) covering: what the model does in 1-2 sentences, its YAML `model:` block keys, what each hyperparameter controls, recommended defaults per dataset family (ModelNet40 / ShapeNet / STPCTLS / HELIALS / S3DIS), memory/compute footprint, and any model-specific gotchas (e.g., input channel assumptions, required preprocessors, supported task heads).
+- [ ] **Full documentation of every model and its hyperparameters** — a per-model reference page (markdown under `docs/models/` or a single consolidated table) covering: what the model does in 1-2 sentences, its YAML `model:` block keys, what each hyperparameter controls, recommended defaults per dataset family (ModelNet40 / ShapeNet / STPCTLS / S3DIS), memory/compute footprint, and any model-specific gotchas (e.g., input channel assumptions, required preprocessors, supported task heads).
 - [ ] **Any community proposal that improves LIDARLearn** — new features, API refinements, documentation, tooling, CI, visualization helpers, or anything else. Open an issue first to discuss scope, then send a PR.
 
 ## Contributing

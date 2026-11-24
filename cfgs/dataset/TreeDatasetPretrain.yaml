@@ -1,7 +1,0 @@
-NAME: TreeSpeciesPretrain
-DATA_PATH: data/HELIALS
-N_POINTS: 1024
-seed: 42
-pretrain_ratio: 0.5
-svm_train_ratio: 0.75
-cache_name: point_cloud_data_pretrain_1024.h5
