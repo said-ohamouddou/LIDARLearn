@@ -45,7 +45,7 @@ jobs:
           cache-dependency-path: requirements.txt
 
       - name: System libraries for open3d
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgl1 libgomp1
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgl1 libegl1 libgomp1
 
       - name: Install PyTorch ${{ matrix.torch }} (CPU)
         run: |
