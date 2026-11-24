@@ -76,11 +76,12 @@ class RepSurf(BasePointCloudModel):
 
         return feature
 
-@MODELS.register_module()
-class RAPSurfx2(BasePointCloudModel):
+# RepSurf-U (2x) from the paper; 'RAPSurfx2' is kept as an alias.
+@MODELS.register_module(name=['RepSurf2x', 'RAPSurfx2'])
+class RepSurf2x(BasePointCloudModel):
     def __init__(self, config, **kwargs):
         num_classes = config.num_classes
-        super(RAPSurfx2, self).__init__(config, num_classes)
+        super(RepSurf2x, self).__init__(config, num_classes)
 
         self.num_point = config.num_point
         self.return_dist = config.return_dist

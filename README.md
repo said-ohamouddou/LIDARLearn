@@ -28,7 +28,7 @@
 
 ## Overview
 
-**LIDARLearn** ships the **most complete off-the-shelf catalogue of 3D point cloud deep-learning methods** we're aware of — **57 model configurations** covering 29 supervised backbones, 8 self-supervised pre-training methods, and 5 parameter-efficient fine-tuning (PEFT) strategies (DAPT, IDPT, PPT, GST, VPT-Deep) composable with 4 of the SSL backbones (ACT, PointGPT, Point-MAE, ReCon) — all exposed through a single registry-based framework with YAML-driven configs, standardised runners, automatic LaTeX/CSV reporting, and a 2 200+ test `pytest` suite.
+**LIDARLearn** ships the **most complete off-the-shelf catalogue of 3D point cloud deep-learning methods** we're aware of — **59 model configurations** covering 31 supervised backbones, 8 self-supervised pre-training methods, and 5 parameter-efficient fine-tuning (PEFT) strategies (DAPT, IDPT, PPT, GST, VPT-Deep) composable with 4 of the SSL backbones (ACT, PointGPT, Point-MAE, ReCon) — all exposed through a single registry-based framework with YAML-driven configs, standardised runners, automatic LaTeX/CSV reporting, and a 2 200+ test `pytest` suite.
 
 Designed for **researchers and engineers** who need to run **apples-to-apples benchmarks** across heterogeneous 3D point-cloud sources in the same pipeline:
 
@@ -55,7 +55,7 @@ PointMamba ships exactly the tasks of its [official repository](https://github.c
 <tr><th>Category</th><th>Model</th><th>Strategy</th><th align="center">Cls</th><th align="center">PartSeg</th><th align="center">SemSeg</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="15"><b>Point-based</b></td><td>PointNet</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td rowspan="17"><b>Point-based</b></td><td>PointNet</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PointNet2-SSG</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PointNet2-MSG</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>SONet</td><td>—</td><td align="center">✓</td><td align="center">—</td><td align="center">—</td></tr>
@@ -65,8 +65,10 @@ PointMamba ships exactly the tasks of its [official repository](https://github.c
 <tr><td>PointConv</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>RSCNN</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PointMLP</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td>PointMLP-elite</td><td>—</td><td align="center">✓</td><td align="center">—</td><td align="center">—</td></tr>
 <tr><td>PointSCNet</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>RepSurf</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td>RepSurf-U (2×)</td><td>—</td><td align="center">✓</td><td align="center">—</td><td align="center">—</td></tr>
 <tr><td>PointKAN</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>DELA</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>RandLA-Net</td><td>—</td><td align="center">—</td><td align="center">✓</td><td align="center">✓</td></tr>
@@ -116,7 +118,7 @@ PointMamba ships exactly the tasks of its [official repository](https://github.c
 </tbody>
 </table>
 
-**Total: 57 configurations** (29 supervised × FF, 8 SSL × FF, 4 SSL × 5 PEFT = 20). See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for per-model licences and upstream repositories, and [`docs/point_cloud_methods.csv`](docs/point_cloud_methods.csv) for paper titles and venues.
+**Total: 59 configurations** (31 supervised × FF, 8 SSL × FF, 4 SSL × 5 PEFT = 20). See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for per-model licences and upstream repositories, and [`docs/point_cloud_methods.csv`](docs/point_cloud_methods.csv) for paper titles and venues.
 
 ## Key Features
 
@@ -287,7 +289,7 @@ python main.py --config cfgs/classification/PointMAE/STPCTLS/stpctls_cv_dapt.yam
 
 Each loader strips the appropriate state-dict prefix (`MAE_encoder.`, `ACT_encoder.`, `transformer_q.`, `GPT_Transformer.`, …) so checkpoints trained with different SSL objectives all map cleanly onto the finetune model. See [`tests/test_pretrained_load.py`](tests/test_pretrained_load.py) for the verification logic that asserts every loader actually consumes its checkpoint (guards against silent prefix-mismatch failures).
 
-You can skip this section entirely if you only plan to train the 29 supervised backbones — they don't need any pretrained weights.
+You can skip this section entirely if you only plan to train the 31 supervised backbones — they don't need any pretrained weights.
 
 ## Supported Datasets
 
@@ -333,7 +335,7 @@ python scripts/reports/friedman_significance_report.py --exp_dir experiments/STP
 Sweep the entire benchmark with a single command:
 
 ```bash
-bash scripts/train_stpctls.sh      # all 56 classification configs
+bash scripts/train_stpctls.sh      # all 58 classification configs
 bash scripts/train_fewshot.sh      # few-shot evaluation
 bash scripts/train_s3dis.sh        # semantic segmentation
 bash scripts/train_shapenetparts.sh # part segmentation
