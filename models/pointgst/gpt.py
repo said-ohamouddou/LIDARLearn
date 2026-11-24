@@ -106,7 +106,6 @@ class GPT_extractor(nn.Module):
 
         h = h.transpose(0, 1)
         h = self.cls_norm(h)
-        # save_tensor2np(h,'output_full')
         concat_f = torch.cat([h[:, 1], h[:, 2:].max(1)[0]], dim=-1)
         ret = self.cls_head_finetune(concat_f)
         return ret, concat_f

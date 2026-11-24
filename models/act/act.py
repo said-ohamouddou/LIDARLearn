@@ -235,8 +235,6 @@ class TokenAllMaskTransformer(nn.Module):
         # define the encoder
         self.encoder_dims = config.transformer_config.encoder_dims
         self.encoder = Encoder(encoder_channel=self.encoder_dims)
-        # bridge encoder and transformer
-        # self.reduce_dim = nn.Linear(self.encoder_dims, self.embed_dim)
 
         # define the learnable tokens
         self.cls_token = nn.Parameter(torch.randn(1, 1, self.embed_dim))
@@ -260,9 +258,6 @@ class TokenAllMaskTransformer(nn.Module):
         )
         # layer norm
         self.norm = nn.LayerNorm(self.embed_dim)
-        # head for token classification
-        # self.num_tokens = config.dvae_config.num_tokens
-        # self.lm_head = nn.Linear(self.embed_dim, self.num_tokens)
         # head for cls contrast
         self.cls_head = nn.Sequential(
             nn.Linear(self.embed_dim, self.cls_dim),
@@ -390,7 +385,6 @@ class TokenAllMaskTransformer(nn.Module):
             bool_masked_pos = self._mask_center_block(center, noaug=noaug)  # B G
         # encoder the input cloud blocks
         group_input_tokens = self.encoder(neighborhood)  # B G N
-        # group_input_tokens = self.reduce_dim(group_input_tokens)
         # replace the point
         replaced_group_input_tokens, overall_mask = self._random_replace(group_input_tokens, bool_masked_pos.clone(),
                                                                          noaug=noaug)
@@ -880,9 +874,8 @@ class ACT_PointBERT(nn.Module):
 
     @torch.no_grad()
     def _dequeue_and_enqueue(self, keys):
-        # gather keys before updating queue
-        # keys = concat_all_gather(keys)
-
+        # Unlike Point-BERT, keys are not gathered across processes
+        # (concat_all_gather) before the queue update.
         batch_size = keys.shape[0]
 
         ptr = int(self.queue_ptr)
@@ -1031,9 +1024,6 @@ class ACT_PointDistillation_Pretrain(nn.Module):
         if self.proj_type == 'conv':
             self.proj_head = nn.Sequential(
                 nn.Conv1d(self.embed_dim, self.embed_dim, 1),
-                # nn.BatchNorm1d(1024),
-                # nn.LeakyReLU(negative_slope=0.2),
-                # nn.Conv1d(self.embed_dim, 3*self.group_size, 1)
             )
         elif self.proj_type == 'linear':
             self.proj_head = nn.Linear(self.embed_dim, config.dvae_config.tokens_dims)

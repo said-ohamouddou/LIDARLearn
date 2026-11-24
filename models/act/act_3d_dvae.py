@@ -175,7 +175,6 @@ class Group(nn.Module):
         center = misc.fps(xyz, self.num_group)  # B G 3
         # knn to get the neighborhood
         _, idx = self.knn(xyz, center)  # B G M
-        # idx = knn_point(self.group_size, xyz, center) # B G M
         assert idx.size(1) == self.num_group
         assert idx.size(2) == self.group_size
         idx_base = torch.arange(0, batch_size, device=xyz.device).view(-1, 1, 1) * num_points
@@ -307,7 +306,6 @@ class DiscreteVAE_ACT(nn.Module):
     def build_loss_func(self):
         self.loss_func_cdl1 = ChamferDistanceL1().cuda()
         self.loss_func_cdl2 = ChamferDistanceL2().cuda()
-        # self.loss_func_emd = emd().cuda()
 
     def recon_loss(self, ret, gt):
         whole_coarse, whole_fine, coarse, fine, group_gt, _ = ret
@@ -706,7 +704,6 @@ class ACTPromptedDiscreteVAEwithBERT(nn.Module):
     def build_loss_func(self):
         self.loss_func_cdl1 = ChamferDistanceL1().cuda()
         self.loss_func_cdl2 = ChamferDistanceL2().cuda()
-        # self.loss_func_emd = emd().cuda()
 
     def recon_loss(self, ret, gt):
         whole_coarse, whole_fine, coarse, fine, group_gt, _ = ret

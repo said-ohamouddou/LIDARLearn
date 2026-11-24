@@ -34,7 +34,6 @@ def validate(base_model, test_dataloader, epoch, args, config,
         for idx, (taxonomy_ids, model_ids, data) in enumerate(test_dataloader):
             points = data[0].cuda()
             label = data[1].cuda()
-            # points = misc.fps(points, npoints)
             logits = base_model(points)
 
             # Handle tuple/list returns

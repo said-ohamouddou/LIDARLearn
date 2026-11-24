@@ -163,8 +163,6 @@ class SOM():
         node_matrix_view = self.node.view(self.dim, self.rows, self.cols)  # Cxrowsxcols
         node_matrix_view += delta
 
-        # print(self.node)
-
     def optimize(self, x):
         self.node_init()
         for iter in range(int(self.max_iteration / 3)):
@@ -257,7 +255,6 @@ class BatchSOM():
 
         node_idx_list = self.node_idx_list.unsqueeze(0).unsqueeze(0).unsqueeze(3).expand_as(min_idx_expanded).long()  # BxNxnode_numxk
         mask = torch.eq(min_idx_expanded, node_idx_list).int()  # BxNxnode_numxk
-        # mask = torch.sum(mask, dim=3)  # BxNxnode_num
 
         mask_list, min_idx_list = [], []
         for i in range(k):
@@ -349,9 +346,6 @@ class BatchSOM():
         # apply the update
         node_matrix_view = self.node.view(self.batch_size, self.dim, self.rows, self.cols)  # BxCxrowsxcols
         node_matrix_view += delta
-
-        # print(self.node)
-        # print(delta.max())
 
     def optimize(self, x):
         self.node_init(x.size()[0])

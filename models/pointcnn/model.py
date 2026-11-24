@@ -41,9 +41,6 @@ class XConv(nn.Module):
 
         self.P = P
 
-        # Additional processing layers
-        # self.pts_layernorm = LayerNorm(2, momentum = 0.9)
-
         # Main dense linear layers
         self.dense1 = Dense(dims, C_mid)
         self.dense2 = Dense(C_mid, C_mid)
@@ -100,7 +97,6 @@ class XConv(nn.Module):
 
         # Move pts to local coordinate system of rep_pt.
         pts_local = pts - p_center  # (N, P, K, dims)
-        # pts_local = self.pts_layernorm(pts - p_center)
 
         # Individually lift each point into C_mid space.
         fts_lifted0 = self.dense1(pts_local)
