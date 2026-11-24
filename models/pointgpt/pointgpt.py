@@ -264,18 +264,6 @@ class GPT_Transformer(nn.Module):
         with torch.no_grad():
             attn_mask = torch.triu(attn_mask, diagonal=1)
 
-            # point wise
-            # overall_mask = np.zeros([self.num_groups, self.num_groups])
-            # for i in range(self.num_groups):
-            #     mask = np.hstack([
-            #         np.zeros(self.num_groups-self.num_mask),
-            #         np.ones(self.num_mask),
-            #     ])
-            #     np.random.shuffle(mask)
-            #     overall_mask[i, :] = mask
-            # overall_mask = torch.from_numpy(
-            #     overall_mask).to(torch.bool).to('cuda')
-
             # column wise
             overall_mask = np.hstack([
                 np.zeros(self.num_groups - self.keep_attend - self.num_mask),

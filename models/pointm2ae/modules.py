@@ -10,7 +10,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from timm.models.layers import DropPath
-# from .build import MODELS
 from utils import misc
 from models.knn import KNN
 
@@ -156,7 +155,6 @@ class PointNetFeaturePropagation(nn.Module):
             interpolated_points = torch.sum(index_points(points2, idx) * weight.view(B, N, 3, 1), dim=2)
 
         if points1 is not None:
-            # points1 = points1.permute(0, 2, 1)
             new_points = torch.cat([points1, interpolated_points], dim=-1)
         else:
             new_points = interpolated_points
@@ -289,7 +287,6 @@ class Attention(nn.Module):
 
         attn = (q @ k.transpose(-2, -1)) * self.scale
         if mask is not None:
-            # mask = mask * float('-inf')
             mask = mask * - 100000.0
             attn = attn + mask.unsqueeze(1)
         attn = attn.softmax(dim=-1)

@@ -159,7 +159,6 @@ class Group(nn.Module):
         super().__init__()
         self.num_group = num_group
         self.group_size = group_size
-        # self.knn = KNN(k=self.group_size, transpose_mode=True)
 
     def forward(self, xyz):
         '''
@@ -172,7 +171,6 @@ class Group(nn.Module):
         # fps the centers out
         center = misc.fps(xyz, self.num_group)  # B G 3
         # knn to get the neighborhood
-        # _, idx = self.knn(xyz, center) # B G M
         idx = knn_point(self.group_size, xyz, center)  # B G M
         assert idx.size(1) == self.num_group
         assert idx.size(2) == self.group_size
@@ -303,7 +301,6 @@ class DiscreteVAE(nn.Module):
     def build_loss_func(self):
         self.loss_func_cdl1 = ChamferDistanceL1().cuda()
         self.loss_func_cdl2 = ChamferDistanceL2().cuda()
-        # self.loss_func_emd = emd().cuda()
 
     def recon_loss(self, ret, gt):
         whole_coarse, whole_fine, coarse, fine, group_gt, _ = ret

@@ -151,11 +151,8 @@ def sample_and_group(npoint, radius, nsample, xyz, points):
     fps_idx = pointnet2_utils.furthest_point_sample(xyz, npoint).long()  # [B, npoint]
     new_xyz = index_points(xyz, fps_idx)
     new_points = index_points(points, fps_idx)
-    # new_xyz = xyz[:]
-    # new_points = points[:]
 
     idx = knn_point(nsample, xyz, new_xyz)
-    # idx = query_ball_point(radius, nsample, xyz, new_xyz)
     grouped_xyz = index_points(xyz, idx)  # [B, npoint, nsample, C]
     grouped_xyz_norm = grouped_xyz - new_xyz.view(B, S, 1, C)
     grouped_points = index_points(points, idx)

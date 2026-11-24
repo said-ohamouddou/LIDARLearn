@@ -214,13 +214,7 @@ class GPT_extractor(nn.Module):
         else:
             h = torch.cat([sos, h], axis=0)
 
-        # attn_mask = torch.full(
-        #     (length + 1, length + 1), -float("Inf"), device=h.device, dtype=h.dtype
-        # ).to(torch.bool)
-        # attn_mask = torch.triu(attn_mask, diagonal=1)
-
         # transformer
-        # h = h + pos
         for i, layer in enumerate(self.layers):
             attn_mask = torch.full(
                 (length + i + 1, length + i + 1), -float("Inf"), device=h.device, dtype=h.dtype

@@ -28,7 +28,6 @@ class Block(nn.Module):
     def forward(self, x, attn_mask):
 
         x = self.ln_1(x)
-        # a, _ = self.attn(x, x, x, attn_mask=attn_mask, need_weights=False)
         a, _ = self.attn(x, x, x, attn_mask=attn_mask, need_weights=False)
         x = x + a
         m = self.mlp(self.ln_2(x))

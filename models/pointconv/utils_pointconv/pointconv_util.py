@@ -73,7 +73,6 @@ def farthest_point_sample(xyz, npoint):
     B, N, C = xyz.shape
     centroids = torch.zeros(B, npoint, dtype=torch.long).to(device)
     distance = torch.ones(B, N).to(device) * 1e10
-    # farthest = torch.randint(0, N, (B,), dtype=torch.long).to(device)
     farthest = torch.zeros(B, dtype=torch.long).to(device)
     batch_indices = torch.arange(B, dtype=torch.long).to(device)
     for i in range(npoint):
@@ -165,7 +164,6 @@ def sample_and_group_all(xyz, points, density_scale=None):
     """
     device = xyz.device
     B, N, C = xyz.shape
-    # new_xyz = torch.zeros(B, 1, C).to(device)
     new_xyz = xyz.mean(dim=1, keepdim=True)
     grouped_xyz = xyz.view(B, 1, N, C) - new_xyz.view(B, 1, 1, C)
     if points is not None:
