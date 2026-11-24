@@ -55,6 +55,9 @@ class ModelNet(Dataset):
         self.uniform = True
         split = config.subset
         self.subset = config.subset
+        if split == 'val':
+            # ModelNet40 has no validation split; validate on the official test split.
+            split = 'test'
 
         if self.num_category == 10:
             self.catfile = os.path.join(self.root, 'modelnet10_shape_names.txt')
@@ -84,7 +87,17 @@ class ModelNet(Dataset):
             self.save_path = os.path.join(self.root, 'modelnet%d_%s_%dpts.dat' % (self.num_category, split, self.npoints))
 
         if self.process_data:
-            if not os.path.exists(self.save_path):
+            larger_cache = None if os.path.exists(self.save_path) else self._larger_fps_cache(split)
+            if larger_cache is not None:
+                # FPS caches are stored in selection order, so the first N points
+                # of a larger cache are an FPS sample of N points.
+                print_log('Load processed data from %s (first %d points)...' % (larger_cache, self.npoints),
+                          logger='ModelNet')
+                with open(larger_cache, 'rb') as f:
+                    points, self.list_of_labels = pickle.load(f)
+                self.list_of_points = [np.ascontiguousarray(p[:self.npoints]) for p in points]
+                del points
+            elif not os.path.exists(self.save_path):
                 print_log('Processing data %s (only running in the first time)...' % self.save_path, logger = 'ModelNet')
                 self.list_of_points = [None] * len(self.datapath)
                 self.list_of_labels = [None] * len(self.datapath)
@@ -109,6 +122,20 @@ class ModelNet(Dataset):
                 print_log('Load processed data from %s...' % self.save_path, logger = 'ModelNet')
                 with open(self.save_path, 'rb') as f:
                     self.list_of_points, self.list_of_labels = pickle.load(f)
+
+    def _larger_fps_cache(self, split):
+        """Smallest FPS cache with more than N_POINTS points (e.g. the distributed
+        modelnet40_<split>_8192pts_fps.dat), or None."""
+        if not self.uniform:
+            return None
+        prefix = 'modelnet%d_%s_' % (self.num_category, split)
+        candidates = []
+        for name in os.listdir(self.root):
+            if name.startswith(prefix) and name.endswith('pts_fps.dat'):
+                count = name[len(prefix):-len('pts_fps.dat')]
+                if count.isdigit() and int(count) > self.npoints:
+                    candidates.append((int(count), os.path.join(self.root, name)))
+        return min(candidates)[1] if candidates else None
 
     def __len__(self):
         return len(self.datapath)
@@ -142,3 +169,7 @@ class ModelNet(Dataset):
         current_points = points[pt_idxs].copy()
         current_points = torch.from_numpy(current_points).float()
         return 'ModelNet', 'sample', (current_points, label)
+
+
+# cfgs/dataset/ModelNet40Dataset.yaml refers to the loader by this name.
+DATASETS.register_module(name='ModelNet40Dataset', module=ModelNet)
