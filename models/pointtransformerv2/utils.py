@@ -12,7 +12,7 @@ import math
 import torch
 import torch.nn as nn
 from torch.utils.checkpoint import checkpoint
-from torch_geometric.nn.pool import voxel_grid
+from torch_cluster import grid_cluster
 from torch_scatter import segment_csr
 
 import einops
@@ -21,6 +21,37 @@ try:
 except ImportError:
     from timm.models.layers import DropPath
 import pointops
+
+
+def voxel_grid(pos, size, batch=None, start=None, end=None):
+    """Assign each point of a batched point cloud to a voxel of edge ``size``.
+
+    Same semantics as ``torch_geometric.nn.pool.voxel_grid`` in PyG <= 2.6
+    (MIT licence), computed directly with ``torch_cluster.grid_cluster``.
+    PyG >= 2.7 routes this call through the extra ``pyg-lib`` package, so
+    keeping it here lets PTv2 run with any PyG version, or without PyG.
+    """
+    pos = pos.unsqueeze(-1) if pos.dim() == 1 else pos
+    dim = pos.size(1)
+    if batch is None:
+        batch = pos.new_zeros(pos.size(0), dtype=torch.long)
+    # The batch index becomes an extra coordinate so samples never share voxels.
+    pos = torch.cat([pos, batch.view(-1, 1).to(pos.dtype)], dim=-1)
+
+    def per_dim(value):
+        value = torch.as_tensor(value, dtype=pos.dtype, device=pos.device).flatten()
+        if value.numel() == 1:
+            return value.repeat(dim)
+        if value.numel() != dim:
+            raise ValueError(f"expected a scalar or {dim} values, got {value.numel()}")
+        return value
+
+    size = torch.cat([per_dim(size), pos.new_ones(1)])
+    if start is not None:
+        start = torch.cat([per_dim(start), pos.new_zeros(1)])
+    if end is not None:
+        end = torch.cat([per_dim(end), batch.max().unsqueeze(0).to(pos.dtype)])
+    return grid_cluster(pos, size, start, end)
 
 
 def offset2batch(offset):
