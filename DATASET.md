@@ -60,6 +60,11 @@ data/ModelNet/
     └── modelnet40_test_8192pts_fps.dat
 ```
 
+The `.dat` files hold 8192 farthest-point-sampled points per shape, stored in
+sampling order; configs with `N_POINTS: 1024` use the first 1024 of them
+(an FPS sample of 1024 points), so no raw per-shape files are needed.
+ModelNet40 has no validation split: `subset: val` uses the official test split.
+
 ---
 
 ### ModelNet Few-Shot
