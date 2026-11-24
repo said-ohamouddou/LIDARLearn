@@ -1,35 +1,43 @@
 % ============================================================
 % LIDARLearn — References for implemented models and methods
 % Only includes entries for models/strategies in the library
+%
+% Metadata verified against Crossref, OpenAlex and arXiv (2026-11).
+% Titles brace-protect proper names and acronyms so that
+% natbib styles such as unsrtnat keep their capitalisation.
+% Page ranges follow the version identified by the DOI.
 % ============================================================
 
 % ────────────────────────────────────────────────
 %  DATASETS
 % ────────────────────────────────────────────────
 
+% --- STPCTLS (tree species, TLS) ---
 @article{seidelPredictingTreeSpecies2021c,
-  title={Predicting tree species from 3D laser scanning point clouds using deep learning},
-  author={Seidel, Dominik and Annigh{\"o}fer, Peter and Ehbrecht, Martin and Zemp, Delphine C and Alem, Setotaw and Hedrich, Tobias},
+  title={Predicting Tree Species from {3D} Laser Scanning Point Clouds Using Deep Learning},
+  author={Seidel, Dominik and Annigh{\"o}fer, Peter and Thielman, Anton and Seifert, Quentin Edward and Thauer, Jan-Henrik and Glatthorn, Jonas and Ehbrecht, Martin and Kneib, Thomas and Ammer, Christian},
   journal={Frontiers in Plant Science},
   volume={12},
   pages={635440},
   year={2021},
-  publisher={Frontiers}
+  publisher={Frontiers},
+  doi={10.3389/fpls.2021.635440}
 }
 
 @article{chang2015shapenet,
-  title={Shapenet: An information-rich 3d model repository},
-  author={Chang, Angel X and Funkhouser, Thomas and Guibas, Leonidas and Hanrahan, Pat and Huang, Qixing and Li, Zimo and Savarese, Silvio and Savva, Manolis and Song, Shuran and Su, Hao and others},
+  title={{ShapeNet}: An Information-Rich {3D} Model Repository},
+  author={Chang, Angel X. and Funkhouser, Thomas and Guibas, Leonidas and Hanrahan, Pat and Huang, Qixing and Li, Zimo and Savarese, Silvio and Savva, Manolis and Song, Shuran and Su, Hao and Xiao, Jianxiong and Yi, Li and Yu, Fisher},
   journal={arXiv preprint arXiv:1512.03012},
   year={2015}
 }
 
 @inproceedings{modelnetdata,
-  title={3d shapenets: A deep representation for volumetric shapes},
+  title={{3D ShapeNets}: A Deep Representation for Volumetric Shapes},
   author={Wu, Zhirong and Song, Shuran and Khosla, Aditya and Yu, Fisher and Zhang, Linguang and Tang, Xiaoou and Xiao, Jianxiong},
-  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  booktitle={IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
   pages={1912--1920},
-  year={2015}
+  year={2015},
+  doi={10.1109/CVPR.2015.7298801}
 }
 
 % ────────────────────────────────────────────────
@@ -38,32 +46,34 @@
 
 % --- PointNet ---
 @inproceedings{qi2017pointnet,
-  title={Pointnet: Deep learning on point sets for 3d classification and segmentation},
-  author={Qi, Charles R and Su, Hao and Mo, Kaichun and Guibas, Leonidas J},
-  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-  pages={652--660},
-  year={2017}
+  title={{PointNet}: Deep Learning on Point Sets for {3D} Classification and Segmentation},
+  author={Qi, Charles R. and Su, Hao and Mo, Kaichun and Guibas, Leonidas J.},
+  booktitle={IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={77--85},
+  year={2017},
+  doi={10.1109/CVPR.2017.16}
 }
 
 % --- PointNet++ ---
 @inproceedings{qi2017pointnet++,
-  title={Pointnet++: Deep hierarchical feature learning on point sets in a metric space},
-  author={Qi, Charles Ruizhongtai and Yi, Li and Su, Hao and Guibas, Leonidas J},
-  booktitle={Advances in Neural Information Processing Systems},
+  title={{PointNet++}: Deep Hierarchical Feature Learning on Point Sets in a Metric Space},
+  author={Qi, Charles R. and Yi, Li and Su, Hao and Guibas, Leonidas J.},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
   volume={30},
   year={2017}
 }
 
 % --- DGCNN ---
 @article{wang2019dynamic,
-  title={Dynamic graph cnn for learning on point clouds},
-  author={Wang, Yue and Sun, Yongbin and Liu, Ziwei and Sarma, Sanjay E and Bronstein, Michael M and Solomon, Justin M},
+  title={Dynamic Graph {CNN} for Learning on Point Clouds},
+  author={Wang, Yue and Sun, Yongbin and Liu, Ziwei and Sarma, Sanjay E. and Bronstein, Michael M. and Solomon, Justin M.},
   journal={ACM Transactions on Graphics},
   volume={38},
   number={5},
   pages={1--12},
   year={2019},
-  publisher={Acm New York, NY, USA}
+  publisher={ACM},
+  doi={10.1145/3326362}
 }
 
 % --- RSCNN ---
@@ -71,59 +81,69 @@
   title={Relation-Shape Convolutional Neural Network for Point Cloud Analysis},
   author={Liu, Yongcheng and Fan, Bin and Xiang, Shiming and Pan, Chunhong},
   booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={8887--8896},
   year={2019},
+  doi={10.1109/CVPR.2019.00910}
 }
 
 % --- PointConv ---
 @inproceedings{pointconv,
-  title={PointConv: Deep Convolutional Networks on 3D Point Clouds},
+  title={{PointConv}: Deep Convolutional Networks on {3D} Point Clouds},
   author={Wu, Wenxuan and Qi, Zhongang and Fuxin, Li},
   booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={9613--9622},
   year={2019},
+  doi={10.1109/CVPR.2019.00985}
 }
 
 % --- PointWeb ---
 @inproceedings{pointweb,
-  title={{PointWeb}: {Enhancing Local Neighborhood Features} for {Point Cloud Processing}},
+  title={{PointWeb}: Enhancing Local Neighborhood Features for Point Cloud Processing},
   author={Zhao, Hengshuang and Jiang, Li and Fu, Chi-Wing and Jia, Jiaya},
   booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
   pages={5560--5568},
   year={2019},
+  doi={10.1109/CVPR.2019.00571}
 }
 
 % --- SO-Net ---
 @inproceedings{sonet,
-  title={SO-Net: Self-Organizing Net for Point Cloud Analysis},
+  title={{SO-Net}: Self-Organizing Network for Point Cloud Analysis},
   author={Li, Jiaxin and Chen, Ben M. and Lee, Gim Hee},
   booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={9397--9406},
   year={2018},
+  doi={10.1109/CVPR.2018.00979}
 }
 
 % --- PCT ---
 @article{guo2021pct,
-  title={Pct: Point cloud transformer},
-  author={Guo, Meng-Hao and Cai, Jun-Xiong and Liu, Zheng-Ning and Mu, Tai-Jiang and Martin, Ralph R and Hu, Shi-Min},
+  title={{PCT}: Point Cloud Transformer},
+  author={Guo, Meng-Hao and Cai, Jun-Xiong and Liu, Zheng-Ning and Mu, Tai-Jiang and Martin, Ralph R. and Hu, Shi-Min},
   journal={Computational Visual Media},
   volume={7},
+  number={2},
   pages={187--199},
   year={2021},
-  publisher={Springer}
+  publisher={Springer},
+  doi={10.1007/s41095-021-0229-5}
 }
 
 % --- Point Transformer (v1) ---
 @inproceedings{zhao2021point,
-  title={Point transformer},
-  author={Zhao, Hengshuang and Jiang, Li and Jia, Jiaya and Torr, Philip HS and Koltun, Vladlen},
-  booktitle={IEEE/CVF International Conference on Computer Vision},
-  pages={16259--16268},
-  year={2021}
+  title={Point Transformer},
+  author={Zhao, Hengshuang and Jiang, Li and Jia, Jiaya and Torr, Philip H. S. and Koltun, Vladlen},
+  booktitle={IEEE/CVF International Conference on Computer Vision (ICCV)},
+  pages={16239--16248},
+  year={2021},
+  doi={10.1109/ICCV48922.2021.01595}
 }
 
 % --- Point Transformer V2 ---
 @inproceedings{wu2022point,
-  title={Point transformer v2: Grouped vector attention and partition-based pooling},
+  title={Point Transformer {V2}: Grouped Vector Attention and Partition-based Pooling},
   author={Wu, Xiaoyang and Lao, Yixing and Jiang, Li and Liu, Xihui and Zhao, Hengshuang},
-  booktitle={Advances in Neural Information Processing Systems},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
   volume={35},
   pages={33330--33342},
   year={2022}
@@ -131,11 +151,12 @@
 
 % --- Point Transformer V3 ---
 @inproceedings{wu2024point,
-  title={Point Transformer V3: Simpler Faster Stronger},
+  title={Point Transformer {V3}: Simpler, Faster, Stronger},
   author={Wu, Xiaoyang and Jiang, Li and Wang, Peng-Shuai and Liu, Zhijian and Liu, Xihui and Qiao, Yu and Ouyang, Wanli and He, Tong and Zhao, Hengshuang},
-  booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
   pages={4840--4851},
-  year={2024}
+  year={2024},
+  doi={10.1109/CVPR52733.2024.00463}
 }
 
 % --- CurveNet ---
@@ -143,23 +164,27 @@
   title={Walk in the Cloud: Learning Curves for Point Clouds Shape Analysis},
   author={Xiang, Tiange and Zhang, Chaoyi and Song, Yang and Yu, Jianhui and Cai, Weidong},
   booktitle={IEEE/CVF International Conference on Computer Vision (ICCV)},
+  pages={895--904},
   year={2021},
+  doi={10.1109/ICCV48922.2021.00095}
 }
 
 % --- PointMLP ---
 @inproceedings{pointmlp,
-  title={Rethinking Network Design and Local Geometry in Point Cloud: A Simple Residual MLP Framework},
+  title={Rethinking Network Design and Local Geometry in Point Cloud: A Simple Residual {MLP} Framework},
   author={Ma, Xu and Qin, Can and You, Haoxuan and Ran, Haoxi and Fu, Yun},
   booktitle={International Conference on Learning Representations (ICLR)},
-  year={2022},
+  year={2022}
 }
 
 % --- DeepGCN ---
 @inproceedings{deepgcn,
-  title={DeepGCNs: Can GCNs Go as Deep as CNNs?},
+  title={{DeepGCNs}: Can {GCNs} Go as Deep as {CNNs}?},
   author={Li, Guohao and M{\"u}ller, Matthias and Thabet, Ali and Ghanem, Bernard},
   booktitle={IEEE/CVF International Conference on Computer Vision (ICCV)},
+  pages={9266--9275},
   year={2019},
+  doi={10.1109/ICCV.2019.00936}
 }
 
 % --- RepSurf ---
@@ -167,28 +192,35 @@
   title={Surface Representation for Point Clouds},
   author={Ran, Haoxi and Liu, Jun and Wang, Chengjie},
   booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={18920--18930},
   year={2022},
+  doi={10.1109/CVPR52688.2022.01837}
 }
 
-% --- DELA ---
-@article{dela,
+% --- DELA (arXiv preprint; implementation from github.com/Matrix-ASC/DeLA) ---
+@misc{dela,
   title={Decoupled Local Aggregation for Point Cloud Learning},
   author={Chen, Binjie and Xia, Yunzhou and Zang, Yu and Wang, Cheng and Li, Jonathan},
-  journal={arXiv preprint arXiv:2308.16532},
-  year={2024},
+  year={2023},
+  eprint={2308.16532},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  howpublished={arXiv preprint arXiv:2308.16532}
 }
 
 % --- PPFNet ---
 @inproceedings{ppfnet,
-  title={PPFNet: Global Context Aware Local Features for Robust 3D Point Matching},
+  title={{PPFNet}: Global Context Aware Local Features for Robust {3D} Point Matching},
   author={Deng, Haowen and Birdal, Tolga and Ilic, Slobodan},
   booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={195--205},
   year={2018},
+  doi={10.1109/CVPR.2018.00028}
 }
 
 % --- PVT ---
 @article{pvt,
-  title={PVT: Point-voxel transformer for point cloud learning},
+  title={{PVT}: Point-Voxel Transformer for Point Cloud Learning},
   author={Zhang, Cheng and Wan, Haocheng and Shen, Xinyi and Wu, Zizhao},
   journal={International Journal of Intelligent Systems},
   volume={37},
@@ -196,23 +228,26 @@
   pages={11985--12008},
   year={2022},
   publisher={Wiley},
-  doi={10.1002/int.23073},
+  doi={10.1002/int.23073}
 }
 
 % --- PointCNN ---
 @inproceedings{pointcnn,
-  title={PointCNN: Convolution On X-Transformed Points},
+  title={{PointCNN}: Convolution on {$\mathcal{X}$}-Transformed Points},
   author={Li, Yangyan and Bu, Rui and Sun, Mingchao and Wu, Wei and Di, Xinhan and Chen, Baoquan},
   booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
-  year={2018},
+  volume={31},
+  year={2018}
 }
 
-% --- PointTNT / GlobalTransformer (same paper, conference version) ---
+% --- PointTNT / GlobalTransformer (same paper) ---
 @inproceedings{pointtnt,
-  title={Points to Patches: Enabling the Use of Self-Attention for 3D Shape Recognition},
+  title={Points to Patches: Enabling the Use of Self-Attention for {3D} Shape Recognition},
   author={Berg, Axel and Oskarsson, Magnus and O'Connor, Mark},
   booktitle={International Conference on Pattern Recognition (ICPR)},
+  pages={528--534},
   year={2022},
+  doi={10.1109/ICPR56361.2022.9956172}
 }
 % Alias: GlobalTransformer uses the same paper as PointTNT.
 
@@ -224,75 +259,83 @@
   volume={8},
   pages={65591--65598},
   year={2020},
-  doi={10.1109/ACCESS.2020.2985279},
+  doi={10.1109/ACCESS.2020.2985279}
 }
 
 % --- MSDGCNN2 (MS-DGCNN++) ---
 @misc{msdgcnn2,
-  title={MS-DGCNN++: Multi-Scale Dynamic Graph Convolution with Scale-Dependent Normalization for Robust LiDAR Tree Species Classification},
-  author={Said Ohamouddou and Hanaa El Afia and Mohamed Hamza Boulaich and Abdellatif El Afia and Raddouane Chiheb},
+  title={{MS-DGCNN++}: Multi-Scale Dynamic Graph Convolution with Scale-Dependent Normalization for Robust {LiDAR} Tree Species Classification},
+  author={Ohamouddou, Said and El Afia, Hanaa and Boulaich, Mohamed Hamza and El Afia, Abdellatif and Chiheb, Raddouane},
   year={2025},
   eprint={2507.12602},
   archivePrefix={arXiv},
   primaryClass={cs.CV},
-  url={https://arxiv.org/abs/2507.12602},
+  howpublished={arXiv preprint arXiv:2507.12602},
+  url={https://arxiv.org/abs/2507.12602}
 }
 
 % --- KANDGCNN ---
 @article{kandgcnn,
-  title={Introducing the Short-Time Fourier Kolmogorov Arnold Network: A Dynamic Graph CNN Approach for Tree Species Classification in 3D Point Clouds},
+  title={Introducing the Short-Time {Fourier} {Kolmogorov} {Arnold} Network: A Dynamic Graph {CNN} Approach for Tree Species Classification in {3D} Point Clouds},
   author={Ohamouddou, Said and El Afia, Abdellatif and Ohamouddou, Mohamed and Lasri, Rafik and El Afia, Hanaa and Chiheb, Raddouane},
   journal={Pattern Recognition},
   volume={172},
   pages={112584},
   year={2026},
-  doi={10.1016/j.patcog.2025.112584},
+  doi={10.1016/j.patcog.2025.112584}
 }
 
 % --- PointKAN ---
 @article{pointkan,
-  title={PointNet with KAN versus PointNet with MLP for 3D classification and segmentation of point sets},
+  title={{PointNet} with {KAN} versus {PointNet} with {MLP} for {3D} Classification and Segmentation of Point Sets},
   author={Kashefi, Ali},
   journal={Computers \& Graphics},
+  volume={131},
+  pages={104319},
   year={2025},
-  doi={10.1016/j.cag.2025.104289},
-  note={arXiv:2410.10084},
+  doi={10.1016/j.cag.2025.104319}
 }
 
 % --- PointSCNet ---
 @article{pointscnet,
-  title={PointSCNet: Point Cloud Structure and Correlation Learning Based on Space-Filling Curve-Guided Sampling},
+  title={{PointSCNet}: Point Cloud Structure and Correlation Learning Based on Space-Filling Curve-Guided Sampling},
   author={Chen, Xingye and Wu, Yiqi and Xu, Wenjie and Li, Jin and Dong, Huaiyi and Chen, Yilin},
   journal={Symmetry},
   volume={14},
   number={1},
   pages={8},
   year={2022},
-  doi={10.3390/sym14010008},
+  doi={10.3390/sym14010008}
 }
 
 % --- RandLA-Net ---
 @inproceedings{randlanet,
-  title={RandLA-Net: Efficient Semantic Segmentation of Large-Scale Point Clouds},
+  title={{RandLA-Net}: Efficient Semantic Segmentation of Large-Scale Point Clouds},
   author={Hu, Qingyong and Yang, Bo and Xie, Linhai and Rosa, Stefano and Guo, Yulan and Wang, Zhihua and Trigoni, Niki and Markham, Andrew},
   booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={11105--11114},
   year={2020},
+  doi={10.1109/CVPR42600.2020.01112}
 }
 
 % --- GDANet ---
 @inproceedings{gdanet,
-  title={Learning Geometry-Disentangled Representation for Complementary Understanding of 3D Object Point Cloud},
+  title={Learning Geometry-Disentangled Representation for Complementary Understanding of {3D} Object Point Cloud},
   author={Xu, Mutian and Zhang, Junhao and Zhou, Zhipeng and Xu, Mingye and Qi, Xiaojuan and Qiao, Yu},
   booktitle={AAAI Conference on Artificial Intelligence},
+  volume={35},
+  pages={3056--3064},
   year={2021},
+  doi={10.1609/aaai.v35i4.16414}
 }
 
 % --- P2P ---
 @inproceedings{p2p,
-  title={P2P: Tuning Pre-trained Image Models for Point Cloud Analysis with Point-to-Pixel Prompting},
+  title={{P2P}: Tuning Pre-trained Image Models for Point Cloud Analysis with Point-to-Pixel Prompting},
   author={Wang, Ziyi and Yu, Xumin and Rao, Yongming and Zhou, Jie and Lu, Jiwen},
   booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
-  year={2022},
+  volume={35},
+  year={2022}
 }
 
 % ────────────────────────────────────────────────
@@ -301,27 +344,30 @@
 
 % --- PointMAE ---
 @inproceedings{pang2022masked,
-  title={Masked autoencoders for point cloud self-supervised learning},
-  author={Pang, Yatian and Wang, Wenxiao and Tay, Francis EH and Liu, Wei and Tian, Yonghong and Yuan, Li},
-  booktitle={European Conference on Computer Vision},
+  title={Masked Autoencoders for Point Cloud Self-supervised Learning},
+  author={Pang, Yatian and Wang, Wenxiao and Tay, Francis E. H. and Liu, Wei and Tian, Yonghong and Yuan, Li},
+  booktitle={European Conference on Computer Vision (ECCV)},
   pages={604--621},
   year={2022},
+  publisher={Springer},
+  doi={10.1007/978-3-031-20086-1_35}
 }
 
 % --- PointBERT ---
 @inproceedings{yu2022point,
-  title={Point-bert: Pre-training 3d point cloud transformers with masked point modeling},
+  title={{Point-BERT}: Pre-training {3D} Point Cloud Transformers with Masked Point Modeling},
   author={Yu, Xumin and Tang, Lulu and Rao, Yongming and Huang, Tiejun and Zhou, Jie and Lu, Jiwen},
-  booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  pages={19313--19322},
-  year={2022}
+  booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={19291--19300},
+  year={2022},
+  doi={10.1109/CVPR52688.2022.01871}
 }
 
-% --- PointGPT ---
+% --- PointGPT (NeurIPS 2023) ---
 @inproceedings{chen2024pointgpt,
-  title={Pointgpt: Auto-regressively generative pre-training from point clouds},
+  title={{PointGPT}: Auto-regressively Generative Pre-training from Point Clouds},
   author={Chen, Guangyan and Wang, Meiling and Yang, Yi and Yu, Kai and Yuan, Li and Yue, Yufeng},
-  booktitle={Advances in Neural Information Processing Systems},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
   volume={36},
   pages={29615--29627},
   year={2023}
@@ -329,34 +375,37 @@
 
 % --- ACT ---
 @inproceedings{dong2023act,
-  title={Autoencoders as Cross-Modal Teachers: Can Pretrained 2D Image Transformers Help 3D Representation Learning?},
-  author={Runpei Dong and Zekun Qi and Linfeng Zhang and Junbo Zhang and Jianjian Sun and Zheng Ge and Li Yi and Kaisheng Ma},
-  booktitle={International Conference on Learning Representations},
-  year={2023},
+  title={Autoencoders as Cross-Modal Teachers: Can Pretrained {2D} Image Transformers Help {3D} Representation Learning?},
+  author={Dong, Runpei and Qi, Zekun and Zhang, Linfeng and Zhang, Junbo and Sun, Jianjian and Ge, Zheng and Yi, Li and Ma, Kaisheng},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2023}
 }
 
 % --- RECON ---
 @inproceedings{qi2023contrast,
-  title={Contrast with reconstruct: Contrastive 3d representation learning guided by generative pretraining},
+  title={Contrast with Reconstruct: Contrastive {3D} Representation Learning Guided by Generative Pretraining},
   author={Qi, Zekun and Dong, Runpei and Fan, Guofan and Ge, Zheng and Zhang, Xiangyu and Ma, Kaisheng and Yi, Li},
-  booktitle={International Conference on Machine Learning},
+  booktitle={International Conference on Machine Learning (ICML)},
+  series={Proceedings of Machine Learning Research},
+  volume={202},
   pages={28223--28243},
-  year={2023},
+  year={2023}
 }
 
 % --- PCP-MAE ---
 @inproceedings{pcpmae,
-  title={PCP-MAE: Learning to Predict Centers for Point Masked Autoencoders},
+  title={{PCP-MAE}: Learning to Predict Centers for Point Masked Autoencoders},
   author={Zhang, Xiangdong and Zhang, Shaofeng and Yan, Junchi},
   booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
-  year={2024},
+  volume={37},
+  year={2024}
 }
 
 % --- Point-M2AE ---
 @inproceedings{zhang2022point,
-  title={Point-m2ae: multi-scale masked autoencoders for hierarchical point cloud pre-training},
+  title={{Point-M2AE}: Multi-scale Masked Autoencoders for Hierarchical Point Cloud Pre-training},
   author={Zhang, Renrui and Guo, Ziyu and Gao, Peng and Fang, Rongyao and Zhao, Bin and Wang, Dong and Qiao, Yu and Li, Hongsheng},
-  booktitle={Advances in Neural Information Processing Systems},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
   volume={35},
   pages={27061--27074},
   year={2022}
@@ -368,38 +417,44 @@
 
 % --- IDPT ---
 @inproceedings{zha2023instance,
-  title={Instance-aware dynamic prompt tuning for pre-trained point cloud models},
+  title={Instance-aware Dynamic Prompt Tuning for Pre-trained Point Cloud Models},
   author={Zha, Yaohua and Wang, Jinpeng and Dai, Tao and Chen, Bin and Wang, Zhi and Xia, Shu-Tao},
-  booktitle={IEEE/CVF International Conference on Computer Vision},
-  pages={14161--14170},
-  year={2023}
+  booktitle={IEEE/CVF International Conference on Computer Vision (ICCV)},
+  pages={14115--14124},
+  year={2023},
+  doi={10.1109/ICCV51070.2023.01302}
 }
 
 % --- VPT-Deep ---
 @inproceedings{jia2022visual,
-  title={Visual prompt tuning},
+  title={Visual Prompt Tuning},
   author={Jia, Menglin and Tang, Luming and Chen, Bor-Chun and Cardie, Claire and Belongie, Serge and Hariharan, Bharath and Lim, Ser-Nam},
-  booktitle={European Conference on Computer Vision},
+  booktitle={European Conference on Computer Vision (ECCV)},
   pages={709--727},
   year={2022},
+  publisher={Springer},
+  doi={10.1007/978-3-031-19827-4_41}
 }
 
 % --- DAPT ---
 @inproceedings{zhou2024dynamic,
   title={Dynamic Adapter Meets Prompt Tuning: Parameter-Efficient Transfer Learning for Point Cloud Analysis},
   author={Zhou, Xin and Liang, Dingkang and Xu, Wei and Zhu, Xingkui and Xu, Yihan and Zou, Zhikang and Bai, Xiang},
-  booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
   pages={14707--14717},
-  year={2024}
+  year={2024},
+  doi={10.1109/CVPR52733.2024.01393}
 }
 
-% --- PPT ---
-@inproceedings{sun24ppt,
-  title={Parameter-efficient prompt learning for 3d point cloud understanding},
-  author={Sun, Hongyu and Wang, Yongcai and Chen, Wang and Deng, Haoran and Li, Deying},
-  booktitle={IEEE International Conference on Robotics and Automation},
-  pages={9478--9486},
-  year={2024},
+% --- PPT (Positional Prompt Tuning; implementation from github.com/zsc000722/PPT) ---
+@inproceedings{zhang2025positional,
+  title={Positional Prompt Tuning for Efficient {3D} Representation Learning},
+  author={Zhang, Shaochen and Qi, Zekun and Dong, Runpei and Bai, Xiuxiu and Wei, Xing},
+  booktitle={ACM International Conference on Multimedia (ACM MM)},
+  pages={1171--1180},
+  year={2025},
+  publisher={ACM},
+  doi={10.1145/3746027.3755013}
 }
 
 % --- PointGST ---
@@ -407,6 +462,9 @@
   title={Parameter-Efficient Fine-Tuning in Spectral Domain for Point Cloud Learning},
   author={Liang, Dingkang and Feng, Tianrui and Zhou, Xin and Zhang, Yumeng and Zou, Zhikang and Bai, Xiang},
   journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  volume={47},
+  number={12},
+  pages={10949--10966},
   year={2025},
-  note={arXiv:2410.08114},
+  doi={10.1109/TPAMI.2025.3594749}
 }

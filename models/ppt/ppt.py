@@ -1,9 +1,9 @@
 """
-Parameter-efficient Prompt Learning for 3D Point Cloud Understanding
+Positional Prompt Tuning for Efficient 3D Representation Learning
 
-Paper: ICRA 2024
-Authors: Hongyu Sun, Yongcai Wang, Wang Chen, Haoran Deng, Deying Li
-Source: Implementation adapted from: https://github.com/auniquesun/PPT
+Paper: ACM MM 2025 (arXiv 2408.11567)
+Authors: Shaochen Zhang, Zekun Qi, Runpei Dong, Xiuxiu Bai, Xing Wei
+Source: Implementation adapted from: https://github.com/zsc000722/PPT
 License: MIT
 """
 
