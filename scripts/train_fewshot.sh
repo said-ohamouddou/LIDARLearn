@@ -25,7 +25,7 @@
 #   bash scripts/train_fewshot.sh --models pointmae --strategies "dapt idpt ppt gst vpt_deep"
 #
 #   # SSL models, 5-way only
-#   bash scripts/train_fewshot.sh --models "pointmae pointbert pointgpt act recon pcpmae pointm2ae" \
+#   bash scripts/train_fewshot.sh --models "pointmae pointbert pointgpt act recon pcpmae pointm2ae pointmamba" \
 #                                 --combos "5w10s 5w20s"
 #
 # After all runs finish, aggregate into a LaTeX/Markdown/CSV table:
@@ -46,7 +46,7 @@ pointnet pointnet2 sonet ppfnet pointcnn pointweb pointconv rscnn \
 pointmlp pointscnet repsurf pointkan dela \
 pct p2p pointtnt globaltransformer pvt pointtransformer pointtransformerv2 pointtransformerv3 \
 dgcnn deepgcn curvenet gdan msdgcnn kandgcnn msdgcnn2 \
-pointmae act recon pointgpt pointm2ae pointbert pcpmae"
+pointmae act recon pointgpt pointm2ae pointbert pcpmae pointmamba"
 
 # Fine-tuning strategies. 'ff' = Full Finetuning (the plain modelnet_fewshot_*w*s.yaml).
 # PEFT strategies only run on SSL models that have matching few-shot configs.
@@ -113,6 +113,7 @@ declare -A CFG_DIR=(
     [pointm2ae]=PointM2AE
     [pointbert]=PointBERT
     [pcpmae]=PCPMAE
+    [pointmamba]=PointMamba
 )
 
 # Pretrained checkpoint per SSL model (none => train from scratch)
@@ -124,6 +125,7 @@ declare -A CKPT=(
     [pointm2ae]=pretrained/pretrained_m2ae.pth
     [pointbert]=pretrained/pretrained_bert.pth
     [pcpmae]=pretrained/pretrained_pcp.pth
+    [pointmamba]=pretrained/pointmamba_pretrain.pth
 )
 
 echo "============================================================"

@@ -33,11 +33,13 @@ import datasets  # noqa: F401,E402
 # --------------------------------------------------------------------------
 # CI without CUDA extensions
 # --------------------------------------------------------------------------
-# Import names of the CUDA extensions built by extensions/install_extensions.sh.
-# These are the only dependencies CI mode is allowed to find missing.
+# Import names of the GPU-only packages CI cannot install: the CUDA extensions
+# built by extensions/install_extensions.sh, plus the optional Mamba packages
+# used by PointMamba. These are the only dependencies CI mode may find missing.
 CUDA_EXTENSION_MODULES = frozenset({
     "pointnet2_ops", "chamfer", "chamfer_dist", "dela_cutils",
     "pointops", "ptv_modules", "clip", "index_max",
+    "mamba_ssm", "causal_conv1d",
 })
 
 

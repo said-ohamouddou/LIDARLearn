@@ -1,7 +1,9 @@
 """GPU-side point cloud augmentation transforms."""
 
-import torch
 import math
+
+import numpy as np
+import torch
 from typing import List, Optional, Union
 
 
@@ -104,6 +106,38 @@ class RandomRotate(PointCloudAugmentation):
         if is_channels_first:
             result = result.permute(0, 2, 1)
 
+        return result
+
+
+class RandomYRotate(PointCloudAugmentation):
+    """
+    Random rotation about the y axis by an angle drawn from U[0, 2*pi).
+
+    Same as ``PointcloudRotate`` in Point-BERT / Point-MAE / PointMamba (numpy
+    RNG, points multiplied on the right by R_y). PointMamba uses it for
+    ShapeNet-55 pretraining and ScanObjectNN fine-tuning.
+    """
+
+    def __repr__(self) -> str:
+        return "RandomYRotate(axis=y, range=2pi)"
+
+    def __call__(self, points: torch.Tensor) -> torch.Tensor:
+        """
+        Args:
+            points: (B, C, N) or (B, N, C) point cloud; the first 3 channels are xyz
+        """
+        is_channels_first = points.shape[1] == 3 and points.shape[2] != 3
+        if is_channels_first:
+            points = points.permute(0, 2, 1)
+        result = points.clone()
+        for i in range(result.shape[0]):
+            angle = np.random.uniform() * 2 * np.pi
+            cosval, sinval = np.cos(angle), np.sin(angle)
+            rotation = np.array([[cosval, 0, sinval], [0, 1, 0], [-sinval, 0, cosval]], dtype=np.float32)
+            R = torch.from_numpy(rotation).to(device=result.device, dtype=result.dtype)
+            result[i, :, :3] = result[i, :, :3] @ R
+        if is_channels_first:
+            result = result.permute(0, 2, 1).contiguous()
         return result
 
 
@@ -470,6 +504,7 @@ AUGMENTATION_REGISTRY = {
     'dropout': RandomDropout,
     'flip': RandomFlip,
     'z_rotate_tree': RandomZRotateTree,
+    'y_rotate': RandomYRotate,
 }
 
 

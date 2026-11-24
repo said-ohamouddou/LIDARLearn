@@ -102,3 +102,11 @@ def test_part_seg_model_builds(cfg_path):
     _assert_registered(cfg.model.NAME)
     model = build_model_or_skip(cfg.model)
     assert sum(p.numel() for p in model.parameters()) > 0
+
+
+@pytest.mark.parametrize("cfg_path", [p for p in CLASSIFICATION_CONFIGS if "_pretrain" not in p.name],
+                         ids=config_id)
+def test_classification_config_sets_k_folds(cfg_path):
+    """tools/runner_finetune.py reads dataset.train.others.K_FOLDS directly."""
+    cfg = cfg_from_yaml_file(cfg_path)
+    assert "K_FOLDS" in cfg.dataset.train.others, f"{cfg_path}: dataset.train.others.K_FOLDS missing"

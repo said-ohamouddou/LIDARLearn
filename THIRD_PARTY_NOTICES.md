@@ -51,6 +51,7 @@ the basis for adaptation.
 | RECON | `models/recon/` | MIT | https://github.com/qizekun/ReCon |
 | PCP-MAE | `models/pcpmae/` | MIT | https://github.com/aHapBean/PCP-MAE |
 | Point-M2AE | `models/pointm2ae/` | MIT | https://github.com/ZrrSkywalker/Point-M2AE |
+| PointMamba | `models/pointmamba/` | Apache-2.0 | https://github.com/LMD0311/PointMamba |
 
 ## Parameter-Efficient Fine-Tuning Methods
 
@@ -75,6 +76,7 @@ copyright holder and the changes made for LIDARLearn integration.
 | RepSurf | `models/rapsurf/` | `models/rapsurf/NOTICE` |
 | PointGST | `models/pointgst/` | `models/pointgst/NOTICE` |
 | DAPT | `models/dapt/` | `models/dapt/NOTICE` |
+| PointMamba | `models/pointmamba/` | `models/pointmamba/NOTICE` |
 
 ## Unlicensed Upstream Sources
 
@@ -98,3 +100,7 @@ on the corresponding papers, not copies of the upstream code.
 | ChamferDistance | MIT | https://github.com/ThibaultGROUEIX/ChamferDistancePytorch |
 | timm | Apache-2.0 | https://github.com/huggingface/pytorch-image-models |
 | efficient-kan | MIT | https://github.com/Blealtan/efficient-kan |
+| mamba-ssm (optional, PointMamba) | Apache-2.0 | https://github.com/state-spaces/mamba |
+| causal-conv1d (optional, PointMamba) | BSD-3-Clause | https://github.com/Dao-AILab/causal-conv1d |
+| Point serialization / Hilbert order (`models/pointmamba/serialization.py`, `hilbert.py`) | MIT | https://github.com/Pointcept/Pointcept |
+| Hilbert curve encoding (`models/pointmamba/hilbert.py`, via Pointcept) | MIT | https://github.com/PrincetonLIPS/numpy-hilbert-curve |

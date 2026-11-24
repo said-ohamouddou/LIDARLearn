@@ -28,11 +28,11 @@
 
 ## Overview
 
-**LIDARLearn** ships the **most complete off-the-shelf catalogue of 3D point cloud deep-learning methods** we're aware of — **56 model configurations** covering 29 supervised backbones, 7 self-supervised pre-training methods, and 5 parameter-efficient fine-tuning (PEFT) strategies (DAPT, IDPT, PPT, GST, VPT-Deep) composable with 4 of the SSL backbones (ACT, PointGPT, Point-MAE, ReCon) — all exposed through a single registry-based framework with YAML-driven configs, standardised runners, automatic LaTeX/CSV reporting, and a 2 200+ test `pytest` suite.
+**LIDARLearn** ships the **most complete off-the-shelf catalogue of 3D point cloud deep-learning methods** we're aware of — **57 model configurations** covering 29 supervised backbones, 8 self-supervised pre-training methods, and 5 parameter-efficient fine-tuning (PEFT) strategies (DAPT, IDPT, PPT, GST, VPT-Deep) composable with 4 of the SSL backbones (ACT, PointGPT, Point-MAE, ReCon) — all exposed through a single registry-based framework with YAML-driven configs, standardised runners, automatic LaTeX/CSV reporting, and a 2 200+ test `pytest` suite.
 
 Designed for **researchers and engineers** who need to run **apples-to-apples benchmarks** across heterogeneous 3D point-cloud sources in the same pipeline:
 
-- **General 3D data** — ModelNet40, ShapeNet-55/34, ShapeNet Part
+- **General 3D data** — ModelNet40, ShapeNet-55/34, ShapeNet Part, ScanObjectNN (PointMamba)
 - **Indoor 3D scans** — S3DIS (Matterport-style RGB + XYZ, semantic segmentation)
 - **Terrestrial Laser Scanning (TLS)** — STPCTLS (tree species classification on high-density ground-based scans)
 - **Aerial / helicopter LiDAR (ALS)** — HELIALS (tree species from sparse-to-dense aerial point clouds)
@@ -48,7 +48,8 @@ with ready-to-run YAML configs. Columns:
 **SemSeg** — semantic segmentation (S3DIS).
 "Strategy" is the PEFT adapter applied on top of an SSL backbone:
 **FF** = full finetuning (no PEFT), plus 5 PEFT methods — **DAPT**, **IDPT**, **PPT**, **GST** (PointGST), **VPT-Deep**.
-The 7 SSL backbones also support pre-training on ShapeNet-55.
+The 8 SSL backbones also support pre-training on ShapeNet-55.
+PointMamba ships exactly the tasks of its [official repository](https://github.com/LMD0311/PointMamba): classification on ModelNet40, ModelNetFewShot and ScanObjectNN (OBJ-BG, OBJ-ONLY, PB-T50-RS); it needs the optional `mamba-ssm` package (see [Installation](#installation)). Augmentation follows upstream where it is PointMamba-specific: its pretraining config and `scripts/train_scanobjectnn.sh` use `y_rotate`. The shared ModelNet40 / few-shot sweeps keep the library-wide `--augmentation none` for all models, whereas upstream PointMamba uses random scaling (2/3–3/2) plus translation (±0.2) there.
 
 <table border="1" cellpadding="6" cellspacing="0">
 <thead>
@@ -85,7 +86,7 @@ The 7 SSL backbones also support pre-training on ShapeNet-55.
 <tr><td>MS-DGCNN</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>KAN-DGCNN</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>MS-DGCNN++</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
-<tr><td rowspan="27"><b>Self-supervised</b></td><td rowspan="6">Point-MAE</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td rowspan="28"><b>Self-supervised</b></td><td rowspan="6">Point-MAE</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>DAPT</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>IDPT</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PPT</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
@@ -112,10 +113,11 @@ The 7 SSL backbones also support pre-training on ShapeNet-55.
 <tr><td>Point-M2AE</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>Point-BERT</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PCP-MAE</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td>PointMamba</td><td>FF</td><td align="center">✓</td><td align="center">—</td><td align="center">—</td></tr>
 </tbody>
 </table>
 
-**Total: 56 configurations** (29 supervised × FF, 7 SSL × FF, 4 SSL × 5 PEFT = 20). See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for per-model licences and upstream repositories, and [`docs/point_cloud_methods.csv`](docs/point_cloud_methods.csv) for paper titles and venues.
+**Total: 57 configurations** (29 supervised × FF, 8 SSL × FF, 4 SSL × 5 PEFT = 20). See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for per-model licences and upstream repositories, and [`docs/point_cloud_methods.csv`](docs/point_cloud_methods.csv) for paper titles and venues.
 
 ## Key Features
 
@@ -123,7 +125,7 @@ The 7 SSL backbones also support pre-training on ShapeNet-55.
 - **Cross-validation** — stratified *K*-fold with aggregated metrics (`--run_all_folds`).
 - **Friedman / Nemenyi** — non-parametric multi-model statistical testing with critical-difference diagrams (`scripts/reports/friedman_significance_report.py`).
 - **Automated reporting** — publication-ready, standalone LaTeX documents auto-generated from experiment folders (`scripts/reports/`). Best value per metric column is auto-bolded (`\textbf{}`). Every report supports `--use_citation_in_tables` to inline `\citep{}` in the tables, or a single citation paragraph above them by default.
-- **SSL pre-training** — ShapeNet-55 pre-training recipes for all 7 SSL backbones.
+- **SSL pre-training** — ShapeNet-55 pre-training recipes for all 8 SSL backbones.
 - **PEFT** — 5 fine-tuning strategies composable with any SSL backbone via a single `finetuning_strategy` field.
 - **Testing** — L1 config-parse · L2 forward-shape · L3 pretrained-load · L4 script-coverage.
 - **Visualisation** — interactive 3D HTML for classification, part-seg, and semantic-seg predictions.
@@ -209,6 +211,25 @@ This builds 7 extensions: `pointnet2_ops`, `chamfer_dist`, `dela_cutils`, `point
 
 Extensions you skip or fail to build don't break the rest of the library: `import models` still works, the models that need a missing extension are skipped with a single warning naming the missing package, and asking for one of them raises an error that tells you what to install.
 
+### 5b. (Optional) Install Mamba for PointMamba
+
+PointMamba needs [`mamba-ssm`](https://github.com/state-spaces/mamba) and [`causal-conv1d`](https://github.com/Dao-AILab/causal-conv1d) (NVIDIA GPU only). Without them every other model works and PointMamba is skipped with a message. Install the prebuilt wheels that match your torch / CUDA / Python / C++ ABI (Python 3.11):
+
+```bash
+# A. Reference (torch 2.4.1 + cu118)
+pip install https://github.com/Dao-AILab/causal-conv1d/releases/download/v1.5.0.post8/causal_conv1d-1.5.0.post8+cu11torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+pip install https://github.com/state-spaces/mamba/releases/download/v2.2.4/mamba_ssm-2.2.4+cu11torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+# B. Newer PyTorch (torch 2.8.0 + cu128)
+pip install https://github.com/Dao-AILab/causal-conv1d/releases/download/v1.7.0/causal_conv1d-1.7.0+cu12torch2.8cxx11abiTRUE-cp311-cp311-linux_x86_64.whl
+pip install https://github.com/state-spaces/mamba/releases/download/v2.2.5/mamba_ssm-2.2.5+cu12torch2.8cxx11abiTRUE-cp311-cp311-linux_x86_64.whl
+# Both
+pip install "transformers<5"
+```
+
+- Use `mamba-ssm` **2.2.x**: 2.3.x requires `triton>=3.5`, which conflicts with torch 2.8.
+- `transformers<5` is needed because `mamba_ssm` imports names that transformers 5 removed.
+- Other setups: pick the matching wheel from the [mamba](https://github.com/state-spaces/mamba/releases) and [causal-conv1d](https://github.com/Dao-AILab/causal-conv1d/releases) release pages (check `python -c "import torch; print(torch._C._GLIBCXX_USE_CXX11_ABI)"` for the `cxx11abi` part).
+
 ### 6. Verify the install
 
 ```bash
@@ -226,8 +247,8 @@ Everything should pass. If a model's tests fail with `... is not in the models r
 - **CPU** AMD Ryzen 7 5700X (8 cores / 16 threads)
 - **GPU** NVIDIA GeForce RTX 4060 Ti (single-GPU; all runs validated on a single-GPU configuration)
 - **Python** 3.11
-- **Setup A:** PyTorch 2.4.1 (`+cu118`), torchvision 0.19.1, nvcc 11.8, torch-scatter / torch-cluster from the `torch-2.4.1+cu118` index
-- **Setup B:** PyTorch 2.8.0 (`+cu128`), torchvision 0.23.0, nvcc 12.8, torch-scatter / torch-cluster from the `torch-2.8.0+cu128` index
+- **Setup A:** PyTorch 2.4.1 (`+cu118`), torchvision 0.19.1, nvcc 11.8, torch-scatter / torch-cluster from the `torch-2.4.1+cu118` index; PointMamba with mamba-ssm 2.2.4 / causal-conv1d 1.5.0.post8
+- **Setup B:** PyTorch 2.8.0 (`+cu128`), torchvision 0.23.0, nvcc 12.8, torch-scatter / torch-cluster from the `torch-2.8.0+cu128` index; PointMamba with mamba-ssm 2.2.5 / causal-conv1d 1.7.0
 - **numpy** 1.26 and 2.x, **timm** 0.4.5, **ninja** (for C++/CUDA extension builds)
 
 > PyTorch 2.4.1 is the minimum. Newer releases than 2.8 are likely to work but have not been tested yet; for another torch/CUDA pair, change the versions in steps 2–3 (the PyG index URL is `https://data.pyg.org/whl/torch-<torch version>+<cu tag>.html`) and use a matching `nvcc` in step 5. **Feedback and compatibility reports from other versions are very welcome**; please open an issue with your environment details.
@@ -236,7 +257,7 @@ Everything should pass. If a model's tests fail with `... is not in the models r
 
 ## Pretrained SSL Weights
 
-The 7 self-supervised backbones (Point-MAE, Point-BERT, PointGPT, ACT, ReCon, PCP-MAE, Point-M2AE) need a pretrained checkpoint to fine-tune from. All checkpoints are published together on Google Drive:
+The 8 self-supervised backbones (Point-MAE, Point-BERT, PointGPT, ACT, ReCon, PCP-MAE, Point-M2AE, PointMamba) need a pretrained checkpoint to fine-tune from. The first seven are published together on Google Drive:
 
 **Download:** [Google Drive — LIDARLearn pretrained weights](https://drive.google.com/drive/folders/1u0EbvwVji_fAMD2GghoNviyzyXxxaUMa?usp=sharing)
 
@@ -252,8 +273,11 @@ pretrained/
 ├── pretrained_pcp.pth     # PCP-MAE      — cfgs/classification/PCPMAE/**
 ├── pretrained_m2ae.pth    # Point-M2AE   — cfgs/classification/PointM2AE/**
 ├── act_dvae.pth           # ACT dVAE tokeniser (needed only for ACT pre-training)
-└── dVAE.pth               # Point-BERT dVAE tokeniser (needed only for Point-BERT pre-training)
+├── dVAE.pth               # Point-BERT dVAE tokeniser (needed only for Point-BERT pre-training)
+└── pointmamba_pretrain.pth  # PointMamba — cfgs/classification/PointMamba/**
 ```
+
+PointMamba's checkpoints come from its [official release](https://github.com/LMD0311/PointMamba/releases/tag/ckpts-2) and load unchanged: [`pretrain.pth`](https://github.com/LMD0311/PointMamba/releases/download/ckpts-2/pretrain.pth) (save as `pretrained/pointmamba_pretrain.pth`) to fine-tune; the authors' ModelNet40 fine-tuned weights [`finetune_modelnet.pth`](https://github.com/LMD0311/PointMamba/releases/download/ckpts-2/finetune_modelnet.pth) (save as `pretrained/pointmamba_finetune_modelnet.pth`) also load unchanged, e.g. for inference with `load_model_from_ckpt`.
 
 Pass the relevant checkpoint via `--ckpts pretrained/<name>.pth` when fine-tuning, e.g.:
 
@@ -314,6 +338,7 @@ bash scripts/train_stpctls.sh      # all 56 classification configs
 bash scripts/train_fewshot.sh      # few-shot evaluation
 bash scripts/train_s3dis.sh        # semantic segmentation
 bash scripts/train_shapenetparts.sh # part segmentation
+bash scripts/train_scanobjectnn.sh  # ScanObjectNN (PointMamba)
 ```
 
 > **Training a subset of models.** The `scripts/train_*.sh` files are plain
@@ -373,6 +398,7 @@ Point-cloud augmentations are implemented in [`datasets/augmentation.py`](datase
 | `dropout` | Random point dropout (mask out a fraction of points) |
 | `flip` | Random axis flipping (x or y) |
 | `z_rotate_tree` | Rotation around Z-axis only — right default for upright tree scans (TLS / ALS) where up is meaningful |
+| `y_rotate` | Random rotation around the Y-axis (as `PointcloudRotate` in Point-BERT / PointMamba) — used for PointMamba pretraining and ScanObjectNN |
 
 **Example — full-sweep smoke test with Z-axis rotation for tree data:**
 

@@ -1,0 +1,47 @@
+# PointMamba fine-tuning on ScanObjectNN PB-T50-RS (hardest) (upstream cfgs/finetune_scan_hardest.yaml).
+dataset:
+  train:
+    _base_: cfgs/dataset/ScanObjectNN_hardest.yaml
+    others:
+      K_FOLDS: 1
+      bs: 32
+      subset: train
+  val:
+    _base_: cfgs/dataset/ScanObjectNN_hardest.yaml
+    others:
+      K_FOLDS: 1
+      bs: 32
+      subset: test
+grad_norm_clip: 10
+max_epoch: 300
+model:
+  NAME: PointMamba
+  init_source: ShapeNet
+  base_model: PointMamba
+  cls_dim: 15
+  trans_dim: 384
+  depth: 12
+  num_heads: 6
+  group_size: 32
+  num_group: 128
+  encoder_dims: 384
+  rms_norm: false
+  drop_path: 0.5
+  drop_out: 0.0
+  use_cls_token: false
+  max_head: false
+  avg_head: true
+  finetuning_strategy: Full Finetuning
+  label_smoothing: 0.0
+npoints: 2048
+optimizer:
+  type: AdamW
+  kwargs:
+    lr: 0.0005
+    weight_decay: 0.05
+scheduler:
+  type: CosLR
+  kwargs:
+    epochs: 300
+    initial_epochs: 10
+step_per_update: 1
