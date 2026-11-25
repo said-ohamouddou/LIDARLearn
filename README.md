@@ -88,7 +88,7 @@ Step-by-step guide, CUDA toolkit tips, optional Mamba (PointMamba) and tested ha
 | S3DIS | Indoor semantic segmentation |
 | [STPCTLS](https://data.goettingen-research-online.de/dataset.xhtml?persistentId=doi:10.25625/FOHUJM) | Tree species classification (TLS), split or *K*-fold CV |
 
-Download and preparation: [DATASET.md](DATASET.md).
+Download and preparation: [docs/datasets.md](docs/datasets.md).
 
 ## Quick Start
 
@@ -114,7 +114,7 @@ Whole benchmarks run with one script each (`scripts/train_*.sh`). More examples:
 |---|---|
 | Installation · pretrained weights · quick start | [installation](docs/getting-started/installation.md) · [pretrained](docs/getting-started/pretrained.md) · [quick start](docs/getting-started/quickstart.md) |
 | Supported models (full matrix) | [docs/models.md](docs/models.md) |
-| Datasets | [DATASET.md](DATASET.md) |
+| Datasets | [docs/datasets.md](docs/datasets.md) |
 | Training runners · augmentation | [training](docs/guide/training.md) · [augmentation](docs/guide/augmentation.md) |
 | Visualization · automated reports | [visualization](docs/guide/visualization.md) · [reports](docs/guide/reports.md) |
 | Contributing · testing · credits | [contributing](docs/development/contributing.md) · [testing](docs/development/testing.md) · [credits](docs/about/credits.md) |
