@@ -1,4 +1,4 @@
-## Online Augmentation
+# Online Augmentation
 
 Point-cloud augmentations are implemented in [`datasets/augmentation.py`](https://github.com/said-ohamouddou/LIDARLearn/blob/main/datasets/augmentation.py) and applied **online** — on the GPU, per batch, inside the training loop — not baked into disk files. That means:
 

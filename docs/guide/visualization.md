@@ -1,4 +1,4 @@
-## Visualization
+# Visualization
 
 The three scripts in [`scripts/visualization/`](https://github.com/said-ohamouddou/LIDARLearn/tree/main/scripts/visualization) write:
 
