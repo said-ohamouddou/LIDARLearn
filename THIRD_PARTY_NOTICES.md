@@ -1,10 +1,9 @@
 # Third-Party Notices
 
-LIDARLearn includes clean-room or adapted implementations of the following
-point cloud deep learning models. Each model directory under `models/`
-contains a `LICENSE` file with the full license text. Repository URLs below
-are the upstream sources referenced in [`docs/point_cloud_methods.csv`](docs/point_cloud_methods.csv) and used as
-the basis for adaptation.
+LIDARLearn includes clean-room or adapted implementations of the point cloud models below.
+
+- Each model directory under `models/` contains a `LICENSE` file with the full licence text.
+- The repository URLs are the upstream sources used as the basis for adaptation (also listed in [`docs/point_cloud_methods.csv`](docs/point_cloud_methods.csv)).
 
 ## Supervised Models
 
