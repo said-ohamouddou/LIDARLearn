@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="media/logo.png" alt="LIDARLearn logo" width="600"/>
+<img src="media/logo.png" alt="LIDARLearn logo" width="700"/>
 
 # LIDARLearn
 
