@@ -64,3 +64,6 @@ PPT-main/
 segmentation_for_pointm2ae/
 segmentation_for_ppt/
 dgcnn_segementation.py
+
+# Documentation build output
+docs/_build/

@@ -78,7 +78,8 @@ class BasePointCloudModel(nn.Module, ABC):
         - forward(x): Forward pass through the model
         - get_loss_acc(pred, gt, smoothing): Calculate loss and accuracy
 
-    Example Usage:
+    Example usage::
+
         class MyModel(BasePointCloudModel):
             def __init__(self, config, **kwargs):
                 super().__init__(config)

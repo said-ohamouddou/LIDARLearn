@@ -6,15 +6,19 @@ from utils import config
 
 class Registry:
     """A registry to map strings to classes.
+
     Registered object could be built from registry.
+
     Example:
         >>> MODELS = Registry('models')
         >>> @MODELS.register_module()
         >>> class ResNet:
         >>>     pass
         >>> resnet = MODELS.build(dict(NAME='ResNet'))
+
     Please refer to https://mmcv.readthedocs.io/en/latest/registry.html for
-    advanced useage.
+    advanced usage.
+
     Args:
         name (str): Registry name.
         build_func(func, optional): Build function to construct instance from

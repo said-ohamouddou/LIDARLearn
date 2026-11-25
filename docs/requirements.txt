@@ -1,0 +1,24 @@
+# Documentation build (Read the Docs and CI). CPU-only: no GPU or CUDA extension is needed.
+sphinx>=8,<9
+myst-parser>=4,<5
+furo>=2024.8.6
+sphinx-copybutton>=0.5
+
+# Imported by the API reference pages.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.8.0
+torchvision==0.23.0
+numpy>=1.26
+easydict
+pyyaml
+timm==0.4.5
+scikit-learn
+h5py
+einops
+addict
+termcolor
+tqdm
+pandas
+scipy
+matplotlib
+seaborn
