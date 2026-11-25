@@ -21,7 +21,7 @@ extensions = [
 ]
 
 source_suffix = {".md": "markdown"}
-exclude_patterns = ["_build", "paper", "superpowers"]
+exclude_patterns = ["_build", "paper", "superpowers", "models/catalogue.md"]
 myst_heading_anchors = 3
 
 html_theme = "furo"
@@ -32,3 +32,21 @@ html_theme_options = {
     "source_branch": "main",
     "source_directory": "docs/",
 }
+
+
+def _write_model_catalogue(app):
+    """Regenerate models/catalogue.md from cfgs/ before reading the sources."""
+    from pathlib import Path
+
+    from model_catalogue import build_catalogue, load_strategies, render_markdown
+
+    root = Path(REPO_ROOT)
+    text = render_markdown(build_catalogue(root), load_strategies(root))
+    out = Path(DOCS_DIR) / "models" / "catalogue.md"
+    out.parent.mkdir(exist_ok=True)
+    if not out.exists() or out.read_text() != text:
+        out.write_text(text)
+
+
+def setup(app):
+    app.connect("builder-inited", _write_model_catalogue)

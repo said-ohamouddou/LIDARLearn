@@ -41,3 +41,4 @@
 40,pointtransformerv3,"Point Transformer V3: Simpler, Faster, Stronger","Xiaoyang Wu, Li Jiang, Peng-Shuai Wang, Zhijian Liu, Xihui Liu, Yu Qiao, Wanli Ouyang, Tong He, Hengshuang Zhao",CVPR 2024
 41,VPT,Visual Prompt Tuning,"Menglin Jia, Luming Tang, Bor-Chun Chen, Claire Cardie, Serge Belongie, Bharath Hariharan, Ser-Nam Lim",ECCV 2022
 42,PointMamba,PointMamba: A Simple State Space Model for Point Cloud Analysis,"Dingkang Liang, Xin Zhou, Wei Xu, Xingkui Zhu, Zhikang Zou, Xiaoqing Ye, Xiao Tan, Xiang Bai",NeurIPS 2024
+43,IDPT,Instance-aware Dynamic Prompt Tuning for Pre-trained Point Cloud Models,"Yaohua Zha, Jinpeng Wang, Tao Dai, Bin Chen, Zhi Wang, Shu-Tao Xia",ICCV 2023
