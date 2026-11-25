@@ -42,11 +42,18 @@ their outputs under `data/`, where the loaders expect them.
 
 ## ModelNet40
 
-- **Download:** [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/d/4808a242b60c4c1f9bed/)
+- **Download:** [Pointcept mirror on Hugging Face](https://huggingface.co/datasets/Pointcept/modelnet40_normal_resampled-compressed) (`modelnet40_normal_resampled.tar.gz`, about 1.7 GB)
 - **Config:** [cfgs/dataset/ModelNet40Dataset.yaml](https://github.com/said-ohamouddou/LIDARLearn/blob/main/cfgs/dataset/ModelNet40Dataset.yaml)
 - **Loader:** [datasets/ModelNetDataset.py](https://github.com/said-ohamouddou/LIDARLearn/blob/main/datasets/ModelNetDataset.py)
 
-Unpack the archive under `data/ModelNet/` so that the final layout is:
+The archive holds the raw `modelnet40_normal_resampled` files (10,000 points per shape, with normals). It has no top-level folder, so extract it *inside* the target directory:
+
+```bash
+mkdir -p data/ModelNet/modelnet40_normal_resampled
+tar -xzf modelnet40_normal_resampled.tar.gz -C data/ModelNet/modelnet40_normal_resampled
+```
+
+The final layout is:
 
 ```
 data/ModelNet/
@@ -54,25 +61,14 @@ data/ModelNet/
     ├── modelnet40_shape_names.txt
     ├── modelnet40_train.txt
     ├── modelnet40_test.txt
-    ├── modelnet40_train_8192pts_fps.dat
-    └── modelnet40_test_8192pts_fps.dat
+    ├── airplane/ ... xbox/                         # 40 class folders, one .txt per shape
+    └── modelnet40_{train,test}_<N_POINTS>pts_fps.dat  # created on the first run
 ```
 
-- The `.dat` files hold 8192 farthest-point-sampled (FPS) points per shape, in sampling order.
-- Configs with `N_POINTS: 1024` use the first 1024 of them, which is an FPS sample of 1024 points. No raw per-shape files are needed.
+- On the first run, the loader samples each shape with farthest point sampling (FPS) and caches the result as `modelnet40_{train,test}_<N_POINTS>pts_fps.dat`. This one-time step takes about an hour for 1024 points.
+- If you already have the 8192-point files `modelnet40_{train,test}_8192pts_fps.dat`, put them in the same folder: configs with `N_POINTS: 1024` use their first 1024 points (an FPS sample), and the raw class folders are not needed.
 - ModelNet40 has no validation split: `subset: val` uses the official test split.
-
-**Alternative source (raw files).** If the Tsinghua Cloud link is unavailable, use the Pointcept mirror on Hugging Face: [`Pointcept/modelnet40_normal_resampled-compressed`](https://huggingface.co/datasets/Pointcept/modelnet40_normal_resampled-compressed). It holds the raw `modelnet40_normal_resampled` files (10,000 points per shape, with normals).
-
-The archive has no top-level folder, so extract it *inside* the target directory:
-
-```bash
-mkdir -p data/ModelNet/modelnet40_normal_resampled
-tar -xzf modelnet40_normal_resampled.tar.gz -C data/ModelNet/modelnet40_normal_resampled
-```
-
-- On the first run, the loader samples each shape with FPS and caches the result as `modelnet40_{train,test}_<N_POINTS>pts_fps.dat` next to the raw files. This one-time step takes about an hour for 1024 points.
-- The resulting data reproduces published accuracy: the official PointMamba checkpoint scores 93.5% on it.
+- Data prepared this way reproduces published accuracy: the official PointMamba checkpoint scores 93.5% on it.
 - The dataset comes from the [Princeton ModelNet project](https://modelnet.cs.princeton.edu/); please cite it and follow its terms of use.
 
 ---
