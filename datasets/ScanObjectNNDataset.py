@@ -1,8 +1,8 @@
 """
 ScanObjectNN dataset (real-world scanned objects, 15 classes, 2048 points).
 
-Source: Implementation adapted from: https://github.com/LMD0311/PointMamba
-        (datasets/ScanObjectNNDataset.py), following Point-BERT / Point-MAE.
+Source: Implementation adapted from https://github.com/LMD0311/PointMamba
+(datasets/ScanObjectNNDataset.py), following Point-BERT / Point-MAE.
 License: Apache-2.0
 
 Variants, selected by the dataset config (see DATASET.md):

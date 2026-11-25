@@ -8,6 +8,10 @@ REPO_ROOT = os.path.dirname(DOCS_DIR)
 sys.path.insert(0, REPO_ROOT)
 sys.path.insert(0, os.path.join(DOCS_DIR, "_ext"))
 
+# The API pages import the library on a CPU-only machine (Read the Docs, CI):
+# models that need a missing CUDA extension are skipped, not fatal.
+os.environ.setdefault("LIDARLEARN_ALLOW_MISSING_EXTENSIONS", "1")
+
 project = "LIDARLearn"
 author = "Said Ohamouddou, Hanaa El Afia, Abdellatif El Afia, Raddouane Chiheb"
 copyright = "2026, " + author
@@ -23,6 +27,14 @@ extensions = [
 source_suffix = {".md": "markdown"}
 exclude_patterns = ["_build", "paper", "superpowers", "models/catalogue.md"]
 myst_heading_anchors = 3
+
+autodoc_mock_imports = [
+    "pointnet2_ops", "chamfer", "chamfer_dist", "dela_cutils", "pointops", "ptv_modules",
+    "clip", "index_max", "mamba_ssm", "causal_conv1d", "open3d", "torch_scatter",
+    "torch_cluster", "lightly", "flash_attn", "spconv", "transformers",
+]
+autodoc_typehints = "description"
+autodoc_member_order = "bysource"
 
 html_theme = "furo"
 html_title = "LIDARLearn"

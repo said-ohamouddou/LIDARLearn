@@ -47,6 +47,14 @@ guide/reports
 
 ```{toctree}
 :maxdepth: 2
+:caption: API
+:hidden:
+
+api/index
+```
+
+```{toctree}
+:maxdepth: 2
 :caption: Development
 :hidden:
 

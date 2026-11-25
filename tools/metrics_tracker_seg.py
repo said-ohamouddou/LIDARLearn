@@ -4,9 +4,10 @@ Segmentation Metrics Tracker.
 Tracks per-point accuracy and mean Intersection-over-Union (mIoU) for
 point cloud segmentation. Computes two mIoU variants standard for
 ShapeNet Parts evaluation:
-    - Instance-average mIoU: per-shape IoU averaged over all shapes.
-    - Class-average mIoU: per-shape IoU averaged within each category,
-                          then averaged across categories.
+
+- Instance-average mIoU: per-shape IoU averaged over all shapes.
+- Class-average mIoU: per-shape IoU averaged within each category,
+  then averaged across categories.
 
 The best model is selected by instance-average mIoU (standard convention).
 """
@@ -154,6 +155,7 @@ class SegMetricsTracker:
         Part segmentation (seg_classes_map is not None):
             - instance_miou: mean over all shapes of per-shape mean-IoU.
             - class_miou: mean over categories of per-category mean-IoU.
+
             Both follow the standard ShapeNet Parts convention.
 
         Semantic segmentation (seg_classes_map is None):

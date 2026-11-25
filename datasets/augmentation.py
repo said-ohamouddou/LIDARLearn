@@ -544,7 +544,8 @@ def get_train_transforms(config_or_name: Union[str, list, object] = 'none', **kw
     Returns:
         PointCloudAugmentation instance (Compose if multiple augmentations)
 
-    Examples:
+    Examples::
+
         # Single augmentation by name
         transform = get_train_transforms('z_rotate_tree')
 
@@ -554,7 +555,8 @@ def get_train_transforms(config_or_name: Union[str, list, object] = 'none', **kw
         # With config object
         transform = get_train_transforms(config)
 
-    Example YAML config:
+    Example YAML config::
+
         augmentation:
           type: ['z_rotate_tree', 'jitter', 'scale']
           params:
