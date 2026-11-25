@@ -4,6 +4,11 @@ The catalogue lists one entry per model folder in ``cfgs/classification`` and
 ``cfgs/segmentation``: its paper, venue, category, the tasks and datasets it has
 configs for, and the fine-tuning strategies it supports. Nothing is written by
 hand, so the page always matches the shipped configs.
+
+docs/models.md is committed (so it also renders on GitHub) and regenerated at
+every documentation build. After adding or removing a model folder, run:
+
+    python docs/_ext/model_catalogue.py
 """
 
 from __future__ import annotations
@@ -155,3 +160,26 @@ def render_markdown(entries: list[ModelEntry], strategies: list[dict]) -> str:
         out.append(f"| **{label}** | {_cell(s['paper'])} | {_cell(s['venue'])} |")
     out.append("")
     return "\n".join(out)
+
+
+def render_page(repo_root: Path) -> str:
+    """The full docs/models.md: the intro from models_intro.md, then the generated tables."""
+    repo_root = Path(repo_root)
+    intro = (repo_root / "docs" / "_ext" / "models_intro.md").read_text().rstrip()
+    tables = render_markdown(build_catalogue(repo_root), load_strategies(repo_root))
+    return intro + "\n\n" + tables
+
+
+def write_page(repo_root: Path) -> bool:
+    """Write docs/models.md if it changed; return True when it was rewritten."""
+    out = Path(repo_root) / "docs" / "models.md"
+    text = render_page(repo_root)
+    if out.exists() and out.read_text() == text:
+        return False
+    out.write_text(text)
+    return True
+
+
+if __name__ == "__main__":
+    root = Path(__file__).resolve().parents[2]
+    print("docs/models.md", "updated" if write_page(root) else "already up to date")

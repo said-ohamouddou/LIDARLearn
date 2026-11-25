@@ -14,7 +14,7 @@ import pytest
 from .conftest import REPO_ROOT
 
 sys.path.insert(0, str(REPO_ROOT / "docs" / "_ext"))
-from model_catalogue import build_catalogue, load_strategies, render_markdown  # noqa: E402
+from model_catalogue import build_catalogue, load_strategies, render_markdown, render_page  # noqa: E402
 
 
 def _config_dirs(root):
@@ -63,3 +63,16 @@ def test_render_lists_every_model_and_strategy():
     md = render_markdown(entries, strategies)
     assert all(e.name in md for e in entries)
     assert all(s["paper"] in md for s in strategies)
+
+
+def test_committed_models_page_is_up_to_date():
+    """docs/models.md is committed so it renders on GitHub too; it must match the configs."""
+    committed = (REPO_ROOT / "docs" / "models.md").read_text()
+    assert committed == render_page(REPO_ROOT), (
+        "docs/models.md is out of date with cfgs/. Regenerate it with: "
+        "python docs/_ext/model_catalogue.py")
+
+
+def test_models_page_renders_on_github():
+    page = render_page(REPO_ROOT)
+    assert "{include}" not in page and "PointMamba" in page and "## Fine-tuning strategies" in page

@@ -11,6 +11,7 @@
 **Test LIDARLearn on Colab:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-9_pwgyqAK6OUS2tvPT5DUPowv1udOWl?usp=sharing)
 
 [![tests](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml/badge.svg)](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml)
+[![docs](https://readthedocs.org/projects/lidarlearn/badge/?version=latest)](https://lidarlearn.readthedocs.io)
 [![arXiv](https://img.shields.io/badge/arXiv-2604.10780-b31b1b.svg)](https://arxiv.org/abs/2604.10780)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
@@ -110,6 +111,8 @@ Whole benchmarks run with one script each (`scripts/train_*.sh`). More examples:
 
 ## Documentation
 
+**Full documentation: [lidarlearn.readthedocs.io](https://lidarlearn.readthedocs.io)** (also readable in [`docs/`](docs/) on GitHub).
+
 | Topic | Page |
 |---|---|
 | Installation · pretrained weights · quick start | [installation](docs/getting-started/installation.md) · [pretrained](docs/getting-started/pretrained.md) · [quick start](docs/getting-started/quickstart.md) |
@@ -118,6 +121,7 @@ Whole benchmarks run with one script each (`scripts/train_*.sh`). More examples:
 | Training runners · augmentation | [training](docs/guide/training.md) · [augmentation](docs/guide/augmentation.md) |
 | Visualization · automated reports | [visualization](docs/guide/visualization.md) · [reports](docs/guide/reports.md) |
 | Contributing · testing · credits | [contributing](docs/development/contributing.md) · [testing](docs/development/testing.md) · [credits](docs/about/credits.md) |
+| Changelog | [docs/about/changelog.md](docs/about/changelog.md) |
 
 ## Citation
 
