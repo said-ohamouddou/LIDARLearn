@@ -42,7 +42,6 @@ DEFAULT_METRICS = [
     'best_accuracy',
     'balanced_acc',
     'f1_macro',
-    'recall_macro',
     'precision_macro',
     'total_params_M',
     'trainable_params_M',
@@ -60,8 +59,6 @@ METRIC_DISPLAY_NAMES = {
     'f1_weighted': 'F1 Weighted',
     'precision_macro': 'Precision',
     'precision_weighted': 'Precision (W)',
-    'recall_macro': 'Recall',
-    'recall_weighted': 'Recall (W)',
     'kappa': 'Kappa',
     'mcc': 'MCC',
     'model_name': 'Model',
@@ -79,8 +76,6 @@ LATEX_DISPLAY_NAMES = {
     'f1_weighted': 'F1 Weighted (\\%)',
     'precision_macro': 'Precision (\\%)',
     'precision_weighted': 'Precision W (\\%)',
-    'recall_macro': 'Recall (\\%)',
-    'recall_weighted': 'Recall W (\\%)',
     'kappa': 'Kappa (\\%)',
     'mcc': 'MCC (\\%)',
     'model_name': 'Model',
@@ -110,6 +105,7 @@ MODEL_ORDER = [
     'DGCNN', 'DeepGCN', 'CurveNet', 'GDAN', 'GDANet', 'MSDGCNN', 'KANDGCNN', 'MSDGCNN2',
     # Self-supervised (lines 55-84)
     'Point-MAE', 'ACT', 'RECON', 'PointGPT', 'Point-M2AE', 'PointBERT', 'PCP',
+    'PointMamba',
 ]
 
 # Category assignments for each model
@@ -129,7 +125,7 @@ MODEL_CATEGORIES = {
     'GDAN': 'Graph-based', 'GDANet': 'Graph-based', 'MSDGCNN': 'Graph-based', 'KANDGCNN': 'Graph-based', 'MSDGCNN2': 'Graph-based',
     # Self-supervised
     'Point-MAE': 'Self-supervised', 'ACT': 'Self-supervised', 'RECON': 'Self-supervised',
-    'PointGPT': 'Self-supervised', 'PCP': 'Self-supervised', 'Point-M2AE': 'Self-supervised',
+    'PointGPT': 'Self-supervised', 'PCP': 'Self-supervised', 'PointMamba': 'Self-supervised', 'Point-M2AE': 'Self-supervised',
     'PointBERT': 'Self-supervised',
 }
 
@@ -151,9 +147,9 @@ MODEL_CITATIONS = {
     'GDAN': 'gdanet', 'GDANet': 'gdanet', 'MSDGCNN': 'msdgcnn', 'KANDGCNN': 'kandgcnn', 'MSDGCNN2': 'msdgcnn2',
     # Self-supervised
     'Point-MAE': 'pang2022masked', 'ACT': 'dong2023act', 'RECON': 'qi2023contrast',
-    'PointGPT': 'chen2024pointgpt', 'PCP': 'pcpmae', 'Point-M2AE': 'zhang2022point', 'PointBERT': 'yu2022point',
+    'PointGPT': 'chen2024pointgpt', 'PCP': 'pcpmae', 'PointMamba': 'liang2024pointmamba', 'Point-M2AE': 'zhang2022point', 'PointBERT': 'yu2022point',
     # PEFT
-    'IDPT': 'zha2023instance', 'DAPT': 'zhou2024dynamic', 'PPT': 'sun24ppt',
+    'IDPT': 'zha2023instance', 'DAPT': 'zhou2024dynamic', 'PPT': 'zhang2025positional',
     'PointGST': 'pointgst', 'VPT_Deep': 'jia2022visual', 'VPT-Deep': 'jia2022visual',
 }
 

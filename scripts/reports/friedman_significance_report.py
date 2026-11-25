@@ -55,7 +55,6 @@ METRIC_LATEX_NAMES = {
     'f1_macro': 'F1 Macro',
     'f1_weighted': 'F1 Weighted',
     'precision_macro': 'Precision',
-    'recall_macro': 'Recall',
     'kappa': "Cohen's $\\kappa$",
     'mcc': 'MCC',
 }

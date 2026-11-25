@@ -16,13 +16,15 @@ from __future__ import annotations
 import pytest
 
 from utils.config import cfg_from_yaml_file
-from models.build import MODELS, build_model_from_cfg
+from models.build import MODELS
 
 from .conftest import (
     ALL_CONFIGS,
     CLASSIFICATION_CONFIGS,
     S3DIS_CONFIGS,
     SHAPENETPARTS_CONFIGS,
+    allow_missing_extensions,
+    build_model_or_skip,
     config_id,
 )
 
@@ -55,6 +57,18 @@ def _assert_registered(name: str):
     except AttributeError:
         registered = []
     hint = ", ".join(registered[:20]) + ("..." if len(registered) > 20 else "")
+    skipped = getattr(MODELS, "import_failures", {})
+    if skipped:
+        if allow_missing_extensions():
+            # CI without a GPU/nvcc: the CUDA extensions can't be built there.
+            missing = sorted({dep for dep, _ in skipped.values()})
+            pytest.skip(f"{name} unavailable: missing {', '.join(missing)}")
+        details = "\n".join(f"  - {mod}: {err}" for mod, (_, err) in sorted(skipped.items()))
+        raise AssertionError(
+            f"Model '{name}' is not registered. These model modules were skipped "
+            f"because a dependency is missing; install it or build the CUDA "
+            f"extensions (bash extensions/install_extensions.sh):\n{details}"
+        )
     raise AssertionError(
         f"Model '{name}' is not registered "
         f"(registry has {len(registered)} entries: {hint}). "
@@ -69,7 +83,7 @@ def test_classification_model_builds(cfg_path):
     if not hasattr(cfg, "model") or not hasattr(cfg.model, "NAME"):
         pytest.skip("not a model config (no model.NAME)")
     _assert_registered(cfg.model.NAME)
-    model = build_model_from_cfg(cfg.model)
+    model = build_model_or_skip(cfg.model)
     total = sum(p.numel() for p in model.parameters())
     assert total > 0, f"Model {cfg.model.NAME} has no parameters"
 
@@ -78,7 +92,7 @@ def test_classification_model_builds(cfg_path):
 def test_semantic_seg_model_builds(cfg_path):
     cfg = cfg_from_yaml_file(cfg_path)
     _assert_registered(cfg.model.NAME)
-    model = build_model_from_cfg(cfg.model)
+    model = build_model_or_skip(cfg.model)
     assert sum(p.numel() for p in model.parameters()) > 0
 
 
@@ -86,5 +100,13 @@ def test_semantic_seg_model_builds(cfg_path):
 def test_part_seg_model_builds(cfg_path):
     cfg = cfg_from_yaml_file(cfg_path)
     _assert_registered(cfg.model.NAME)
-    model = build_model_from_cfg(cfg.model)
+    model = build_model_or_skip(cfg.model)
     assert sum(p.numel() for p in model.parameters()) > 0
+
+
+@pytest.mark.parametrize("cfg_path", [p for p in CLASSIFICATION_CONFIGS if "_pretrain" not in p.name],
+                         ids=config_id)
+def test_classification_config_sets_k_folds(cfg_path):
+    """tools/runner_finetune.py reads dataset.train.others.K_FOLDS directly."""
+    cfg = cfg_from_yaml_file(cfg_path)
+    assert "K_FOLDS" in cfg.dataset.train.others, f"{cfg_path}: dataset.train.others.K_FOLDS missing"

@@ -55,9 +55,10 @@ MODEL_CITATIONS: dict[str, str] = {
     'PointConv':           'pointconv',
     'RSCNN':               'rscnn',
     'PointMLP':            'pointmlp',
-    'PointMLPLite':        'pointmlp',
+    'PointMLPElite':       'pointmlp',
     'PointSCNet':          'pointscnet',
     'RepSurf':             'repsurf',
+    'RepSurf2x':           'repsurf',
     'RapSurf':             'repsurf',
     'PointKAN':            'pointkan',
     'DELA':                'dela',
@@ -94,6 +95,7 @@ MODEL_CITATIONS: dict[str, str] = {
     'PCP':                 'pcpmae',
     'PCP-MAE':             'pcpmae',
     'PCPMAE':              'pcpmae',
+    'PointMamba':          'liang2024pointmamba',
     'Point-M2AE':          'zhang2022point',
     'PointM2AE':           'zhang2022point',
     'PointBERT':           'yu2022point',
@@ -101,7 +103,7 @@ MODEL_CITATIONS: dict[str, str] = {
     # PEFT strategies
     'IDPT':                'zha2023instance',
     'DAPT':                'zhou2024dynamic',
-    'PPT':                 'sun24ppt',
+    'PPT':                 'zhang2025positional',
     'PointGST':            'pointgst',
     'GST':                 'pointgst',
     'VPT_Deep':            'jia2022visual',
@@ -175,9 +177,10 @@ MODEL_CATEGORIES: dict[str, str] = {
     'PointConv':           'Point-based',
     'RSCNN':               'Point-based',
     'PointMLP':            'Point-based',
-    'PointMLPLite':        'Point-based',
+    'PointMLPElite':       'Point-based',
     'PointSCNet':          'Point-based',
     'RepSurf':             'Point-based',
+    'RepSurf2x':           'Point-based',
     'RapSurf':             'Point-based',
     'PointKAN':            'Point-based',
     'DELA':                'Point-based',
@@ -214,6 +217,7 @@ MODEL_CATEGORIES: dict[str, str] = {
     'PCP':                 'Self-supervised',
     'PCP-MAE':             'Self-supervised',
     'PCPMAE':              'Self-supervised',
+    'PointMamba':          'Self-supervised',
     'Point-M2AE':          'Self-supervised',
     'PointM2AE':           'Self-supervised',
     'PointBERT':           'Self-supervised',
@@ -227,7 +231,7 @@ MODEL_ORDER = [
     # Point-based
     'PointNet', 'PointNet2', 'PointNet2_SSG', 'PointNet2_MSG',
     'SONet', 'PPFNet', 'PointCNN', 'PointWeb', 'PointConv', 'RSCNN',
-    'PointMLP', 'PointMLPLite', 'PointSCNet', 'RepSurf', 'PointKAN', 'DELA',
+    'PointMLP', 'PointMLPElite', 'PointSCNet', 'RepSurf', 'RepSurf2x', 'PointKAN', 'DELA',
     'RandLANet',
     # Attention-based
     'PCT', 'P2P', 'PointTNT', 'GlobalTransformer', 'PVT',
@@ -237,6 +241,7 @@ MODEL_ORDER = [
     'MSDGCNN', 'KANDGCNN', 'MSDGCNN2',
     # Self-supervised
     'Point-MAE', 'ACT', 'RECON', 'PointGPT', 'Point-M2AE', 'PointBERT', 'PCP',
+    'PointMamba',
 ]
 
 # PEFT strategies — order inside each SSL base model
@@ -256,9 +261,13 @@ _LOWERCASE_ALIASES = {
     'pointconv':           'PointConv',
     'rscnn':               'RSCNN',
     'pointmlp':            'PointMLP',
+    'pointmlpelite':       'PointMLPElite',
+    'pointmlp_elite':      'PointMLPElite',
     'pointscnet':          'PointSCNet',
     'repsurf':             'RepSurf',
     'rapsurf':             'RepSurf',
+    'repsurf2x':           'RepSurf2x',
+    'repsurf_2x':          'RepSurf2x',
     'pointkan':            'PointKAN',
     'dela':                'DELA',
     'randlanet':           'RandLANet',
@@ -286,6 +295,7 @@ _LOWERCASE_ALIASES = {
     'pcpmae':              'PCP',
     'pointm2ae':           'Point-M2AE',
     'pointbert':           'PointBERT',
+    'pointmamba':          'PointMamba',
 }
 
 

@@ -21,7 +21,7 @@ from .z_order import *
 from ..build import MODELS
 from ..base_model import BasePointCloudModel, print_model_info
 from utils import misc
-from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message
+from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message, load_checkpoint
 from utils.logger import print_log
 
 from ..gpt_blocks import Encoder_large, Encoder_small, PositionEmbeddingCoordsSine
@@ -264,18 +264,6 @@ class GPT_Transformer(nn.Module):
         with torch.no_grad():
             attn_mask = torch.triu(attn_mask, diagonal=1)
 
-            # point wise
-            # overall_mask = np.zeros([self.num_groups, self.num_groups])
-            # for i in range(self.num_groups):
-            #     mask = np.hstack([
-            #         np.zeros(self.num_groups-self.num_mask),
-            #         np.ones(self.num_mask),
-            #     ])
-            #     np.random.shuffle(mask)
-            #     overall_mask[i, :] = mask
-            # overall_mask = torch.from_numpy(
-            #     overall_mask).to(torch.bool).to('cuda')
-
             # column wise
             overall_mask = np.hstack([
                 np.zeros(self.num_groups - self.keep_attend - self.num_mask),
@@ -448,7 +436,7 @@ class PointGPT(BasePointCloudModel):
 
     def load_model_from_ckpt(self, bert_ckpt_path):
         if bert_ckpt_path is not None:
-            ckpt = torch.load(bert_ckpt_path)
+            ckpt = load_checkpoint(bert_ckpt_path)
             base_ckpt = {k.replace("module.", ""): v for k,
                          v in ckpt['base_model'].items()}
 

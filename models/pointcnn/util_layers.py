@@ -50,7 +50,6 @@ class Dense(nn.Module):
 
         self.linear = nn.Linear(in_features, out_features)
         self.activation = activation
-        # self.bn = LayerNorm(out_channels) if with_bn else None
         self.drop = nn.Dropout(drop_rate) if drop_rate > 0 else None
 
     def forward(self, x: UFloatTensor) -> UFloatTensor:
@@ -62,8 +61,6 @@ class Dense(nn.Module):
         x = self.linear(x)
         if self.activation:
             x = self.activation(x)
-        # if self.bn:
-        #     x = self.bn(x)
         if self.drop:
             x = self.drop(x)
         return x

@@ -18,7 +18,6 @@ import torch.nn.functional as F
 
 
 from . import pointnet2_utils
-# import my_point_utils as point_utils
 from . import pytorch_utils as pt_utils
 from typing import List
 import numpy as np
@@ -55,23 +54,8 @@ class _PointnetSAModuleBase(nn.Module):
         new_features_list = []
         xyz_flipped = xyz.transpose(1, 2).contiguous()
         if self.npoint is not None:
-            # fps_idx = point_utils.farthest_point_sampling(xyz_flipped, self.npoint)  # (B, npoint)
             fps_idx = pointnet2_utils.furthest_point_sample(xyz_flipped, self.npoint)
-            """# my code:
-            if self.first_layer_:
-                all_feature = xyz_flipped
-            else:
-                features = features.contiguous() # features: (B, C, N)
-                all_feature = torch.cat((xyz_flipped, features), dim=1) #(B,3+C,N)
-            all_feature = self.mlp_for_att1(all_feature)
-            all_feature = self.mlp_for_att2(all_feature).squeeze(1) # (B,N)
-            att_score = F.softmax(all_feature, dim=1)
-            fps_idx = torch.topk(att_score, k=self.npoint, dim=1)
-            fps_idx = fps_idx.type(torch.cuda.IntTensor)
-            """
             new_xyz = pointnet2_utils.gather_operation(xyz_flipped, fps_idx).transpose(1, 2).contiguous()
-            # new_xyz = point_utils.index_points(xyz_flipped, fps_idx).transpose(1, 2).contiguous()
-            # fps_idx = fps_idx.data
         else:
             new_xyz = None
             fps_idx = None
@@ -125,17 +109,6 @@ class PointnetSAModuleMSG(_PointnetSAModuleBase):
         # initialize shared mapping functions
         C_in = (mlps[0][0] + 3) if use_xyz else mlps[0][0]
         C_out = mlps[0][1]
-        """# my code:
-        self.C_in_att = mlps[0][0]+3
-        self.C_out_att = self.C_in_att if first_layer else math.floor(self.C_in_att/4)
-        self.mlp_for_att1 = nn.Conv1d(in_channels = self.C_in_att, out_channels = self.C_out_att,
-                                    kernel_size = 1, stride = 1, bias = False)
-        self.mlp_for_att2 = nn.Conv1d(in_channels = self.C_out_att, out_channels = 1,
-                                    kernel_size = 1, stride = 1, bias = False)
-        nn.init.kaiming_normal_(self.mlp_for_att1.weight)
-        nn.init.kaiming_normal_(self.mlp_for_att2.weight)
-        self.first_layer = first_layer
-        """
 
         if relation_prior == 0:
             in_channels = 1

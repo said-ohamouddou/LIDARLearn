@@ -1,9 +1,9 @@
 """
-Parameter-efficient Prompt Learning for 3D Point Cloud Understanding
+Positional Prompt Tuning for Efficient 3D Representation Learning
 
-Paper: ICRA 2024
-Authors: Hongyu Sun, Yongcai Wang, Wang Chen, Haoran Deng, Deying Li
-Source: Implementation adapted from: https://github.com/auniquesun/PPT
+Paper: ACM MM 2025 (arXiv 2408.11567)
+Authors: Shaochen Zhang, Zekun Qi, Runpei Dong, Xiuxiu Bai, Xing Wei
+Source: Implementation adapted from: https://github.com/zsc000722/PPT
 License: MIT
 """
 
@@ -15,7 +15,7 @@ from timm.models.layers import DropPath, trunc_normal_
 from ..build import MODELS
 from ..base_model import BasePointCloudModel, print_model_info
 from utils import misc
-from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message
+from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message, load_checkpoint
 from utils.logger import print_log
 from utils.knn import knn_point
 
@@ -165,7 +165,7 @@ class PPT(BasePointCloudModel):
 
     def load_model_from_ckpt(self, bert_ckpt_path):
         if bert_ckpt_path is not None:
-            ckpt = torch.load(bert_ckpt_path)
+            ckpt = load_checkpoint(bert_ckpt_path)
             # Accept a few common checkpoint wrappers: {'base_model': sd},
             # {'model': sd}, or a bare state_dict.
             if isinstance(ckpt, dict) and 'base_model' in ckpt:

@@ -41,9 +41,6 @@ class XConv(nn.Module):
 
         self.P = P
 
-        # Additional processing layers
-        # self.pts_layernorm = LayerNorm(2, momentum = 0.9)
-
         # Main dense linear layers
         self.dense1 = Dense(dims, C_mid)
         self.dense2 = Dense(C_mid, C_mid)
@@ -65,7 +62,7 @@ class XConv(nn.Module):
             out_channels=C_out,
             kernel_size=(1, K),
             depth_multiplier=depth_multiplier
-        )).cuda()
+        ))
 
     def forward(self, x: Tuple[UFloatTensor,            # (N, P, dims)
                                UFloatTensor,            # (N, P, K, dims)
@@ -100,7 +97,6 @@ class XConv(nn.Module):
 
         # Move pts to local coordinate system of rep_pt.
         pts_local = pts - p_center  # (N, P, K, dims)
-        # pts_local = self.pts_layernorm(pts - p_center)
 
         # Individually lift each point into C_mid space.
         fts_lifted0 = self.dense1(pts_local)
@@ -197,7 +193,7 @@ class PointCNN(nn.Module):
         fts = self.dense(fts) if fts is not None else fts
 
         # This step takes ~97% of the time. Prime target for optimization: KNN on GPU.
-        pts_idx = self.r_indices_func(rep_pts.cpu(), pts.cpu()).cuda()
+        pts_idx = self.r_indices_func(rep_pts.cpu(), pts.cpu()).to(pts.device)
         # -------------------------------------------------------------------------- #
 
         pts_regional = self.select_region(pts, pts_idx)

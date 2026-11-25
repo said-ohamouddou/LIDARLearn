@@ -31,6 +31,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from ..base_seg_model import BaseSegModel
+from utils.checkpoint import load_checkpoint
 
 
 # Adapter registry: maps backbone class name → where to hook for per-point feats.
@@ -298,7 +299,7 @@ class PointCentricSegWrapper(BaseSegModel):
 
     def load_backbone_ckpt(self, ckpt_path: str, strict: bool = False):
         """Load pretrained classification weights into the backbone."""
-        state = torch.load(ckpt_path, map_location='cpu')
+        state = load_checkpoint(ckpt_path, map_location='cpu')
         if 'base_model' in state:
             sd = {k.replace('module.', ''): v for k, v in state['base_model'].items()}
         elif 'model' in state:

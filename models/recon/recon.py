@@ -19,7 +19,7 @@ from timm.models.layers import trunc_normal_
 from ..build import MODELS
 from ..base_model import BasePointCloudModel, print_model_info
 from utils import misc
-from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message
+from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message, load_checkpoint
 from utils.logger import print_log
 from utils.knn import knn_point
 
@@ -125,19 +125,23 @@ class ReConBlock(nn.Module):
             x = x + self.drop_path(self.mlp(self.norm2(x)))
             return x
 
+        # As in upstream ReCon, each residual is added to the normalised
+        # tokens (not the block input); pretrained ReCon weights expect this.
         cls = x[:, :3]
         vis_x = x[:, 3:]
 
         cls = self.norm1_contrast(cls)
-        vis_x_norm = self.norm1(vis_x)
+        vis_x = self.norm1(vis_x)
         if self.finetune:
-            cls = cls + self.drop_path(self.attn_contrast(cls, vis_x_norm))
+            cls = cls + self.drop_path(self.attn_contrast(cls, vis_x))
         else:
-            cls = cls + self.drop_path(self.attn_contrast(cls, vis_x_norm.detach()))
-        vis_x = vis_x + self.drop_path(self.attn(vis_x_norm))
+            cls = cls + self.drop_path(self.attn_contrast(cls, vis_x.detach()))
+        vis_x = vis_x + self.drop_path(self.attn(vis_x))
 
-        cls = cls + self.drop_path(self.mlp_contrast(self.norm2_contrast(cls)))
-        vis_x = vis_x + self.drop_path(self.mlp(self.norm2(vis_x)))
+        cls = self.norm2_contrast(cls)
+        vis_x = self.norm2(vis_x)
+        cls = cls + self.drop_path(self.mlp_contrast(cls))
+        vis_x = vis_x + self.drop_path(self.mlp(vis_x))
 
         return torch.cat((cls, vis_x), dim=1)
 
@@ -597,7 +601,7 @@ class RECON(BasePointCloudModel):
 
     def load_model_from_ckpt(self, bert_ckpt_path, log=True):
         if bert_ckpt_path is not None:
-            ckpt = torch.load(bert_ckpt_path)
+            ckpt = load_checkpoint(bert_ckpt_path)
             base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
 
             total_ckpt_params = sum(p.numel() for p in base_ckpt.values())

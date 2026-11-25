@@ -15,12 +15,11 @@ import tqdm
 from itertools import repeat
 import numpy as np
 from typing import List, Tuple
-# from scipy.stats import t as student_t
-# import statistics as stats
 
 import torch
 import torch.nn as nn
 from torch.autograd.function import InplaceFunction
+from utils.checkpoint import load_checkpoint
 
 BN1d, BN2d, BN3d = nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d
 
@@ -403,7 +402,7 @@ def load_checkpoint(model=None, optimizer=None, filename='checkpoint'):
     filename = "{}.pth.tar".format(filename)
     if os.path.isfile(filename):
         print("==> Loading from checkpoint '{}'".format(filename))
-        checkpoint = torch.load(filename)
+        checkpoint = load_checkpoint(filename)
         epoch = checkpoint['epoch']
         it = checkpoint.get('it', 0.0)
         best_prec = checkpoint['best_prec']
@@ -514,76 +513,6 @@ class TrainValSplitter():
         self.val = torch.utils.data.sampler.SubsetRandomSampler(
             indicies[int(percent_train * numel):-1]
         )
-
-
-'''
-class CrossValSplitter():
-    r"""
-        Class that creates cross validation splits.  The train and val splits can be used in pytorch DataLoaders.  The splits can be updated
-        by calling next(self) or using a loop:
-            for _ in self:
-                ....
-    Parameters
-    ---------
-        numel : int
-            Number of elements in the training set
-        k_folds : int
-            Number of folds
-        shuffled : bool
-            Whether or not to shuffle which data goes in which fold
-    """
-
-    def __init__(self, *, numel: int, k_folds: int, shuffled: bool = False):
-        inidicies = np.array([i for i in range(numel)])
-        if shuffled:
-            np.random.shuffle(inidicies)
-
-        self.folds = np.array(np.array_split(inidicies, k_folds), dtype=object)
-        self.current_v_ind = -1
-
-        self.val = torch.utils.data.sampler.SubsetRandomSampler(self.folds[0])
-        self.train = torch.utils.data.sampler.SubsetRandomSampler(
-            np.concatenate(self.folds[1:], axis=0)
-        )
-
-        self.metrics = {}
-
-    def __iter__(self):
-        self.current_v_ind = -1
-        return self
-
-    def __len__(self):
-        return len(self.folds)
-
-    def __getitem__(self, idx):
-        assert idx >= 0 and idx < len(self)
-        self.val.inidicies = self.folds[idx]
-        self.train.inidicies = np.concatenate(
-            self.folds[np.arange(len(self)) != idx], axis=0
-        )
-
-    def __next__(self):
-        self.current_v_ind += 1
-        if self.current_v_ind >= len(self):
-            raise StopIteration
-
-        self[self.current_v_ind]
-
-    def update_metrics(self, to_post: dict):
-        for k, v in to_post.items():
-            if k in self.metrics:
-                self.metrics[k].append(v)
-            else:
-                self.metrics[k] = [v]
-
-    def print_metrics(self):
-        for name, samples in self.metrics.items():
-            xbar = stats.mean(samples)
-            sx = stats.stdev(samples, xbar)
-            tstar = student_t.ppf(1.0 - 0.025, len(samples) - 1)
-            margin_of_error = tstar * sx / sqrt(len(samples))
-            print("{}: {} +/- {}".format(name, xbar, margin_of_error))
-'''
 
 
 def set_bn_momentum_default(bn_momentum):

@@ -35,8 +35,8 @@ MODEL_CITATIONS = {
     'PointNet': 'qi2017pointnet', 'PointNet2_SSG': 'qi2017pointnet++', 'PointNet2_MSG': 'qi2017pointnet++',
     'SONet': 'sonet', 'PPFNet': 'ppfnet', 'PointCNN': 'pointcnn',
     'PointWeb': 'pointweb', 'PointConv': 'pointconv', 'RSCNN': 'rscnn',
-    'PointMLP': 'pointmlp', 'PointMLPLite': 'pointmlp',
-    'PointSCNet': 'pointscnet', 'RepSurf': 'repsurf', 'PointKAN': 'pointkan', 'DELA': 'dela',
+    'PointMLP': 'pointmlp', 'PointMLPElite': 'pointmlp',
+    'PointSCNet': 'pointscnet', 'RepSurf': 'repsurf', 'RepSurf2x': 'repsurf', 'PointKAN': 'pointkan', 'DELA': 'dela',
     'RandLANet': 'randlanet',
     # Supervised — attention-based
     'PCT': 'guo2021pct', 'P2P': 'p2p', 'PointTNT': 'pointtnt',
@@ -48,11 +48,11 @@ MODEL_CITATIONS = {
     # Self-supervised
     'Point-MAE': 'pang2022masked', 'PointMAE': 'pang2022masked',
     'ACT': 'dong2023act', 'RECON': 'qi2023contrast', 'ReCon': 'qi2023contrast',
-    'PointGPT': 'chen2024pointgpt', 'PCP': 'pcpmae', 'PCP-MAE': 'pcpmae',
+    'PointGPT': 'chen2024pointgpt', 'PCP': 'pcpmae', 'PCP-MAE': 'pcpmae', 'PointMamba': 'liang2024pointmamba',
     'Point-M2AE': 'zhang2022point', 'PointM2AE': 'zhang2022point',
     'PointBERT': 'yu2022point', 'Point-BERT': 'yu2022point',
     # PEFT
-    'IDPT': 'zha2023instance', 'DAPT': 'zhou2024dynamic', 'PPT': 'sun24ppt',
+    'IDPT': 'zha2023instance', 'DAPT': 'zhou2024dynamic', 'PPT': 'zhang2025positional',
     'PointGST': 'pointgst', 'VPT_Deep': 'jia2022visual', 'VPT-Deep': 'jia2022visual',
 }
 
@@ -61,8 +61,8 @@ MODEL_CATEGORIES = {
     'PointNet': 'Point-based', 'PointNet2_SSG': 'Point-based', 'PointNet2_MSG': 'Point-based',
     'SONet': 'Point-based', 'PPFNet': 'Point-based', 'PointCNN': 'Point-based',
     'PointWeb': 'Point-based', 'PointConv': 'Point-based', 'RSCNN': 'Point-based',
-    'PointMLP': 'Point-based', 'PointMLPLite': 'Point-based',
-    'PointSCNet': 'Point-based', 'RepSurf': 'Point-based', 'PointKAN': 'Point-based', 'DELA': 'Point-based',
+    'PointMLP': 'Point-based', 'PointMLPElite': 'Point-based',
+    'PointSCNet': 'Point-based', 'RepSurf': 'Point-based', 'RepSurf2x': 'Point-based', 'PointKAN': 'Point-based', 'DELA': 'Point-based',
     'RandLANet': 'Point-based',
     # Attention-based
     'PCT': 'Attention-based', 'P2P': 'Attention-based', 'PointTNT': 'Attention-based',
@@ -74,7 +74,7 @@ MODEL_CATEGORIES = {
     # Self-supervised
     'Point-MAE': 'Self-supervised', 'PointMAE': 'Self-supervised',
     'ACT': 'Self-supervised', 'RECON': 'Self-supervised', 'ReCon': 'Self-supervised',
-    'PointGPT': 'Self-supervised', 'PCP': 'Self-supervised', 'PCP-MAE': 'Self-supervised',
+    'PointGPT': 'Self-supervised', 'PCP': 'Self-supervised', 'PCP-MAE': 'Self-supervised', 'PointMamba': 'Self-supervised',
     'Point-M2AE': 'Self-supervised', 'PointM2AE': 'Self-supervised',
     'PointBERT': 'Self-supervised', 'Point-BERT': 'Self-supervised',
     # PEFT
@@ -86,7 +86,8 @@ MODEL_CATEGORIES = {
 DISPLAY_NAMES = {
     'PointNet2_SSG': 'PointNet++ (SSG)',
     'PointNet2_MSG': 'PointNet++ (MSG)',
-    'PointMLPLite': 'PointMLP-Elite',
+    'PointMLPElite': 'PointMLP-Elite',
+    'RepSurf2x': 'RepSurf-U (2x)',
     'VPT_Deep': 'VPT-Deep',
     'Point-MAE': 'Point-MAE',
     'Point-BERT': 'Point-BERT',

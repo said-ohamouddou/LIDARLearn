@@ -15,7 +15,7 @@ from timm.models.layers import trunc_normal_
 from .modules import Group, Token_Embed, Encoder_Block
 from ..build import MODELS
 from ..base_model import BasePointCloudModel, print_model_info
-from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message
+from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message, load_checkpoint
 from utils.logger import print_log
 
 class H_Encoder(nn.Module):
@@ -128,7 +128,7 @@ class PointM2AE(BasePointCloudModel):
 
     def load_model_from_ckpt(self, ckpt_path):
         if ckpt_path is not None:
-            state_dict = torch.load(ckpt_path)
+            state_dict = load_checkpoint(ckpt_path)
             base_ckpt = state_dict['base_model']
             base_ckpt = {k.replace('module.', '', 1) if k.startswith('module.') else k: v for k, v in base_ckpt.items()}
             total_ckpt_params = sum(p.numel() for p in base_ckpt.values())

@@ -54,11 +54,12 @@ def get_args():
         '--augmentation',
         type=str,
         choices=['none', 'rotate', 'scale_translate', 'jitter', 'scale', 'translate',
-                 'dropout', 'flip', 'z_rotate_tree'],
+                 'dropout', 'flip', 'z_rotate_tree', 'y_rotate'],
         default='none',
         help='Data augmentation technique to use during training. Options: '
              'none (identity), rotate (3D rotation), scale_translate, jitter, '
-             'scale, translate, dropout, flip, z_rotate_tree (tree-specific Z-axis rotation)')
+             'scale, translate, dropout, flip, z_rotate_tree (tree-specific Z-axis rotation), '
+             'y_rotate (Y-axis rotation as in Point-BERT/PointMamba; ScanObjectNN)')
     parser.add_argument(
         '--max_epoch',
         type=int,
@@ -83,7 +84,7 @@ def get_args():
         '--init_source',
         type=str,
         default=None,
-        help='Override init_source in model config (e.g., "HELIALS" for HELIALS-pretrained weights). '
+        help='Override init_source in model config (e.g., "ShapeNet" for ShapeNet-pretrained weights). '
              'If not specified, uses value from YAML config (default: ShapeNet).')
     parser.add_argument(
         '--early_stopping_patience',

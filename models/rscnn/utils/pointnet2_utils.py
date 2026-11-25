@@ -58,14 +58,6 @@ class FurthestPointSampling(Function):
         """
         assert xyz.is_contiguous()
 
-        """B, N, _ = xyz.size()
-
-        output = torch.cuda.IntTensor(B, npoint)
-        temp = torch.cuda.FloatTensor(B, N).fill_(1e10)
-        pointnet2.furthest_point_sampling_wrapper(
-            B, N, npoint, xyz, temp, output
-        )
-        return output"""
         return _ext.furthest_point_sampling(xyz, npoint)
 
     @staticmethod
@@ -101,27 +93,12 @@ class GatherOperation(Function):
         B, npoint = idx.size()
         _, C, N = features.size()
 
-        # output = torch.cuda.FloatTensor(B, C, npoint)
-
-        # pointnet2.gather_points_wrapper(
-        #    B, C, N, npoint, features, idx, output
-        # )
-
         ctx.for_backwards = (idx, C, N)
 
-        # return output
         return _ext.gather_points(features, idx)
 
     @staticmethod
     def backward(ctx, grad_out):
-        """idx, C, N = ctx.for_backwards
-        B, npoint = idx.size()
-
-        grad_features = Variable(torch.cuda.FloatTensor(B, C, N).zero_())
-        grad_out_data = grad_out.data.contiguous()
-        pointnet2.gather_points_grad_wrapper(
-            B, C, N, npoint, grad_out_data, idx, grad_features.data
-        )"""
         idx, C, N = ctx.for_backwards
 
         grad_features = _ext.gather_points_grad(grad_out.contiguous(), idx, N)
@@ -156,14 +133,6 @@ class ThreeNN(Function):
         assert unknown.is_contiguous()
         assert known.is_contiguous()
 
-        """
-        B, N, _ = unknown.size()
-        m = known.size(1)
-        dist2 = torch.cuda.FloatTensor(B, N, 3)
-        idx = torch.cuda.IntTensor(B, N, 3)
-
-        pointnet2.three_nn_wrapper(B, N, m, unknown, known, dist2, idx)
-        """
         dist2, idx = _ext.three_nn(unknown, known)
 
         return torch.sqrt(dist2), idx
@@ -207,13 +176,6 @@ class ThreeInterpolate(Function):
 
         ctx.three_interpolate_for_backward = (idx, weight, m)
 
-        """output = torch.cuda.FloatTensor(B, c, n)
-
-        pointnet2.three_interpolate_wrapper(
-            B, c, m, n, features, idx, weight, output
-        )
-
-        return output"""
         return _ext.three_interpolate(features, idx, weight)
 
     @staticmethod
@@ -237,12 +199,6 @@ class ThreeInterpolate(Function):
         idx, weight, m = ctx.three_interpolate_for_backward
         B, c, n = grad_out.size()
 
-        # grad_features = Variable(torch.cuda.FloatTensor(B, c, m).zero_())
-
-        # grad_out_data = grad_out.data.contiguous()
-        # pointnet2.three_interpolate_grad_wrapper(
-        #    B, c, n, m, grad_out_data, idx, weight, grad_features.data
-        # )
         grad_features = _ext.three_interpolate_grad(
             grad_out.contiguous(), idx, weight, m
         )
@@ -277,15 +233,8 @@ class GroupingOperation(Function):
         B, nfeatures, nsample = idx.size()
         _, C, N = features.size()
 
-        # output = torch.cuda.FloatTensor(B, C, nfeatures, nsample)
-
-        # pointnet2.group_points_wrapper(
-        #    B, C, N, nfeatures, nsample, features, idx, output
-        # )
-
         ctx.for_backwards = (idx, N)
         return _ext.group_points(features, idx)
-        # return output
 
     @staticmethod
     def backward(ctx,
@@ -305,13 +254,6 @@ class GroupingOperation(Function):
         """
         idx, N = ctx.for_backwards
 
-        # B, C, npoint, nsample = grad_out.size()
-        # grad_features = Variable(torch.cuda.FloatTensor(B, C, N).zero_())
-
-        # grad_out_data = grad_out.data.contiguous()
-        # pointnet2.group_points_grad_wrapper(
-        #   B, C, N, npoint, nsample, grad_out_data, idx, grad_features.data
-        # )
         grad_features = _ext.group_points_grad(grad_out.contiguous(), idx, N)
         return grad_features, None
 
@@ -347,14 +289,6 @@ class BallQuery(Function):
         assert new_xyz.is_contiguous()
         assert xyz.is_contiguous()
 
-        """B, N, _ = xyz.size()
-        npoint = new_xyz.size(1)
-        idx = torch.cuda.IntTensor(B, npoint, nsample).zero_()
-
-        pointnet2.ball_query_wrapper(
-            B, N, npoint, radius, nsample, new_xyz, xyz, fps_idx, idx
-        )
-        """
         idx = _ext.ball_query(new_xyz, xyz, radius, nsample)
         return torch.cat([fps_idx.unsqueeze(2), idx], dim=2)
 
@@ -410,16 +344,11 @@ class QueryAndGroup(nn.Module):
         grouped_xyz = grouping_operation(
             xyz_trans, idx
         )  # (B, 3, npoint, nsample)
-        """xyz_flipped = xyz.permute(0,2,1).contiguous()
-        new_xyz_flipped = new_xyz.permute(0,2,1).contiguous()
-        idx = point_utils.query_ball_point(self.radius, self.nsample, xyz_flipped, new_xyz_flipped)
-        grouped_xyz = point_utils.index_points(xyz_flipped, idx) # (B, 3, npoint, nsample)"""
         raw_grouped_xyz = grouped_xyz
         grouped_xyz -= new_xyz.transpose(1, 2).unsqueeze(-1)
 
         if features is not None:
             grouped_features = grouping_operation(features, idx)
-            # grouped_features = point_utils.index_points(features, idx)
             if self.use_xyz:
                 new_features = torch.cat([raw_grouped_xyz, grouped_xyz, grouped_features],
                                          dim=1)  # (B, C + 3 + 3, npoint, nsample)

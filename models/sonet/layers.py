@@ -289,8 +289,6 @@ class EquivariantLayer(nn.Module):
 
     def forward(self, x, epoch=None):
         # x is NxK, x_max is 1xK
-        # x_max, _ = torch.max(x, 0, keepdim=True)
-        # y = self.conv(x - x_max.expand_as(x))
         y = self.conv(x)
 
         if self.normalization == 'batch':
@@ -344,11 +342,6 @@ class KNNModule(nn.Module):
             norm = torch.sum((coordinate_Mx1 - coordinate_1xM) ** 2, dim=1)  # BxMxM, each row corresponds to each coordinate - other coordinates
             knn_D, knn_I = torch.topk(norm, k=K, dim=2, largest=False, sorted=True)  # BxMxK
 
-        # debug
-        # print(knn_D[0])
-        # print(knn_I[0])
-        # assert False
-
         # get gpu_id
         device_index = x.device.index
         neighbors = operations.knn_gather_wrapper(coordinate_tensor, knn_I)  # Bx3xMxK
@@ -358,12 +351,6 @@ class KNNModule(nn.Module):
             neighbors_center = coordinate_tensor.unsqueeze(3)  # Bx3xMx1
         neighbors_decentered = (neighbors - neighbors_center).detach()
         neighbors_center = neighbors_center.squeeze(3).detach()
-
-        # debug
-        # print(neighbors[0, 0])
-        # print(neighbors_avg[0, 0])
-        # print(neighbors_decentered[0, 0])
-        # assert False
 
         x_neighbors = operations.knn_gather_by_indexing(x, knn_I)  # BxCxMxK
         x_augmented = torch.cat((neighbors_decentered, x_neighbors), dim=1)  # Bx(3+C)xMxK

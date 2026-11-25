@@ -10,7 +10,6 @@ from sklearn.metrics import (
     cohen_kappa_score,
     f1_score,
     precision_score,
-    recall_score,
     matthews_corrcoef,
     accuracy_score
 )
@@ -34,7 +33,6 @@ def validate(base_model, test_dataloader, epoch, args, config,
         for idx, (taxonomy_ids, model_ids, data) in enumerate(test_dataloader):
             points = data[0].cuda()
             label = data[1].cuda()
-            # points = misc.fps(points, npoints)
             logits = base_model(points)
 
             # Handle tuple/list returns
@@ -89,19 +87,6 @@ def validate(base_model, test_dataloader, epoch, args, config,
             zero_division=0
         ) * 100.
 
-        # Calculate current recall
-        recall_macro = recall_score(
-            test_label_np,
-            test_pred_np,
-            average='macro',
-            zero_division=0
-        ) * 100.
-        recall_weighted = recall_score(
-            test_label_np,
-            test_pred_np,
-            average='weighted',
-            zero_division=0
-        ) * 100.
 
         # Calculate current kappa and MCC
         kappa = cohen_kappa_score(test_label_np, test_pred_np) * 100.
@@ -136,8 +121,6 @@ def validate(base_model, test_dataloader, epoch, args, config,
         'val_f1_weighted': f1_weighted,
         'val_precision_macro': precision_macro,
         'val_precision_weighted': precision_weighted,
-        'val_recall_macro': recall_macro,
-        'val_recall_weighted': recall_weighted,
         'val_kappa': kappa,
         'val_mcc': mcc,
     }

@@ -1,0 +1,39 @@
+PointMamba
+Copyright (c) 2024 Dingkang Liang, Xin Zhou, Wei Xu, Xingkui Zhu, Zhikang Zou,
+Xiaoqing Ye, Xiao Tan, Xiang Bai
+
+Original repository: https://github.com/LMD0311/PointMamba
+Paper: "PointMamba: A Simple State Space Model for Point Cloud Analysis",
+       NeurIPS 2024
+
+This is a derivative work adapted for the LIDARLearn library.
+Changes from the original:
+  - Integrated into the LIDARLearn model registry and config system;
+    classes renamed PointMambaScan -> PointMamba and
+    Point_MAE_Mamba_serializationV2 -> PointMamba_Pretrain
+    (parameter names unchanged, so the released checkpoints load as-is)
+  - PointMamba uses the BasePointCloudModel base class (loss/accuracy)
+  - Uses LIDARLearn's KNN, FPS, Chamfer distance and checkpoint loader
+    instead of knn_cuda and the bundled extensions
+  - Mamba blocks taken from the official mamba-ssm package instead of the
+    vendored copy; RMSNorm imported from mamba_ssm.ops.triton.layer_norm
+  - load_model_from_ckpt returns the missing/unexpected keys
+  - Removed unused code (Mlp block, commented-out alternatives)
+
+mamba_blocks.py keeps the block design of Mamba
+(Copyright (c) 2023, Tri Dao, Albert Gu; Apache-2.0).
+
+models/pointmamba/serialization.py and models/pointmamba/hilbert.py come from
+Pointcept (https://github.com/Pointcept/Pointcept, MIT licence, see
+LICENSE-Pointcept) via the PointMamba repository and are unchanged apart from
+their header. hilbert.py is modified from numpy-hilbert-curve
+(https://github.com/PrincetonLIPS/numpy-hilbert-curve, MIT licence, see
+LICENSE-numpy-hilbert-curve).
+
+Also derived from the PointMamba repository (and, through it, Point-BERT /
+Point-MAE):
+  - datasets/ScanObjectNNDataset.py: one shared base class for the OBJ-BG /
+    OBJ-ONLY and PB-T50-RS loaders, official class names added, clear error
+    when the h5 files are missing
+  - datasets/augmentation.py RandomYRotate ('y_rotate'): same rotation as
+    PointcloudRotate, used for PointMamba pretraining and ScanObjectNN

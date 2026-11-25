@@ -77,8 +77,6 @@ class ChamferDistanceL1(torch.nn.Module):
             xyz2 = xyz2[non_zeros2].unsqueeze(dim=0)
 
         dist1, dist2 = ChamferFunction.apply(xyz1, xyz2)
-        # import pdb
-        # pdb.set_trace()
         dist1 = torch.sqrt(dist1)
         dist2 = torch.sqrt(dist2)
         return (torch.mean(dist1) + torch.mean(dist2))/2

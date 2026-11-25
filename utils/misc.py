@@ -3,7 +3,6 @@ import random
 import torch
 import os
 from collections import abc
-from pointnet2_ops import pointnet2_utils
 
 
 def fps(data, number):
@@ -11,6 +10,16 @@ def fps(data, number):
         data B N 3
         number int
     '''
+    # Imported here so utils.misc (used by every runner) loads without the
+    # pointnet2_ops CUDA extension; only callers of fps() need it.
+    try:
+        from pointnet2_ops import pointnet2_utils
+    except ImportError as e:
+        raise ImportError(
+            "fps() needs the pointnet2_ops CUDA extension, which is not "
+            "available. Build it with `bash extensions/install_extensions.sh`. "
+            f"(original error: {e})"
+        ) from e
     fps_idx = pointnet2_utils.furthest_point_sample(data, number)
     fps_data = pointnet2_utils.gather_operation(data.transpose(1, 2).contiguous(), fps_idx).transpose(1, 2).contiguous()
     return fps_data

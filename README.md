@@ -10,10 +10,11 @@
 
 **Test LIDARLearn on Colab:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-9_pwgyqAK6OUS2tvPT5DUPowv1udOWl?usp=sharing)
 
+[![tests](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml/badge.svg)](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml)
 [![arXiv](https://img.shields.io/badge/arXiv-2604.10780-b31b1b.svg)](https://arxiv.org/abs/2604.10780)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
-[![PyTorch 2.4.1](https://img.shields.io/badge/PyTorch-2.4.1-ee4c2c.svg)](https://pytorch.org/)
+[![PyTorch 2.4.1 | 2.8](https://img.shields.io/badge/PyTorch-2.4.1%20%7C%202.8-ee4c2c.svg)](https://pytorch.org/)
 ![Repo Views](https://komarev.com/ghpvc/?username=said-ohamouddou&repo=LIDARLearn&label=Repository%20Views&color=0e75b6&style=for-the-badge)
 <img src="media/vis.png" alt="LIDARLearn — 3D point-cloud deep learning outputs" width="900"/>
 
@@ -25,16 +26,22 @@
 
 ---
 
+## News
+
+- **2026-11 — PointMamba added.** LIDARLearn now supports [PointMamba](https://github.com/LMD0311/PointMamba) (NeurIPS 2024), a state-space (Mamba) backbone.
+- **2026-11 — Newer PyTorch and CUDA.** LIDARLearn now runs on PyTorch 2.8 with CUDA 12.8, in addition to PyTorch 2.4.1 with CUDA 11.8. See [Installation](#installation).
+
+---
+
 ## Overview
 
-**LIDARLearn** ships the **most complete off-the-shelf catalogue of 3D point cloud deep-learning methods** we're aware of — **56 model configurations** covering 29 supervised backbones, 7 self-supervised pre-training methods, and 5 parameter-efficient fine-tuning (PEFT) strategies (DAPT, IDPT, PPT, GST, VPT-Deep) composable with 4 of the SSL backbones (ACT, PointGPT, Point-MAE, ReCon) — all exposed through a single registry-based framework with YAML-driven configs, standardised runners, automatic LaTeX/CSV reporting, and a 2 200+ test `pytest` suite.
+**LIDARLearn** ships the **most complete off-the-shelf catalogue of 3D point cloud deep-learning methods** we're aware of — **59 model configurations** covering 31 supervised backbones, 8 self-supervised pre-training methods, and 5 parameter-efficient fine-tuning (PEFT) strategies (DAPT, IDPT, PPT, GST, VPT-Deep) composable with 4 of the SSL backbones (ACT, PointGPT, Point-MAE, ReCon) — all exposed through a single registry-based framework with YAML-driven configs, standardised runners, automatic LaTeX/CSV reporting, and a 2 200+ test `pytest` suite.
 
 Designed for **researchers and engineers** who need to run **apples-to-apples benchmarks** across heterogeneous 3D point-cloud sources in the same pipeline:
 
-- **General 3D data** — ModelNet40, ShapeNet-55/34, ShapeNet Part
+- **General 3D data** — ModelNet40, ShapeNet-55/34, ShapeNet Part, ScanObjectNN (PointMamba)
 - **Indoor 3D scans** — S3DIS (Matterport-style RGB + XYZ, semantic segmentation)
 - **Terrestrial Laser Scanning (TLS)** — STPCTLS (tree species classification on high-density ground-based scans)
-- **Aerial / helicopter LiDAR (ALS)** — HELIALS (tree species from sparse-to-dense aerial point clouds)
 
 Same YAML schema, same CLI, same report generators for all of them — swap the dataset, keep the model and training recipe constant. Supported tasks: **classification**, **semantic segmentation**, **part segmentation**, and **few-shot classification**, with built-in stratified *K*-fold cross-validation and Friedman/Nemenyi statistical analysis.
 
@@ -42,19 +49,20 @@ Same YAML schema, same CLI, same report generators for all of them — swap the 
 
 The matrix below enumerates every (model × fine-tuning strategy) pair shipped
 with ready-to-run YAML configs. Columns:
-**Cls** — object classification (ModelNet40 / STPCTLS / HELIALS / ModelNetFewShot),
+**Cls** — object classification (ModelNet40 / STPCTLS / ModelNetFewShot),
 **PartSeg** — part segmentation (ShapeNetParts),
 **SemSeg** — semantic segmentation (S3DIS).
 "Strategy" is the PEFT adapter applied on top of an SSL backbone:
 **FF** = full finetuning (no PEFT), plus 5 PEFT methods — **DAPT**, **IDPT**, **PPT**, **GST** (PointGST), **VPT-Deep**.
-The 7 SSL backbones also support pre-training on ShapeNet-55.
+The 8 SSL backbones also support pre-training on ShapeNet-55.
+PointMamba ships exactly the tasks of its [official repository](https://github.com/LMD0311/PointMamba): classification on ModelNet40, ModelNetFewShot and ScanObjectNN (OBJ-BG, OBJ-ONLY, PB-T50-RS); it needs the optional `mamba-ssm` package (see [Installation](#installation)). Augmentation follows upstream where it is PointMamba-specific: its pretraining config and `scripts/train_scanobjectnn.sh` use `y_rotate`. The shared ModelNet40 / few-shot sweeps keep the library-wide `--augmentation none` for all models, whereas upstream PointMamba uses random scaling (2/3–3/2) plus translation (±0.2) there.
 
 <table border="1" cellpadding="6" cellspacing="0">
 <thead>
 <tr><th>Category</th><th>Model</th><th>Strategy</th><th align="center">Cls</th><th align="center">PartSeg</th><th align="center">SemSeg</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="15"><b>Point-based</b></td><td>PointNet</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td rowspan="17"><b>Point-based</b></td><td>PointNet</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PointNet2-SSG</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PointNet2-MSG</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>SONet</td><td>—</td><td align="center">✓</td><td align="center">—</td><td align="center">—</td></tr>
@@ -64,8 +72,10 @@ The 7 SSL backbones also support pre-training on ShapeNet-55.
 <tr><td>PointConv</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>RSCNN</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PointMLP</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td>PointMLP-elite</td><td>—</td><td align="center">✓</td><td align="center">—</td><td align="center">—</td></tr>
 <tr><td>PointSCNet</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>RepSurf</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td>RepSurf-U (2×)</td><td>—</td><td align="center">✓</td><td align="center">—</td><td align="center">—</td></tr>
 <tr><td>PointKAN</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>DELA</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>RandLA-Net</td><td>—</td><td align="center">—</td><td align="center">✓</td><td align="center">✓</td></tr>
@@ -84,7 +94,7 @@ The 7 SSL backbones also support pre-training on ShapeNet-55.
 <tr><td>MS-DGCNN</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>KAN-DGCNN</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>MS-DGCNN++</td><td>—</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
-<tr><td rowspan="27"><b>Self-supervised</b></td><td rowspan="6">Point-MAE</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td rowspan="28"><b>Self-supervised</b></td><td rowspan="6">Point-MAE</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>DAPT</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>IDPT</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PPT</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
@@ -111,10 +121,11 @@ The 7 SSL backbones also support pre-training on ShapeNet-55.
 <tr><td>Point-M2AE</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>Point-BERT</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
 <tr><td>PCP-MAE</td><td>FF</td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td></tr>
+<tr><td>PointMamba</td><td>FF</td><td align="center">✓</td><td align="center">—</td><td align="center">—</td></tr>
 </tbody>
 </table>
 
-**Total: 56 configurations** (29 supervised × FF, 7 SSL × FF, 4 SSL × 5 PEFT = 20). See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for per-model licences and upstream repositories, and [`docs/point_cloud_methods.csv`](docs/point_cloud_methods.csv) for paper titles and venues.
+**Total: 59 configurations** (31 supervised × FF, 8 SSL × FF, 4 SSL × 5 PEFT = 20). See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for per-model licences and upstream repositories, and [`docs/point_cloud_methods.csv`](docs/point_cloud_methods.csv) for paper titles and venues.
 
 ## Key Features
 
@@ -122,7 +133,7 @@ The 7 SSL backbones also support pre-training on ShapeNet-55.
 - **Cross-validation** — stratified *K*-fold with aggregated metrics (`--run_all_folds`).
 - **Friedman / Nemenyi** — non-parametric multi-model statistical testing with critical-difference diagrams (`scripts/reports/friedman_significance_report.py`).
 - **Automated reporting** — publication-ready, standalone LaTeX documents auto-generated from experiment folders (`scripts/reports/`). Best value per metric column is auto-bolded (`\textbf{}`). Every report supports `--use_citation_in_tables` to inline `\citep{}` in the tables, or a single citation paragraph above them by default.
-- **SSL pre-training** — ShapeNet-55 pre-training recipes for all 7 SSL backbones.
+- **SSL pre-training** — ShapeNet-55 pre-training recipes for all 8 SSL backbones.
 - **PEFT** — 5 fine-tuning strategies composable with any SSL backbone via a single `finetuning_strategy` field.
 - **Testing** — L1 config-parse · L2 forward-shape · L3 pretrained-load · L4 script-coverage.
 - **Visualisation** — interactive 3D HTML for classification, part-seg, and semantic-seg predictions.
@@ -131,7 +142,19 @@ The 7 SSL backbones also support pre-training on ShapeNet-55.
 
 ## Installation
 
-LIDARLearn is validated on **Python 3.11 + PyTorch 2.4.1 + CUDA 11.8**. The steps below reproduce that exact environment. `torch-scatter` and `torch-cluster` are installed separately from the official PyG wheel index because their wheels are pinned to a specific (torch × CUDA) pair — installing them via plain `pip install` will either fail or pull the wrong build.
+LIDARLearn's full test suite (~2,200 tests) passes on two setups. Pick one and use its values in the steps below:
+
+| | **A. Reference (paper results)** | **B. Newer PyTorch** |
+|---|---|---|
+| Python | 3.11 | 3.11 |
+| PyTorch / torchvision | 2.4.1 / 0.19.1 | 2.8.0 / 0.23.0 |
+| CUDA wheels (`<cu>`) | `cu118` | `cu128` |
+| `nvcc` for the extensions | 11.x | 12.x |
+| PyG wheel index | `torch-2.4.1+cu118` | `torch-2.8.0+cu128` |
+
+Setup A reproduces the environment used for the paper. To reproduce the paper's code exactly as well, check out tag [`v0.5.0`](https://github.com/said-ohamouddou/LIDARLearn/tree/v0.5.0).
+
+`torch-scatter` and `torch-cluster` are installed from the official PyG wheel index because their wheels are built for one specific (torch × CUDA) pair; a plain `pip install` will either fail or pull the wrong build.
 
 ### 1. Create a fresh conda environment
 
@@ -140,22 +163,27 @@ conda create -n lidarlearn python=3.11 -y
 conda activate lidarlearn
 ```
 
-### 2. Install PyTorch 2.4.1 with CUDA 11.8
+### 2. Install PyTorch
 
 ```bash
+# A. Reference
 pip install torch==2.4.1 torchvision==0.19.1 --index-url https://download.pytorch.org/whl/cu118
+# B. Newer PyTorch
+pip install torch==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cu128
 ```
 
 ### 3. Install `torch-scatter` and `torch-cluster` from the PyG wheel index
 
-Pass the torch+CUDA tag in the URL — this is what avoids the "wrong ABI / no CUDA" failures:
+Pass the torch+CUDA tag in the URL; this is what avoids the "wrong ABI / no CUDA" failures:
 
 ```bash
+# A. Reference
 pip install torch-scatter torch-cluster -f https://data.pyg.org/whl/torch-2.4.1+cu118.html
-pip install torch-geometric
+# B. Newer PyTorch
+pip install torch-scatter torch-cluster -f https://data.pyg.org/whl/torch-2.8.0+cu128.html
 ```
 
-Verify they resolved to the CUDA wheels (not CPU-only fallbacks):
+Verify they resolved to the CUDA wheels; a version ending in `+cpu` means you got the CPU-only build (CUDA wheels look like `1.6.3+pt28cu128`):
 
 ```bash
 python -c "import torch_scatter, torch_cluster; print(torch_scatter.__version__, torch_cluster.__version__)"
@@ -169,49 +197,79 @@ cd LIDARLearn
 pip install -r requirements.txt
 ```
 
-(The `torch-scatter` / `torch-cluster` / `torch-geometric` lines in `requirements.txt` are kept as a safety net and will be a no-op since step 3 already installed them.)
+`requirements.txt` only sets lower bounds for `torch`, `torchvision` and `numpy`, so it keeps the PyTorch you installed in step 2.
 
 ### 5. Build the CUDA C++ extensions
+
+The extensions are compiled against your PyTorch, so `nvcc` must have the **same CUDA major version** as your torch build (11.x for setup A, 12.x for setup B). Check with `nvcc --version`. If your system toolkit doesn't match, install one into the conda env:
+
+```bash
+# Only needed when the system nvcc doesn't match (shown for setup B)
+conda install -c conda-forge cuda-version=12.8 cuda-nvcc cuda-cudart-dev \
+    libcublas-dev libcusparse-dev libcusolver-dev libcurand-dev
+```
+
+Then build:
 
 ```bash
 bash extensions/install_extensions.sh
 ```
 
-This builds 7 extensions: `pointnet2_ops`, `chamfer_dist`, `dela_cutils`, `pointops`, `ptv_modules`, `clip`, and `index_max` (needed by SO-Net). If you're on CPU-only or don't need the models that depend on them, individual extensions can fail without blocking the rest of the library — the affected models are guarded by `_safe_import` in [`models/__init__.py`](models/__init__.py) and simply won't register.
+This builds 7 extensions: `pointnet2_ops`, `chamfer_dist`, `dela_cutils`, `pointops`, `ptv_modules`, `clip`, and `index_max` (needed by SO-Net). The script warns if `nvcc` and PyTorch disagree on the CUDA version, finds a conda-installed toolkit automatically, builds each extension independently, prints a pass/fail summary, and exits with an error if any build failed.
+
+Extensions you skip or fail to build don't break the rest of the library: `import models` still works, the models that need a missing extension are skipped with a single warning naming the missing package, and asking for one of them raises an error that tells you what to install.
+
+### 5b. (Optional) Install Mamba for PointMamba
+
+PointMamba needs [`mamba-ssm`](https://github.com/state-spaces/mamba) and [`causal-conv1d`](https://github.com/Dao-AILab/causal-conv1d) (NVIDIA GPU only). Without them every other model works and PointMamba is skipped with a message. Install the prebuilt wheels that match your torch / CUDA / Python / C++ ABI (Python 3.11):
+
+```bash
+# A. Reference (torch 2.4.1 + cu118)
+pip install https://github.com/Dao-AILab/causal-conv1d/releases/download/v1.5.0.post8/causal_conv1d-1.5.0.post8+cu11torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+pip install https://github.com/state-spaces/mamba/releases/download/v2.2.4/mamba_ssm-2.2.4+cu11torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+# B. Newer PyTorch (torch 2.8.0 + cu128)
+pip install https://github.com/Dao-AILab/causal-conv1d/releases/download/v1.7.0/causal_conv1d-1.7.0+cu12torch2.8cxx11abiTRUE-cp311-cp311-linux_x86_64.whl
+pip install https://github.com/state-spaces/mamba/releases/download/v2.2.5/mamba_ssm-2.2.5+cu12torch2.8cxx11abiTRUE-cp311-cp311-linux_x86_64.whl
+# Both
+pip install "transformers<5"
+```
+
+- Use `mamba-ssm` **2.2.x**: 2.3.x requires `triton>=3.5`, which conflicts with torch 2.8.
+- `transformers<5` is needed because `mamba_ssm` imports names that transformers 5 removed.
+- Other setups: pick the matching wheel from the [mamba](https://github.com/state-spaces/mamba/releases) and [causal-conv1d](https://github.com/Dao-AILab/causal-conv1d/releases) release pages (check `python -c "import torch; print(torch._C._GLIBCXX_USE_CXX11_ABI)"` for the `cxx11abi` part).
 
 ### 6. Verify the install
 
 ```bash
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest tests/test_configs.py -v
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest tests/test_configs.py -q   # 1100+ config-build tests, ~1 min
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest tests/ -q                  # full suite (~2,200 tests), ~2-3 min on GPU
 ```
 
-All 1100+ config-build tests should pass. If SONet tests fail with `Model 'SONet' is not registered`, re-run step 5 and check that `index_max` built successfully.
+Everything should pass. If a model's tests fail with `... is not in the models registry`, the error lists the missing extension or package; re-run step 5 and check that it built.
 
 ---
 
-**Tested setup.** LIDARLearn has been developed and validated on:
+**Tested setups.** LIDARLearn has been developed and validated on:
 
-- **OS** Ubuntu 22.04
+- **OS** Ubuntu 22.04, NVIDIA driver 560
 - **CPU** AMD Ryzen 7 5700X (8 cores / 16 threads)
 - **GPU** NVIDIA GeForce RTX 4060 Ti (single-GPU; all runs validated on a single-GPU configuration)
-- **Python** 3.11.10
-- **PyTorch** 2.4.1 (`+cu118`) / **torchvision** 0.19.1 (`+cu118`)
-- **CUDA** 11.8 (nvcc 11.8.89)
-- **torch-scatter / torch-cluster** from `https://data.pyg.org/whl/torch-2.4.1+cu118.html`
-- **timm** 0.4.5
-- **ninja** (for C++/CUDA extension builds)
+- **Python** 3.11
+- **Setup A:** PyTorch 2.4.1 (`+cu118`), torchvision 0.19.1, nvcc 11.8, torch-scatter / torch-cluster from the `torch-2.4.1+cu118` index; PointMamba with mamba-ssm 2.2.4 / causal-conv1d 1.5.0.post8
+- **Setup B:** PyTorch 2.8.0 (`+cu128`), torchvision 0.23.0, nvcc 12.8, torch-scatter / torch-cluster from the `torch-2.8.0+cu128` index; PointMamba with mamba-ssm 2.2.5 / causal-conv1d 1.7.0
+- **numpy** 1.26 and 2.x, **timm** 0.4.5, **ninja** (for C++/CUDA extension builds)
 
-> Other combinations (Python ≥ 3.8, PyTorch ≥ 1.13, CUDA ≥ 11.3) are likely to work but have not been exhaustively tested. If you use a different torch/CUDA pair, update the URL in step 3 to match — e.g. `torch-2.3.0+cu121` for torch 2.3 on CUDA 12.1. **Feedback and compatibility reports from other versions are very welcome** — please open an issue with your environment details.
+> PyTorch 2.4.1 is the minimum. Newer releases than 2.8 are likely to work but have not been tested yet; for another torch/CUDA pair, change the versions in steps 2–3 (the PyG index URL is `https://data.pyg.org/whl/torch-<torch version>+<cu tag>.html`) and use a matching `nvcc` in step 5. **Feedback and compatibility reports from other versions are very welcome**; please open an issue with your environment details.
 >
-> **Multi-GPU / distributed.** The codebase wires through `torch.distributed` (see [`utils/dist_utils.py`](utils/dist_utils.py)) but every shipped benchmark was run on a single GPU. **Feedback from users running multi-GPU or distributed setups is especially welcome** — please open an issue with your launcher, world size, and any adjustments needed.
+> **Multi-GPU / distributed.** The codebase wires through `torch.distributed` (see [`utils/dist_utils.py`](utils/dist_utils.py)) but every shipped benchmark was run on a single GPU. **Feedback from users running multi-GPU or distributed setups is especially welcome**; please open an issue with your launcher, world size, and any adjustments needed.
 
 ## Pretrained SSL Weights
 
-The 7 self-supervised backbones (Point-MAE, Point-BERT, PointGPT, ACT, ReCon, PCP-MAE, Point-M2AE) need a pretrained checkpoint to fine-tune from. All checkpoints are published together on Google Drive:
+The 8 self-supervised backbones (Point-MAE, Point-BERT, PointGPT, ACT, ReCon, PCP-MAE, Point-M2AE, PointMamba) need a pretrained checkpoint to fine-tune from. The first seven are published together on Google Drive:
 
 **Download:** [Google Drive — LIDARLearn pretrained weights](https://drive.google.com/drive/folders/1u0EbvwVji_fAMD2GghoNviyzyXxxaUMa?usp=sharing)
 
-Place every downloaded `.pth` into [`pretrained/`](pretrained/) at the repo root:
+Place every downloaded `.pth` into `pretrained/` at the repo root:
 
 ```
 pretrained/
@@ -223,8 +281,11 @@ pretrained/
 ├── pretrained_pcp.pth     # PCP-MAE      — cfgs/classification/PCPMAE/**
 ├── pretrained_m2ae.pth    # Point-M2AE   — cfgs/classification/PointM2AE/**
 ├── act_dvae.pth           # ACT dVAE tokeniser (needed only for ACT pre-training)
-└── dVAE.pth               # Point-BERT dVAE tokeniser (needed only for Point-BERT pre-training)
+├── dVAE.pth               # Point-BERT dVAE tokeniser (needed only for Point-BERT pre-training)
+└── pointmamba_pretrain.pth  # PointMamba — cfgs/classification/PointMamba/**
 ```
+
+PointMamba's checkpoints come from its [official release](https://github.com/LMD0311/PointMamba/releases/tag/ckpts-2) and load unchanged: [`pretrain.pth`](https://github.com/LMD0311/PointMamba/releases/download/ckpts-2/pretrain.pth) (save as `pretrained/pointmamba_pretrain.pth`) to fine-tune; the authors' ModelNet40 fine-tuned weights [`finetune_modelnet.pth`](https://github.com/LMD0311/PointMamba/releases/download/ckpts-2/finetune_modelnet.pth) (save as `pretrained/pointmamba_finetune_modelnet.pth`) also load unchanged, e.g. for inference with `load_model_from_ckpt`.
 
 Pass the relevant checkpoint via `--ckpts pretrained/<name>.pth` when fine-tuning, e.g.:
 
@@ -235,7 +296,7 @@ python main.py --config cfgs/classification/PointMAE/STPCTLS/stpctls_cv_dapt.yam
 
 Each loader strips the appropriate state-dict prefix (`MAE_encoder.`, `ACT_encoder.`, `transformer_q.`, `GPT_Transformer.`, …) so checkpoints trained with different SSL objectives all map cleanly onto the finetune model. See [`tests/test_pretrained_load.py`](tests/test_pretrained_load.py) for the verification logic that asserts every loader actually consumes its checkpoint (guards against silent prefix-mismatch failures).
 
-You can skip this section entirely if you only plan to train the 29 supervised backbones — they don't need any pretrained weights.
+You can skip this section entirely if you only plan to train the 31 supervised backbones — they don't need any pretrained weights.
 
 ## Supported Datasets
 
@@ -243,14 +304,14 @@ You can skip this section entirely if you only plan to train the 29 supervised b
 |---|---|---|
 | **ModelNet40** | Classification (40 classes) | [`datasets/ModelNetDataset.py`](datasets/ModelNetDataset.py) |
 | **ModelNet40-FewShot** | Few-shot classification (5/10-way, 10/20-shot) | [`datasets/ModelNetDatasetFewShot.py`](datasets/ModelNetDatasetFewShot.py) |
-| **ShapeNet-55** | SSL pre-training | [`datasets/ShapeNet55DatasetPretrain.py`](datasets/ShapeNet55DatasetPretrain.py) |
-| **ShapeNet Part** | Part segmentation (50 classes, 16 categories) | [`datasets/ShapeNet55Dataset.py`](datasets/ShapeNet55Dataset.py) |
+| **ScanObjectNN** | Real-world object classification (15 classes; PointMamba) | [`datasets/ScanObjectNNDataset.py`](datasets/ScanObjectNNDataset.py) |
+| **ShapeNet-55** | SSL pre-training | [`datasets/ShapeNet55Dataset.py`](datasets/ShapeNet55Dataset.py) |
+| **ShapeNet Part** | Part segmentation (50 classes, 16 categories) | [`datasets/ShapeNet55DatasetPretrain.py`](datasets/ShapeNet55DatasetPretrain.py) |
 | **S3DIS** | Indoor semantic segmentation (13 classes) | [`datasets/S3DISDataset.py`](datasets/S3DISDataset.py) |
 | **STPCTLS** ([Göttingen Research Online](https://data.goettingen-research-online.de/dataset.xhtml?persistentId=doi:10.25625/FOHUJM)) | LiDAR tree species (7 classes, TLS point clouds) | [`datasets/TreeSpeciesDataset.py`](datasets/TreeSpeciesDataset.py) |
 | **STPCTLS-CV** | STPCTLS with stratified *K*-fold CV | [`datasets/TreeSpeciesDatasetCV.py`](datasets/TreeSpeciesDatasetCV.py) |
-| **HELIALS** ([Zenodo 17077256](https://zenodo.org/records/17077256)) | Helicopter ALS tree species | [`datasets/TreeSpeciesDatasetHELIALS.py`](datasets/TreeSpeciesDatasetHELIALS.py) |
 
-Dataset download and preparation instructions are in [`DATASET.md`](DATASET.md). For convenience, the **preprocessed STPCTLS data is already included in the repository** (under [`data/`](data/)) so you can reproduce the tree-species benchmark out of the box without any external download.
+Dataset download and preparation instructions are in [`DATASET.md`](DATASET.md).
 
 ## Quick Start
 
@@ -281,10 +342,11 @@ python scripts/reports/friedman_significance_report.py --exp_dir experiments/STP
 Sweep the entire benchmark with a single command:
 
 ```bash
-bash scripts/train_stpctls.sh      # all 56 classification configs
+bash scripts/train_stpctls.sh      # all 58 classification configs
 bash scripts/train_fewshot.sh      # few-shot evaluation
 bash scripts/train_s3dis.sh        # semantic segmentation
 bash scripts/train_shapenetparts.sh # part segmentation
+bash scripts/train_scanobjectnn.sh  # ScanObjectNN (PointMamba)
 ```
 
 > **Training a subset of models.** The `scripts/train_*.sh` files are plain
@@ -344,6 +406,7 @@ Point-cloud augmentations are implemented in [`datasets/augmentation.py`](datase
 | `dropout` | Random point dropout (mask out a fraction of points) |
 | `flip` | Random axis flipping (x or y) |
 | `z_rotate_tree` | Rotation around Z-axis only — right default for upright tree scans (TLS / ALS) where up is meaningful |
+| `y_rotate` | Random rotation around the Y-axis (as `PointcloudRotate` in Point-BERT / PointMamba) — used for PointMamba pretraining and ScanObjectNN |
 
 **Example — full-sweep smoke test with Z-axis rotation for tree data:**
 
@@ -359,18 +422,18 @@ python main.py --config cfgs/classification/PointMAE/STPCTLS/stpctls_cv.yaml \
 
 ### Visualization
 
-All three viz scripts live in [`scripts/visulization/`](scripts/visulization/) and emit self-contained interactive HTML files (Plotly-based 3D scatter) plus `.npy` arrays and a text summary. Each page shows the **model name** and **dataset name** at the top so you never lose track of which run produced which output.
+All three viz scripts live in [`scripts/visualization/`](scripts/visualization/) and emit self-contained interactive HTML files (Plotly-based 3D scatter) plus `.npy` arrays and a text summary. Each page shows the **model name** and **dataset name** at the top so you never lose track of which run produced which output.
 
 | Task | Script | Output |
 |---|---|---|
-| Classification | [`visualize_cls.py`](scripts/visulization/visualize_cls.py) | per-sample 3D HTML, confusion matrix, gallery `index.html` |
-| Semantic segmentation | [`visualize_seg.py`](scripts/visulization/visualize_seg.py) | per-block GT/Pred side-by-side, per-class IoU summary |
-| Part segmentation | [`visualize_partseg.py`](scripts/visulization/visualize_partseg.py) | per-shape GT/Pred side-by-side, per-category mIoU summary |
+| Classification | [`visualize_cls.py`](scripts/visualization/visualize_cls.py) | per-sample 3D HTML, confusion matrix, gallery `index.html` |
+| Semantic segmentation | [`visualize_seg.py`](scripts/visualization/visualize_seg.py) | per-block GT/Pred side-by-side, per-class IoU summary |
+| Part segmentation | [`visualize_partseg.py`](scripts/visualization/visualize_partseg.py) | per-shape GT/Pred side-by-side, per-category mIoU summary |
 
 **Example — part segmentation with a fine-tuned PointBERT checkpoint:**
 
 ```bash
-python scripts/visulization/visualize_partseg.py \
+python scripts/visualization/visualize_partseg.py \
     --config cfgs/segmentation/PointBERT/ShapeNetParts/pointbert_partseg.yaml \
     --ckpt experiments/ShapeNetParts/pointbert_partseg/ckpt-best-seg.pth \
     --num_vis 30 \
@@ -410,23 +473,14 @@ param count and epoch time) is automatically wrapped in `\textbf{}` in the
 LaTeX output and `**…**` in the Markdown output, so the top method stands
 out at a glance. Ties are all bolded.
 
-**Example reports** (fully compiled PDFs + source `.tex` / `.csv` / `.md`
-from real benchmark runs) are shipped under `experiments/<dataset>/latex/`:
-
-| Dataset | Task | Example output |
-|---|---|---|
-| HELIALS | Classification | [`experiments/HELIALS/latex/`](experiments/HELIALS/latex/) — `model_comparison_tables.{tex,pdf,csv,md}` |
-| S3DIS | Semantic segmentation | [`experiments/S3DIS/latex/`](experiments/S3DIS/latex/) — `s3dis_comparison.{tex,pdf,csv,md}` |
-| ShapeNetParts | Part segmentation | [`experiments/ShapeNetParts/latex/`](experiments/ShapeNetParts/latex/) — `shapenetparts_comparison.{tex,pdf,csv,md}` |
-
-Each folder includes `references.bib` (auto-copied from `scripts/reports/references.bib`) so the `.tex` files compile standalone with `pdflatex` + `bibtex` — drop them straight into a paper submission.
+Each report folder also gets a copy of `references.bib` (from `scripts/reports/references.bib`), so the `.tex` files compile standalone with `pdflatex` + `bibtex` — drop them straight into a paper submission.
 
 ## Project Structure
 
 ```
 LIDARLearn/
 ├── cfgs/              # YAML configs (classification, segmentation, fewshot, pretrain)
-├── datasets/          # Dataset loaders (ModelNet, ShapeNet, S3DIS, STPCTLS, HELIALS)
+├── datasets/          # Dataset loaders (ModelNet, ScanObjectNN, ShapeNet, S3DIS, STPCTLS)
 │                      #   + augmentation.py (shared pointcloud transforms)
 ├── models/            # Backbones, SSL methods, PEFT adapters, seg wrappers
 ├── tools/             # Training runners (finetune, pretrain, seg, fewshot)
@@ -434,7 +488,7 @@ LIDARLearn/
 ├── scripts/           # Training sweeps (train_*.sh), visualisation, smoke tests
 │   └── reports/       # LaTeX report generators (classification, partseg, semseg,
 │                      #   fewshot, citations, Friedman significance) + shared references.bib
-├── extensions/        # CUDA C++ extensions (pointnet2_ops, chamfer_dist, dela_cutils)
+├── extensions/        # 7 CUDA C++ extensions + install_extensions.sh
 ├── tests/             # pytest suite (L1-L4)
 ├── docs/              # Paper sources and documentation
 └── main.py            # Unified entry point
@@ -443,31 +497,18 @@ LIDARLearn/
 ## Testing
 
 ```bash
-pytest tests/                      # full suite (~4 min on a single GPU)
+pytest tests/                      # full suite (~2-3 min on a single GPU)
 pytest tests/test_configs.py       # L1: every YAML parses and builds
 pytest tests/test_forward_shapes.py # L2: every model forward-passes correctly
+pytest tests/test_datasets.py      # data loaders: splits, labels, no train/test leakage
 ```
-
-## Roadmap / Open TODOs
-
-Help wanted — these are the priorities we're actively looking for community contributions on:
-
-- [ ] **More tests & benchmark feedback**, especially on long-running datasets such as **S3DIS** (semantic segmentation runs take many hours per config). If you have cluster time, please share logs, mIoU numbers, and any hyperparameter adjustments that worked for you.
-- [ ] **Support arbitrary point dimensions (D > 3)** — current loaders mostly consume XYZ (plus RGB for a few datasets). Remote-sensing pipelines routinely need per-point **intensity, return number, number of returns, classification, scan angle, GPS time, multi-spectral bands**, etc. Goal: configurable input channels end-to-end (LAS/LAZ preprocessors → datasets → model `in_channels`) without per-model forks.
-- [ ] **Reproduce and compare against paper-reported values.** For each model + dataset pair, we want a side-by-side table of LIDARLearn's numbers vs. the original paper's. Mismatches are opportunities to fix configs, augmentation pipelines, or training schedules.
-- [ ] **Add new models** — recent point cloud backbones, SSL methods, and PEFT strategies that aren't in the [matrix above](#supported-models). Follow the three-step contribution workflow below.
-- [ ] **Add 3D point cloud registration support** — task heads, dataset loaders (e.g., 3DMatch, KITTI odometry, ModelNet-registration), metrics (rotation/translation error, RRE/RTE), and reference methods (PPFNet is already vendored but not yet wired as a registration task).
-- [ ] **Improve and optimize the code** — profile training/inference hot paths, reduce redundant tensor copies, add `torch.compile` / AMP support where it helps, cut memory overhead in large-scene seg runs, and clean up any remaining upstream-vendored code paths. PRs that shave GPU hours are especially welcome.
-- [ ] **Windows and macOS support** — the project is currently developed and tested on Linux only. Windows needs PowerShell/`.bat` equivalents for `extensions/install_extensions.sh` and the `scripts/train_*.sh` sweep runners (or a WSL2 setup guide). macOS has no CUDA, so support would mean a CPU/MPS mode that gates the ~6 CUDA-only models (PointTransformerV2/V3, P2P, DeepGCN, DELA, RandLA-Net) on `torch.cuda.is_available()` and skips the CUDA extensions build. PRs adding either platform — with install instructions and at least one model verified end-to-end — very welcome.
-- [ ] **Full documentation of every model and its hyperparameters** — a per-model reference page (markdown under `docs/models/` or a single consolidated table) covering: what the model does in 1-2 sentences, its YAML `model:` block keys, what each hyperparameter controls, recommended defaults per dataset family (ModelNet40 / ShapeNet / STPCTLS / HELIALS / S3DIS), memory/compute footprint, and any model-specific gotchas (e.g., input channel assumptions, required preprocessors, supported task heads).
-- [ ] **Any community proposal that improves LIDARLearn** — new features, API refinements, documentation, tooling, CI, visualization helpers, or anything else. Open an issue first to discuss scope, then send a PR.
 
 ## Contributing
 
 Contributions are welcome! Whether you're adding a new backbone, a new dataset loader, a PEFT strategy, or fixing a bug, the workflow is:
 
 1. **Fork** the repository and create a feature branch (`git checkout -b feat/my-model`).
-2. **Add your model** in three steps — create `models/<name>/<name>.py` with a class inheriting `BasePointCloudModel` (or `BaseSegModel`) and decorated with `@MODELS.register_module()`, register it in `models/__init__.py`, and provide at least one YAML config under `cfgs/`.
+2. **Add your model** in three steps — create `models/<name>/<name>.py` with a class inheriting `BasePointCloudModel` (or `BaseSegModel`) and decorated with `@MODELS.register_module()`, add its module to the `_MODEL_MODULES` list in `models/__init__.py`, and provide at least one YAML config under `cfgs/`.
 3. **Run the test suite** — `pytest tests/` must pass. New models are automatically picked up by the L1 config-parse and L2 forward-shape tests.
 4. **Follow the style** — keep YAML configs `_base_`-inherited, document non-obvious hyperparameters, and include the paper citation in your config header.
 5. **Open a PR** describing the change, the reference paper/repository, and any benchmark numbers if available.

@@ -34,6 +34,9 @@ class Registry:
         self._name = name
         self._module_dict = dict()
         self._children = dict()
+        # {module_path: (missing_dependency, error_message)} for modules that
+        # could not be imported (see models/__init__.py::_safe_import).
+        self.import_failures = dict()
         self._scope = self.infer_scope() if scope is None else scope
 
         # self.build_func will be set with the following priority:
@@ -224,7 +227,8 @@ class Registry:
             return self.deprecated_register_module(name, force=force)
 
         # raise the error ahead of time
-        if not (name is None or isinstance(name, str) or misc.is_seq_of(name, str)):
+        is_str_seq = isinstance(name, (list, tuple)) and all(isinstance(n, str) for n in name)
+        if not (name is None or isinstance(name, str) or is_str_seq):
             raise TypeError(
                 'name must be either of None, an instance of str or a sequence'
                 f'  of str, but got {type(name)}')
@@ -275,8 +279,18 @@ def build_from_cfg(cfg, registry, default_args=None):
     if isinstance(obj_type, str):
         obj_cls = registry.get(obj_type)
         if obj_cls is None:
-            raise KeyError(
-                f'{obj_type} is not in the {registry.name} registry')
+            msg = f'{obj_type} is not in the {registry.name} registry'
+            failures = getattr(registry, 'import_failures', {})
+            if failures:
+                deps = sorted({dep for dep, _ in failures.values()})
+                details = '\n'.join(f'  - {mod}: {err}'
+                                    for mod, (_, err) in sorted(failures.items()))
+                msg += (f'. It may live in a module that was skipped because '
+                        f'of a missing dependency ({", ".join(deps)}). '
+                        f'Install it or build the CUDA extensions with '
+                        f'`bash extensions/install_extensions.sh`.\n'
+                        f'Skipped modules:\n{details}')
+            raise KeyError(msg)
     elif inspect.isclass(obj_type):
         obj_cls = obj_type
     else:

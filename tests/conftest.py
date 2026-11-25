@@ -31,8 +31,47 @@ import datasets  # noqa: F401,E402
 
 
 # --------------------------------------------------------------------------
+# CI without CUDA extensions
+# --------------------------------------------------------------------------
+# Import names of the GPU-only packages CI cannot install: the CUDA extensions
+# built by extensions/install_extensions.sh, plus the optional Mamba packages
+# used by PointMamba. These are the only dependencies CI mode may find missing.
+CUDA_EXTENSION_MODULES = frozenset({
+    "pointnet2_ops", "chamfer", "chamfer_dist", "dela_cutils",
+    "pointops", "ptv_modules", "clip", "index_max",
+    "mamba_ssm", "causal_conv1d",
+})
+
+
+def allow_missing_extensions() -> bool:
+    """True in CI (no GPU / nvcc), where models needing a CUDA extension are
+    skipped instead of failed. Set LIDARLEARN_ALLOW_MISSING_EXTENSIONS=1."""
+    return os.environ.get("LIDARLEARN_ALLOW_MISSING_EXTENSIONS") == "1"
+
+
+def build_model_or_skip(model_cfg):
+    """build_model_from_cfg, but skip (in CI mode) when the model or a nested
+    backbone lives in a module that was skipped for a missing dependency."""
+    from models.build import MODELS, build_model_from_cfg
+    try:
+        return build_model_from_cfg(model_cfg)
+    except KeyError as e:
+        # Only a registry miss may be skipped; any other KeyError is a bug.
+        # tests/test_ci_mode.py checks that only CUDA extensions are missing.
+        registry_miss = "is not in the models registry" in str(e)
+        if registry_miss and allow_missing_extensions() and MODELS.import_failures:
+            missing = sorted({dep for dep, _ in MODELS.import_failures.values()})
+            pytest.skip(f"{model_cfg.NAME} unavailable: missing {', '.join(missing)}")
+        raise
+
+
+# --------------------------------------------------------------------------
 # Global test configuration
 # --------------------------------------------------------------------------
+def pytest_configure(config):
+    config.addinivalue_line("markers", "gpu: test needs CUDA; skipped when no GPU is available")
+
+
 def pytest_collection_modifyitems(config, items):
     """Skip GPU-only tests when CUDA isn't available."""
     if torch.cuda.is_available():

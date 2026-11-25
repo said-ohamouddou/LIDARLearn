@@ -3,11 +3,17 @@
 # Install all CUDA C++ extensions for LIDARLearn
 #
 # Usage:
-#   bash scripts/install_extensions.sh          # install all
-#   bash scripts/install_extensions.sh --clean  # clean + rebuild
+#   bash extensions/install_extensions.sh          # install all
+#   bash extensions/install_extensions.sh --clean  # clean + rebuild
+#
+# Each extension is built and installed independently: one failure is
+# reported and the remaining extensions are still built.
 #
 # Requirements:
-#   - CUDA toolkit matching your PyTorch installation
+#   - CUDA toolkit (nvcc) with the same major version as PyTorch's CUDA
+#     (e.g. nvcc 12.x for a +cu12x torch build). A conda toolkit works too:
+#     conda install -c conda-forge cuda-version=12.8 cuda-nvcc cuda-cudart-dev \
+#         libcublas-dev libcusparse-dev libcusolver-dev libcurand-dev
 #   - ninja (pip install ninja) for faster builds
 #   - GCC compatible with your CUDA version
 #
@@ -71,6 +77,25 @@ GPU_NAME=$(python -c "import torch; print(torch.cuda.get_device_name(0))" 2>/dev
 GPU_ARCH=$(python -c "import torch; cc = torch.cuda.get_device_capability(0); print(f'{cc[0]}.{cc[1]}')" 2>/dev/null || echo "?")
 
 echo "PyTorch $TORCH_VERSION | CUDA $CUDA_VERSION | GPU: $GPU_NAME (sm_$GPU_ARCH)"
+
+# ── nvcc must match torch's CUDA major version ──
+if command -v nvcc >/dev/null 2>&1; then
+    NVCC_VERSION=$(nvcc --version | sed -n 's/.*release \([0-9]*\.[0-9]*\).*/\1/p')
+    echo "nvcc $NVCC_VERSION ($(command -v nvcc))"
+    if [ "${NVCC_VERSION%%.*}" != "${CUDA_VERSION%%.*}" ]; then
+        echo -e "${RED}Warning: nvcc is CUDA $NVCC_VERSION but PyTorch was built with CUDA $CUDA_VERSION.${NC}"
+        echo -e "${RED}Builds will likely fail. Put a CUDA ${CUDA_VERSION%%.*}.x nvcc first on PATH (and set CUDA_HOME).${NC}"
+    fi
+else
+    echo -e "${RED}Warning: nvcc not found on PATH; extension builds need a CUDA toolkit.${NC}"
+fi
+
+# conda-forge CUDA packages keep headers/libs under targets/<arch>/
+if [ -n "$CONDA_PREFIX" ] && [ -f "$CONDA_PREFIX/targets/x86_64-linux/include/cuda_runtime_api.h" ]; then
+    export CPATH="$CONDA_PREFIX/targets/x86_64-linux/include${CPATH:+:$CPATH}"
+    export LIBRARY_PATH="$CONDA_PREFIX/targets/x86_64-linux/lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
+    export CUDA_HOME="${CUDA_HOME:-$CONDA_PREFIX}"
+fi
 echo ""
 
 # ── Install function ──
@@ -82,9 +107,11 @@ install_ext() {
     local dir="$2"
 
     echo -ne "${YELLOW}[$name]${NC} Building... "
-    local log
-    log=$(cd "$dir" && pip install -e . --no-build-isolation 2>&1)
-    local rc=$?
+    # Regular (non-editable) install: `pip install -e` on setup.py projects is
+    # routed through an isolated build without torch on setuptools >= 80.
+    # `|| rc=$?` keeps `set -e` from aborting the script on a failed build.
+    local log rc=0
+    log=$(cd "$dir" && python -m pip install . --no-build-isolation 2>&1) || rc=$?
 
     if [ $rc -eq 0 ]; then
         echo -e "${GREEN}OK${NC}"
@@ -120,3 +147,7 @@ echo ""
 echo "============================================================"
 echo -e " ${GREEN}$PASS passed${NC}, ${RED}$FAIL failed${NC} (out of 7 extensions)"
 echo "============================================================"
+
+# Non-zero exit when any extension failed, so `install && test` chains and CI
+# notice. Models that need a missing extension are skipped at import time.
+[ "$FAIL" -eq 0 ]

@@ -1,9 +1,9 @@
 """
-Parameter-efficient Prompt Learning for 3D Point Cloud Understanding
+Positional Prompt Tuning for Efficient 3D Representation Learning
 
-Paper: ICRA 2024
-Authors: Hongyu Sun, Yongcai Wang, Wang Chen, Haoran Deng, Deying Li
-Source: Implementation adapted from: https://github.com/auniquesun/PPT
+Paper: ACM MM 2025 (arXiv 2408.11567)
+Authors: Shaochen Zhang, Zekun Qi, Runpei Dong, Xiuxiu Bai, Xing Wei
+Source: Implementation adapted from: https://github.com/zsc000722/PPT
 License: MIT
 """
 
@@ -17,6 +17,7 @@ from ..ssl_blocks import Encoder
 from ..build import MODELS
 from ..base_seg_model import BaseSegModel
 from ..seg.transformer_seg_base import PointNetFeaturePropagation
+from utils.checkpoint import load_checkpoint
 
 
 class PPTTransformerEncoderSeg(nn.Module):
@@ -179,7 +180,7 @@ class PPT_Seg(BaseSegModel):
         """
         if ckpt_path is None:
             return
-        ckpt = torch.load(ckpt_path, map_location='cpu')
+        ckpt = load_checkpoint(ckpt_path, map_location='cpu')
         sd = ckpt.get('base_model', ckpt.get('model', ckpt))
         sd = {k.replace('module.', ''): v for k, v in sd.items()}
         remapped = {}

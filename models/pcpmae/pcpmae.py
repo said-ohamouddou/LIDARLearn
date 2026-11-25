@@ -19,7 +19,7 @@ from .pos import get_pos_embed
 from ..build import MODELS
 from ..base_model import BasePointCloudModel, print_model_info
 from utils import misc
-from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message
+from utils.checkpoint import get_missing_parameters_message, get_unexpected_parameters_message, load_checkpoint
 from utils.logger import print_log
 from utils.knn import knn_point
 
@@ -390,9 +390,6 @@ class PCP_Pretrain(nn.Module):
 
         # prediction head
         self.increase_dim = nn.Sequential(
-            # nn.Conv1d(self.trans_dim, 1024, 1),
-            # nn.BatchNorm1d(1024),
-            # nn.LeakyReLU(negative_slope=0.2),
             nn.Conv1d(self.trans_dim, 3 * self.group_size, 1)
         )
 
@@ -427,7 +424,6 @@ class PCP_Pretrain(nn.Module):
             self.loss_func = ChamferDistanceL2().cuda()
         else:
             raise NotImplementedError
-            # self.loss_func = emd().cuda()
 
     def forward(self, pts, vis=False, **kwargs):
         neighborhood, center = self.group_divider(pts)
@@ -480,12 +476,9 @@ class PCP_Pretrain(nn.Module):
             full_vis = vis_points + center[~mask].unsqueeze(1)
             full_rebuild = rebuild_points + center[mask].unsqueeze(1)
             full = torch.cat([full_vis, full_rebuild], dim=0)
-            # full_points = torch.cat([rebuild_points,vis_points], dim=0)
             full_center = torch.cat([center[mask], center[~mask]], dim=0)
-            # full = full_points + full_center.unsqueeze(1)
             ret2 = full_vis.reshape(-1, 3).unsqueeze(0)
             ret1 = full.reshape(-1, 3).unsqueeze(0)
-            # return ret1, ret2
             return ret1, ret2, full_center
         else:
             return loss1, self.config.ita * loss2
@@ -549,7 +542,7 @@ class PCP(BasePointCloudModel):
 
     def load_model_from_ckpt(self, bert_ckpt_path):
         if bert_ckpt_path is not None:
-            ckpt = torch.load(bert_ckpt_path)
+            ckpt = load_checkpoint(bert_ckpt_path)
             base_ckpt = {k.replace("module.", ""): v for k, v in ckpt['base_model'].items()}
 
             total_ckpt_params = sum(p.numel() for p in base_ckpt.values())

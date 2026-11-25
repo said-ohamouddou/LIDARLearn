@@ -42,7 +42,6 @@ DEFAULT_METRICS = [
     'best_accuracy',
     'balanced_acc',
     'f1_macro',
-    'recall_macro',
     'precision_macro',
     'total_params_M',
     'trainable_params_M',
@@ -60,8 +59,6 @@ METRIC_DISPLAY_NAMES = {
     'f1_weighted': 'F1 Weighted',
     'precision_macro': 'Precision',
     'precision_weighted': 'Precision (W)',
-    'recall_macro': 'Recall',
-    'recall_weighted': 'Recall (W)',
     'kappa': 'Kappa',
     'mcc': 'MCC',
     'model_name': 'Model',
@@ -79,8 +76,6 @@ LATEX_DISPLAY_NAMES = {
     'f1_weighted': 'F1 Weighted (\\%)',
     'precision_macro': 'Precision (\\%)',
     'precision_weighted': 'Precision W (\\%)',
-    'recall_macro': 'Recall (\\%)',
-    'recall_weighted': 'Recall W (\\%)',
     'kappa': 'Kappa (\\%)',
     'mcc': 'MCC (\\%)',
     'model_name': 'Model',
@@ -101,8 +96,8 @@ PER_CLASS_PREFIXES = ['precision', 'recall', 'f1']
 MODEL_ORDER = [
     # Point-based (lines 21-36)
     'PointNet', 'PointNet2_SSG', 'PointNet2_MSG', 'SONet', 'PPFNet', 'PointCNN',
-    'PointWeb', 'PointConv', 'RSCNN', 'PointMLP', 'PointMLPLite',
-    'PointSCNet', 'RepSurf', 'PointKAN', 'DELA',
+    'PointWeb', 'PointConv', 'RSCNN', 'PointMLP', 'PointMLPElite',
+    'PointSCNet', 'RepSurf', 'RepSurf2x', 'PointKAN', 'DELA',
     # Attention-based
     'PCT', 'P2P', 'PointTNT', 'GlobalTransformer', 'PVT',
     'PointTransformer', 'PointTransformerV2', 'PointTransformerV3',
@@ -110,6 +105,7 @@ MODEL_ORDER = [
     'DGCNN', 'DeepGCN', 'CurveNet', 'GDAN', 'GDANet', 'MSDGCNN', 'KANDGCNN', 'MSDGCNN2',
     # Self-supervised (lines 55-84)
     'Point-MAE', 'ACT', 'RECON', 'PointGPT', 'Point-M2AE', 'PointBERT', 'PCP',
+    'PointMamba',
 ]
 
 # Category assignments for each model
@@ -118,8 +114,8 @@ MODEL_CATEGORIES = {
     'PointNet': 'Point-based', 'PointNet2_SSG': 'Point-based', 'PointNet2_MSG': 'Point-based',
     'SONet': 'Point-based', 'PPFNet': 'Point-based', 'PointCNN': 'Point-based',
     'PointWeb': 'Point-based', 'PointConv': 'Point-based', 'RSCNN': 'Point-based',
-    'PointMLP': 'Point-based', 'PointMLPLite': 'Point-based',
-    'PointSCNet': 'Point-based', 'RepSurf': 'Point-based', 'PointKAN': 'Point-based', 'DELA': 'Point-based',
+    'PointMLP': 'Point-based', 'PointMLPElite': 'Point-based',
+    'PointSCNet': 'Point-based', 'RepSurf': 'Point-based', 'RepSurf2x': 'Point-based', 'PointKAN': 'Point-based', 'DELA': 'Point-based',
     # Attention-based
     'PCT': 'Attention-based', 'P2P': 'Attention-based', 'PointTNT': 'Attention-based',
     'GlobalTransformer': 'Attention-based', 'PVT': 'Attention-based', 'PointTransformer': 'Attention-based',
@@ -129,7 +125,7 @@ MODEL_CATEGORIES = {
     'GDAN': 'Graph-based', 'GDANet': 'Graph-based', 'MSDGCNN': 'Graph-based', 'KANDGCNN': 'Graph-based', 'MSDGCNN2': 'Graph-based',
     # Self-supervised
     'Point-MAE': 'Self-supervised', 'ACT': 'Self-supervised', 'RECON': 'Self-supervised',
-    'PointGPT': 'Self-supervised', 'PCP': 'Self-supervised', 'Point-M2AE': 'Self-supervised',
+    'PointGPT': 'Self-supervised', 'PCP': 'Self-supervised', 'PointMamba': 'Self-supervised', 'Point-M2AE': 'Self-supervised',
     'PointBERT': 'Self-supervised',
 }
 
@@ -139,8 +135,8 @@ MODEL_CITATIONS = {
     'PointNet': 'qi2017pointnet', 'PointNet2_SSG': 'qi2017pointnet++', 'PointNet2_MSG': 'qi2017pointnet++',
     'SONet': 'sonet', 'PPFNet': 'ppfnet', 'PointCNN': 'pointcnn',
     'PointWeb': 'pointweb', 'PointConv': 'pointconv', 'RSCNN': 'rscnn',
-    'PointMLP': 'pointmlp', 'PointMLPLite': 'pointmlp',
-    'PointSCNet': 'pointscnet', 'RepSurf': 'repsurf', 'PointKAN': 'pointkan', 'DELA': 'dela',
+    'PointMLP': 'pointmlp', 'PointMLPElite': 'pointmlp',
+    'PointSCNet': 'pointscnet', 'RepSurf': 'repsurf', 'RepSurf2x': 'repsurf', 'PointKAN': 'pointkan', 'DELA': 'dela',
     'RandLANet': 'randlanet',
     # Supervised — attention-based
     'PCT': 'guo2021pct', 'P2P': 'p2p', 'PointTNT': 'pointtnt',
@@ -151,9 +147,9 @@ MODEL_CITATIONS = {
     'GDAN': 'gdanet', 'GDANet': 'gdanet', 'MSDGCNN': 'msdgcnn', 'KANDGCNN': 'kandgcnn', 'MSDGCNN2': 'msdgcnn2',
     # Self-supervised
     'Point-MAE': 'pang2022masked', 'ACT': 'dong2023act', 'RECON': 'qi2023contrast',
-    'PointGPT': 'chen2024pointgpt', 'PCP': 'pcpmae', 'Point-M2AE': 'zhang2022point', 'PointBERT': 'yu2022point',
+    'PointGPT': 'chen2024pointgpt', 'PCP': 'pcpmae', 'PointMamba': 'liang2024pointmamba', 'Point-M2AE': 'zhang2022point', 'PointBERT': 'yu2022point',
     # PEFT strategies (when they appear as base_model in SSL:Strategy format)
-    'IDPT': 'zha2023instance', 'DAPT': 'zhou2024dynamic', 'PPT': 'sun24ppt',
+    'IDPT': 'zha2023instance', 'DAPT': 'zhou2024dynamic', 'PPT': 'zhang2025positional',
     'PointGST': 'pointgst', 'VPT_Deep': 'jia2022visual', 'VPT-Deep': 'jia2022visual',
 }
 

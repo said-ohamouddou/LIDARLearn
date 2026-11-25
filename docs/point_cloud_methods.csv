@@ -2,41 +2,42 @@
 1,ACT,Autoencoders as Cross-Modal Teachers: Can Pretrained 2D Image Transformers Help 3D Representation Learning?,"Runpei Dong, Zekun Qi, Linfeng Zhang, Junbo Zhang, Jianjian Sun, Zheng Ge, Li Yi, Kaisheng Ma",ICLR 2023
 2,CurveNet,Walk in the Cloud: Learning Curves for Point Clouds Shape Analysis,"Tiange Xiang, Chaoyi Zhang, Yang Song, Jianhui Yu, Weidong Cai",ICCV 2021
 3,DeepGCNs,DeepGCNs: Can GCNs Go as Deep as CNNs?,"Guohao Li, Matthias Müller, Ali Thabet, Bernard Ghanem",ICCV 2019 (Oral)
-4,DAPT,Dynamic Adapter Meets Prompt Tuning: Parameter-Efficient Transfer Learning for Point Cloud Analysis,"Xin Zhou, Dingkang Liang, Wei Xu, Xingkui Zhu,Yihan Xu, Zhikang Zou, and Xiang Bai",CVPR 2024
+4,DAPT,Dynamic Adapter Meets Prompt Tuning: Parameter-Efficient Transfer Learning for Point Cloud Analysis,"Xin Zhou, Dingkang Liang, Wei Xu, Xingkui Zhu, Yihan Xu, Zhikang Zou, Xiang Bai",CVPR 2024
 5,DGCNN,Dynamic Graph CNN for Learning on Point Clouds,"Yue Wang, Yongbin Sun, Ziwei Liu, Sanjay E. Sarma, Michael M. Bronstein, Justin M. Solomon",ACM TOG 2019
-6,Global Transformer,"Point-TNT: Point Transformer Network, Points to Patches: Enabling the Use of Self-Attention for 3D Shape Recognition","Axel Berg, Magnus Oskarsson, Mark O'Connor",arXiv
-7,MS-DGCNN,Multi-Scale Dynamic Graph Convolution Network for Point Clouds Classification,Zhengli Zhai; Xin Zhang; Luyao Yao,IEEE acces
-8,GPT-DAPT,Dynamic Adapter Meets Prompt Tuning: Parameter-Efficient Transfer Learning for Point Cloud Analysis,"Xin Zhou, Dingkang Liang, Wei Xu, Xingkui Zhu,Yihan Xu, Zhikang Zou, and Xiang Bai",CVPR 2024
-9,MS-DGCNN++,MS-DGCNN++: A Multi-Scale Fusion Dynamic Graph Neural Network with Biological Knowledge Integration for LiDAR Tree Species Classification,"Said Ohamouddou, Abdellatif El Afia, Hanaa El Afia, Raddouane Chiheb",arxiv
+6,Global Transformer,Points to Patches: Enabling the Use of Self-Attention for 3D Shape Recognition,"Axel Berg, Magnus Oskarsson, Mark O'Connor",ICPR 2022
+7,MS-DGCNN,Multi-Scale Dynamic Graph Convolution Network for Point Clouds Classification,"Zhengli Zhai, Xin Zhang, Luyao Yao",IEEE Access 2020
+8,GPT-DAPT,Dynamic Adapter Meets Prompt Tuning: Parameter-Efficient Transfer Learning for Point Cloud Analysis,"Xin Zhou, Dingkang Liang, Wei Xu, Xingkui Zhu, Yihan Xu, Zhikang Zou, Xiang Bai",CVPR 2024
+9,MS-DGCNN++,MS-DGCNN++: Multi-Scale Dynamic Graph Convolution with Scale-Dependent Normalization for Robust LiDAR Tree Species Classification,"Said Ohamouddou, Hanaa El Afia, Mohamed Hamza Boulaich, Abdellatif El Afia, Raddouane Chiheb",arXiv 2025
 10,PCP-MAE,PCP-MAE: Learning to Predict Centers for Point Masked Autoencoders,"Xiangdong Zhang, Shaofeng Zhang, Junchi Yan",NeurIPS 2024 Spotlight
 11,PCT,PCT: Point Cloud Transformer,"Meng-Hao Guo, Jun-Xiong Cai, Zheng-Ning Liu, Tai-Jiang Mu, Ralph R. Martin, Shi-Min Hu",CVM 2021
 12,Point-BERT,Point-BERT: Pre-Training 3D Point Cloud Transformers with Masked Point Modeling,"Xumin Yu, Lulu Tang, Yongming Rao, Tiejun Huang, Jie Zhou, Jiwen Lu",CVPR 2022
 13,PointConv,PointConv: Deep Convolutional Networks on 3D Point Clouds,"Wenxuan Wu, Zhongang Qi, Li Fuxin",CVPR 2019
 14,PointGPT,PointGPT: Auto-regressively Generative Pre-training from Point Clouds,"Guangyan Chen, Meiling Wang, Yi Yang, Kai Yu, Li Yuan, Yufeng Yue",NeurIPS 2023
-15,PointGST,Parameter-Efficient Fine-Tuning in Spectral Domain for Point Cloud Learning,"Dingkang Liang, Tianrui Feng, Xin Zhou, Yumeng Zhang, Zhikang Zou, Xiang Bai",IEEE TPAMI
+15,PointGST,Parameter-Efficient Fine-Tuning in Spectral Domain for Point Cloud Learning,"Dingkang Liang, Tianrui Feng, Xin Zhou, Yumeng Zhang, Zhikang Zou, Xiang Bai",IEEE TPAMI 2025
 16,Point-MAE,Masked Autoencoders for Point Cloud Self-supervised Learning,"Yatian Pang, Wenxiao Wang, Francis E.H. Tay, Wei Liu, Yonghong Tian, Li Yuan",ECCV 2022
 17,PointMLP,Rethinking Network Design and Local Geometry in Point Cloud: A Simple Residual MLP Framework,"Xu Ma, Can Qin, Haoxuan You, Haoxi Ran, Yun Fu",ICLR 2022
 18,PointNet,PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation,"Charles R. Qi, Hao Su, Kaichun Mo, Leonidas J. Guibas",CVPR 2017
 19,PointNet++,PointNet++: Deep Hierarchical Feature Learning on Point Sets in a Metric Space,"Charles R. Qi, Li Yi, Hao Su, Leonidas J. Guibas",NeurIPS 2017
-20,PVT,PVT: Point-Voxel Transformer,"Cheng Zhang, Haocheng Wan, Xinyi Shen, Zizhao Wu",arxiv
-21,PointWeb,PointWeb: Enhancing Local Neighborhood Features for Point Cloud Processing,"Hengshuang Zhao, Li Jiang, Chi-Wing Fu, and Jiaya Jia",CVPR 2019
+20,PVT,PVT: Point-Voxel Transformer for Point Cloud Learning,"Cheng Zhang, Haocheng Wan, Xinyi Shen, Zizhao Wu",International Journal of Intelligent Systems 2022
+21,PointWeb,PointWeb: Enhancing Local Neighborhood Features for Point Cloud Processing,"Hengshuang Zhao, Li Jiang, Chi-Wing Fu, Jiaya Jia",CVPR 2019
 22,PPFNet,PPFNet: Global Context Aware Local Features for Robust 3D Point Matching,"Haowen Deng, Tolga Birdal, Slobodan Ilic",CVPR 2018
-23,PPT,Positional Prompt Tuning for Efficient 3D Representation Learning,"Shaochen Zhang, Zekun Qi, Runpei Dong, Xiuxiu Bai, Xing Wei",arXiv
+23,PPT,Positional Prompt Tuning for Efficient 3D Representation Learning,"Shaochen Zhang, Zekun Qi, Runpei Dong, Xiuxiu Bai, Xing Wei",ACM MM 2025
 24,RepSurf,Surface Representation for Point Clouds,"Haoxi Ran, Jun Liu, Chengjie Wang",CVPR 2022 (Oral)
 25,ReCon,Contrast with Reconstruct: Contrastive 3D Representation Learning Guided by Generative Pretraining,"Zekun Qi, Runpei Dong, Guofan Fan, Zheng Ge, Xiangyu Zhang, Kaisheng Ma, Li Yi",ICML 2023
 26,RS-CNN,Relation-Shape Convolutional Neural Network for Point Cloud Analysis,"Yongcheng Liu, Bin Fan, Shiming Xiang, Chunhong Pan",CVPR 2019
-27,SO-Net,SO-Net: Self-Organizing Net for Point Cloud Analysis,"Jiaxin Li, Ben M. Chen, Gim Hee Lee",CVPR 2018
-28,Point-TNT,Points to Patches: Enabling the Use of Self-Attention for 3D Shape Recognition,"Axel Berg, Magnus Oskarsson, Mark O'Connor",ICPR2022
-29,KAN-PointNet,PointNet with KAN versus PointNet with MLP for 3D Classification and Segmentation of Point Sets,Ali Kashefi,arXiv
-30,KAN-DGCNN,Introducing the Short-Time Fourier Kolmogorov Arnold Network: A Dynamic Graph CNN Approach for Tree Species Classification in 3D Point Clouds,"Said Ohamouddou, Mohamed Ohamouddou, Hanaa El Afia, Abdellatif El Afia, Rafik Lasri, Raddouane Chiheb",Pattern recognition journal 2026
+27,SO-Net,SO-Net: Self-Organizing Network for Point Cloud Analysis,"Jiaxin Li, Ben M. Chen, Gim Hee Lee",CVPR 2018
+28,Point-TNT,Points to Patches: Enabling the Use of Self-Attention for 3D Shape Recognition,"Axel Berg, Magnus Oskarsson, Mark O'Connor",ICPR 2022
+29,KAN-PointNet,PointNet with KAN versus PointNet with MLP for 3D Classification and Segmentation of Point Sets,Ali Kashefi,Computers & Graphics 2025
+30,KAN-DGCNN,Introducing the Short-Time Fourier Kolmogorov Arnold Network: A Dynamic Graph CNN Approach for Tree Species Classification in 3D Point Clouds,"Said Ohamouddou, Abdellatif El Afia, Mohamed Ohamouddou, Rafik Lasri, Hanaa El Afia, Raddouane Chiheb",Pattern Recognition 2026
 31,PointCNN,PointCNN: Convolution On X-Transformed Points,"Yangyan Li, Rui Bu, Mingchao Sun, Wei Wu, Xinhan Di, Baoquan Chen",NeurIPS 2018
-32,DeLA,Decoupled Local Aggregation for Point Cloud Learning,"Binjie Chen, Yunzhou Xia, Yu Zang, Cheng Wang, Jonathan Li",arXiv
+32,DeLA,Decoupled Local Aggregation for Point Cloud Learning,"Binjie Chen, Yunzhou Xia, Yu Zang, Cheng Wang, Jonathan Li",arXiv 2023
 33,P2P,P2P: Tuning Pre-trained Image Models for Point Cloud Analysis with Point-to-Pixel Prompting,"Ziyi Wang, Xumin Yu, Yongming Rao, Jie Zhou, Jiwen Lu",NeurIPS 2022 Spotlight
-34,Point-M2AE,Point-M2AE: Multi-scale Masked Autoencoders for Hierarchical Point Cloud Pre-training,"Renrui Zhang, Ziyu Guo, Rongyao Fang, Bin Zhao, Dong Wang, Yu Qiao, Hongsheng Li, Peng Gao",NeurIPS 2022
-35,Point Transformer,Point Transformer,"Hengshuang Zhao, Li Jiang, Jiaya Jia, Philip H.S. Torr, Vladlen Koltun",arxiv
-36,GDANet,Learning Geometry-Disentangled Representation for Complementary Understanding of 3D Object Point Cloud.,"Mutian Xu, Junhao Zhang, Zhipeng Zhou, Mingye Xu, Xiaojuan Qi and Yu Qiao",AAAI2021
-37,PointSCNet,PointSCNet: Point Cloud Structure and Correlation Learning Based on Space-Filling Curve-Guided Sampling,"Xingye Chen,Yiqi Wu, Wenjie Xu, Jin Li, Huaiyi Dong, Yilin Chen",Symmetry 2022
+34,Point-M2AE,Point-M2AE: Multi-scale Masked Autoencoders for Hierarchical Point Cloud Pre-training,"Renrui Zhang, Ziyu Guo, Peng Gao, Rongyao Fang, Bin Zhao, Dong Wang, Yu Qiao, Hongsheng Li",NeurIPS 2022
+35,Point Transformer,Point Transformer,"Hengshuang Zhao, Li Jiang, Jiaya Jia, Philip H.S. Torr, Vladlen Koltun",ICCV 2021
+36,GDANet,Learning Geometry-Disentangled Representation for Complementary Understanding of 3D Object Point Cloud,"Mutian Xu, Junhao Zhang, Zhipeng Zhou, Mingye Xu, Xiaojuan Qi, Yu Qiao",AAAI 2021
+37,PointSCNet,PointSCNet: Point Cloud Structure and Correlation Learning Based on Space-Filling Curve-Guided Sampling,"Xingye Chen, Yiqi Wu, Wenjie Xu, Jin Li, Huaiyi Dong, Yilin Chen",Symmetry 2022
 38,RandLA-Net,RandLA-Net: Efficient Semantic Segmentation of Large-Scale Point Clouds,"Qingyong Hu, Bo Yang, Linhai Xie, Stefano Rosa, Yulan Guo, Zhihua Wang, Niki Trigoni, Andrew Markham",CVPR 2020
-39,pointtransformerv2,Point Transformer V2: Grouped Vector Attention and Partition-based Pooling,"Xiaoyang Wu, Yixing Lao, Li Jiang, Xihui Liu, Hengshuang Zhao",arxiv
-40,pointtransformerv3,"Point Transformer V3: Simpler, Faster, Stronger","Xiaoyang Wu, Li Jiang, Peng-Shuai Wang, Zhijian Liu, Xihui Liu, Yu Qiao, Wanli Ouyang, Tong He, Hengshuang Zhao",arxiv
-41,VPT,Visual Prompt Tuning,"Menglin Jia, Luming Tang, Bor-Chun Chen, Claire Cardie, Serge Belongie, Bharath Hariharan, Ser-Nam Lim",arxiv
+39,pointtransformerv2,Point Transformer V2: Grouped Vector Attention and Partition-based Pooling,"Xiaoyang Wu, Yixing Lao, Li Jiang, Xihui Liu, Hengshuang Zhao",NeurIPS 2022
+40,pointtransformerv3,"Point Transformer V3: Simpler, Faster, Stronger","Xiaoyang Wu, Li Jiang, Peng-Shuai Wang, Zhijian Liu, Xihui Liu, Yu Qiao, Wanli Ouyang, Tong He, Hengshuang Zhao",CVPR 2024
+41,VPT,Visual Prompt Tuning,"Menglin Jia, Luming Tang, Bor-Chun Chen, Claire Cardie, Serge Belongie, Bharath Hariharan, Ser-Nam Lim",ECCV 2022
+42,PointMamba,PointMamba: A Simple State Space Model for Point Cloud Analysis,"Dingkang Liang, Xin Zhou, Wei Xu, Xingkui Zhu, Zhikang Zou, Xiaoqing Ye, Xiao Tan, Xiang Bai",NeurIPS 2024
