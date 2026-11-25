@@ -21,6 +21,7 @@ from models.build import MODELS
 from .conftest import (
     ALL_CONFIGS,
     CLASSIFICATION_CONFIGS,
+    REPO_ROOT,
     S3DIS_CONFIGS,
     SHAPENETPARTS_CONFIGS,
     allow_missing_extensions,
@@ -110,3 +111,15 @@ def test_classification_config_sets_k_folds(cfg_path):
     """tools/runner_finetune.py reads dataset.train.others.K_FOLDS directly."""
     cfg = cfg_from_yaml_file(cfg_path)
     assert "K_FOLDS" in cfg.dataset.train.others, f"{cfg_path}: dataset.train.others.K_FOLDS missing"
+
+
+DATASET_CONFIGS = sorted((REPO_ROOT / "cfgs" / "dataset").glob("*.yaml"))
+
+
+@pytest.mark.parametrize("cfg_path", DATASET_CONFIGS, ids=config_id)
+def test_dataset_config_adds_no_noise(cfg_path):
+    """Shipped dataset configs load clean data: synthetic Gaussian noise
+    (``noise_std``) is an opt-in option, never a default."""
+    cfg = cfg_from_yaml_file(str(cfg_path))
+    assert float(cfg.get("noise_std", 0.0)) == 0.0, (
+        f"{cfg_path.name} sets noise_std={cfg.noise_std}; shipped configs must not add noise")
