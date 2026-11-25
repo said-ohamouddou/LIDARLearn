@@ -23,10 +23,10 @@ Output layout:
 Pipeline, per tree:
     1. Load the first three columns (XYZ) from the text file; ignore any
        trailing columns (some Roteiche files ship RGB + intensity).
-    2. If the cloud has >= 1024 points → downsample to 1024 via GPU
-       farthest-point sampling (``pointnet2_ops.furthest_point_sample``).
-       If the cloud has < 1024 points → duplicate points cyclically to
-       reach exactly 1024 (no tree is dropped).
+    2. Resample to exactly 1024 points with ``utils.fps.resample``: farthest
+       point sampling when the cloud is larger (on the GPU when
+       ``pointnet2_ops`` and CUDA are available, in NumPy otherwise), cyclic
+       duplication when it is smaller (no tree is dropped).
     3. Write ``.xyz`` with a ``"x y z"`` header + 1024 data rows (``.6f``
        floats, space-separated). Raw coordinates are preserved — no
        centering/scaling, matching the original preprocessed release.
@@ -44,16 +44,11 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import torch
 from tqdm import tqdm
 
-try:
-    from pointnet2_ops.pointnet2_utils import furthest_point_sample
-except ImportError:
-    sys.exit(
-        "pointnet2_ops is required. Build the CUDA extensions first:\n"
-        "    bash extensions/install_extensions.sh"
-    )
+# Run as a script from the repo root: make `utils` importable.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from utils.fps import cuda_fps_available, resample  # noqa: E402
 
 
 TARGET_POINTS = 1024
@@ -77,30 +72,6 @@ def load_xyz(path: Path) -> np.ndarray | None:
         print(f"  [SKIP] {path.name}: expected >=3 columns, got shape {arr.shape}")
         return None
     return arr[:, :3].astype(np.float64)
-
-
-def fps_gpu(xyz: np.ndarray, target: int) -> np.ndarray:
-    """Return `target` points selected from (N, 3) `xyz` via GPU FPS."""
-    pts = torch.from_numpy(xyz).float().cuda().unsqueeze(0).contiguous()  # [1, N, 3]
-    idx = furthest_point_sample(pts, target)  # [1, target] int32
-    return xyz[idx[0].long().cpu().numpy()]
-
-
-def duplicate_to_target(xyz: np.ndarray, target: int) -> np.ndarray:
-    """Cyclically duplicate (N, 3) points until exactly `target` rows."""
-    n = xyz.shape[0]
-    if n == 0:
-        raise ValueError("empty point cloud")
-    reps = target // n + 1
-    return np.tile(xyz, (reps, 1))[:target]
-
-
-def resample(xyz: np.ndarray, target: int) -> np.ndarray:
-    """FPS down to `target` if large enough, otherwise cyclic duplication."""
-    n = xyz.shape[0]
-    if n >= target:
-        return fps_gpu(xyz, target)
-    return duplicate_to_target(xyz, target)
 
 
 def write_xyz(out_path: Path, points: np.ndarray) -> None:
@@ -138,8 +109,6 @@ def main():
     )
     args = ap.parse_args()
 
-    if not torch.cuda.is_available():
-        sys.exit("CUDA is required for GPU FPS — no GPU detected.")
     if not args.input_dir.is_dir():
         sys.exit(f"Input directory does not exist: {args.input_dir}")
 
@@ -151,7 +120,8 @@ def main():
         f"STPCTLS preprocessing:\n"
         f"  input : {args.input_dir}\n"
         f"  output: {args.output_dir}\n"
-        f"  target: {TARGET_POINTS} points per tree (GPU FPS; cyclic dup < {TARGET_POINTS})\n"
+        f"  target: {TARGET_POINTS} points per tree "
+        f"({'GPU' if cuda_fps_available() else 'CPU'} FPS; cyclic dup < {TARGET_POINTS})\n"
         f"  species ({len(species_dirs)}): {[d.name for d in species_dirs]}\n"
     )
 

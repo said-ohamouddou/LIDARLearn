@@ -4,12 +4,12 @@ import glob
 import numpy as np
 import h5py
 from torch.utils.data import Dataset
-import open3d as o3d
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from pathlib import Path
 import logging
 from tqdm import tqdm
 from .build import DATASETS
+from utils.fps import resample
 from types import SimpleNamespace
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -36,19 +36,16 @@ def load_point_cloud(file_path):
 
 
 def point_selection(point_cloud_path, target_point_count):
-    """Downsample point cloud to target point count using farthest point sampling."""
+    """Load a point cloud and resample it to ``target_point_count`` points.
+
+    Larger clouds are downsampled by farthest point sampling, in selection
+    order; smaller ones are repeated cyclically (see ``utils.fps.resample``).
+    """
     try:
         points = load_point_cloud(point_cloud_path)
         if len(points) < target_point_count:
             logger.warning(f"Point cloud {point_cloud_path} has fewer points ({len(points)}) than target ({target_point_count})")
-            # Duplicate points to reach target count
-            points = np.repeat(points, (target_point_count // len(points)) + 1, axis=0)[:target_point_count]
-            return points
-
-        point_cloud = o3d.geometry.PointCloud()
-        point_cloud.points = o3d.utility.Vector3dVector(points)
-        pcd_down = point_cloud.farthest_point_down_sample(target_point_count)
-        return np.asarray(pcd_down.points)
+        return resample(points, target_point_count)
     except Exception as e:
         logger.error(f"Error in point selection for {point_cloud_path}: {str(e)}")
         raise
