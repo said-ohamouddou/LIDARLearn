@@ -21,7 +21,6 @@ addict
 tqdm==4.66.5
 
 # Point-cloud / geometry
-open3d
 einops
 
 # Scatter / cluster ops (PointTransformerV2 / V3, DeepGCN, P2P)

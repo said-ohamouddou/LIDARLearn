@@ -7,6 +7,7 @@ from tqdm import tqdm
 from torch.utils.data import Dataset
 from .build import DATASETS
 from utils.logger import *
+from utils.fps import fps
 import torch
 
 warnings.filterwarnings('ignore')
@@ -20,30 +21,6 @@ def pc_normalize(pc):
     return pc
 
 
-
-def farthest_point_sample(point, npoint):
-    """
-    Args:
-        xyz: pointcloud data, [N, D]
-        npoint: number of samples
-
-    Returns:
-        centroids: sampled pointcloud index, [npoint, D]
-    """
-    N, D = point.shape
-    xyz = point[:,:3]
-    centroids = np.zeros((npoint,))
-    distance = np.ones((N,)) * 1e10
-    farthest = np.random.randint(0, N)
-    for i in range(npoint):
-        centroids[i] = farthest
-        centroid = xyz[farthest, :]
-        dist = np.sum((xyz - centroid) ** 2, -1)
-        mask = dist < distance
-        distance[mask] = dist[mask]
-        farthest = np.argmax(distance, -1)
-    point = point[centroids.astype(np.int32)]
-    return point
 
 @DATASETS.register_module()
 class ModelNet(Dataset):
@@ -110,7 +87,7 @@ class ModelNet(Dataset):
                     point_set = np.loadtxt(fn[1], delimiter=',').astype(np.float32)
 
                     if self.uniform:
-                        point_set = farthest_point_sample(point_set, self.npoints)
+                        point_set = fps(point_set, self.npoints)
                     else:
                         point_set = point_set[0:self.npoints, :]
 
@@ -151,7 +128,8 @@ class ModelNet(Dataset):
             point_set = np.loadtxt(fn[1], delimiter=',').astype(np.float32)
 
             if self.uniform:
-                point_set = farthest_point_sample(point_set, self.npoints)
+                # CPU: CUDA cannot be initialised in DataLoader workers.
+                point_set = fps(point_set, self.npoints, device='cpu')
             else:
                 point_set = point_set[0:self.npoints, :]
                 

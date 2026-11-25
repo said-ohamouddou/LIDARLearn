@@ -30,7 +30,7 @@ myst_heading_anchors = 3
 
 autodoc_mock_imports = [
     "pointnet2_ops", "chamfer", "chamfer_dist", "dela_cutils", "pointops", "ptv_modules",
-    "clip", "index_max", "mamba_ssm", "causal_conv1d", "open3d", "torch_scatter",
+    "clip", "index_max", "mamba_ssm", "causal_conv1d", "torch_scatter",
     "torch_cluster", "lightly", "flash_attn", "spconv", "transformers",
 ]
 autodoc_typehints = "description"
