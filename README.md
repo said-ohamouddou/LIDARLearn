@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="media/logo.png" alt="LIDARLearn logo" width="700"/>
+<img src="media/logo.png" alt="LIDARLearn logo" width="350"/>
 
 # LIDARLearn
 
@@ -8,7 +8,7 @@
 
 *Classification · Semantic Segmentation · Part Segmentation · Self-Supervised Pre-training · Parameter-Efficient Fine-Tuning · Few-Shot*
 
-**Test LIDARLearn on Colab:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1TS8HDEjD5qwrzEmk3IZIDBmw29Zc5oAf)
+**Try LIDARLearn on Colab:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1TS8HDEjD5qwrzEmk3IZIDBmw29Zc5oAf)
 
 [![tests](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml/badge.svg)](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml)
 [![docs](https://readthedocs.org/projects/lidarlearn/badge/?version=latest)](https://lidarlearn.readthedocs.io)
@@ -17,7 +17,7 @@
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
 [![PyTorch 2.4.1 | 2.8](https://img.shields.io/badge/PyTorch-2.4.1%20%7C%202.8-ee4c2c.svg)](https://pytorch.org/)
 ![Repo Views](https://komarev.com/ghpvc/?username=said-ohamouddou&repo=LIDARLearn&label=Repository%20Views&color=0e75b6&style=for-the-badge)
-<img src="media/vis.png" alt="LIDARLearn — 3D point-cloud deep learning outputs" width="900"/>
+<img src="media/vis.png" alt="LIDARLearn — 3D point-cloud deep learning outputs" width="450"/>
 
 *Paper:* [LIDARLearn: A Unified Deep Learning Library for 3D Point Cloud Classification, Segmentation, and Self-Supervised Representation Learning](https://arxiv.org/abs/2604.10780) · *Demo:* [Google Drive walkthrough](https://drive.google.com/drive/folders/1TR4mR9aXYXpvM2RNBFuYb1gYn1uSKad5?usp=sharing)
 
