@@ -8,7 +8,7 @@ LIDARLearn ships **59 ready-to-run model configurations**: 31 supervised backbon
 - **Data:** ModelNet40, ScanObjectNN, ShapeNet-55, ShapeNet Part, S3DIS, and terrestrial laser scanning (STPCTLS tree species).
 - **Benchmarking:** stratified *K*-fold cross-validation, Friedman/Nemenyi significance tests, and publication-ready LaTeX/CSV tables generated from your runs.
 
-**Links:** [GitHub](https://github.com/said-ohamouddou/LIDARLearn) · [Paper (arXiv)](https://arxiv.org/abs/2604.10780) · [Colab demo](https://colab.research.google.com/drive/1-9_pwgyqAK6OUS2tvPT5DUPowv1udOWl?usp=sharing)
+**Links:** [GitHub](https://github.com/said-ohamouddou/LIDARLearn) · [Paper (arXiv)](https://arxiv.org/abs/2604.10780) · [Colab demo](https://colab.research.google.com/drive/1TS8HDEjD5qwrzEmk3IZIDBmw29Zc5oAf)
 
 ## News
 

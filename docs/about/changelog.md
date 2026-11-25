@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+**STPCTLS (80/20 split) now loads clean point clouds.**
+
+- `cfgs/dataset/TreeDataset.yaml` no longer adds Gaussian noise (`noise_std: 0.20`) to every training and validation sample.
+- Results on this split will differ from v0.6.0 and earlier, including the paper. The 5-fold CV split was never affected.
+- Noise can still be enabled explicitly with `noise_std`, for robustness studies.
+
 ## v0.6.0
 
 **Highlights**
