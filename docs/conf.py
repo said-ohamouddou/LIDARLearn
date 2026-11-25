@@ -25,7 +25,7 @@ extensions = [
 ]
 
 source_suffix = {".md": "markdown"}
-exclude_patterns = ["_build", "_ext", "paper", "superpowers"]
+exclude_patterns = ["_build", "_ext", "paper"]
 myst_heading_anchors = 3
 
 autodoc_mock_imports = [
