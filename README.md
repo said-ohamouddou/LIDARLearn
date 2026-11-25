@@ -8,7 +8,7 @@
 
 *Classification · Semantic Segmentation · Part Segmentation · Self-Supervised Pre-training · Parameter-Efficient Fine-Tuning · Few-Shot*
 
-**Test LIDARLearn on Colab:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-9_pwgyqAK6OUS2tvPT5DUPowv1udOWl?usp=sharing)
+**Test LIDARLearn on Colab:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1TS8HDEjD5qwrzEmk3IZIDBmw29Zc5oAf)
 
 [![tests](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml/badge.svg)](https://github.com/said-ohamouddou/LIDARLearn/actions/workflows/tests.yml)
 [![docs](https://readthedocs.org/projects/lidarlearn/badge/?version=latest)](https://lidarlearn.readthedocs.io)
